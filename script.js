@@ -1,266 +1,355 @@
 /**
- * Website Main Script
- * Features: Page Transitions, Letter Animations, Counter Engine, 
- * Form Submission, and Modal/Overlay Management.
+ * Vocal Tech Marketing — script.js
+ * Features:
+ *  1. Page entrance fade-in
+ *  2. Letter animation (slogan + lead-text)
+ *  3. Intersection Observer (reveal, stagger, counters, testimonials)
+ *  4. Hamburger mobile nav (with backdrop, keyboard, close-on-link)
+ *  5. Smooth scroll
+ *  6. Service & Profile overlay management
+ *  7. Contact modal
+ *  8. Contact form submission (Google Apps Script)
  */
 
-/* --- 1. UTILITY & ANIMATION ENGINES --- */
-
-// A. Page Entrance Logic
+/* ============================================================
+   1. PAGE ENTRANCE
+============================================================ */
 const initPageTransition = () => {
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.05s ease-in-out';
-    
-    window.requestAnimationFrame(() => {
-        document.body.style.opacity = '1';
-        const myVideo = document.querySelector('video');
-        if (myVideo) myVideo.playbackRate = 0.5;
-    });
+  document.body.style.opacity = '0';
+  document.body.style.transition = 'opacity 0.4s ease-in-out';
+  window.requestAnimationFrame(() => {
+    document.body.style.opacity = '1';
+    const video = document.querySelector('.hero-video');
+    if (video) video.playbackRate = 0.6;
+  });
 };
 
-// B. Advanced Letter-by-Letter Engine (Preserves HTML Tags)
+/* ============================================================
+   2. LETTER ANIMATION
+============================================================ */
 const runLetterAnimation = (selector) => {
-    const target = document.querySelector(selector);
-    if (!target) return;
+  const target = document.querySelector(selector);
+  if (!target) return;
 
-    const processNode = (node) => {
-        if (node.nodeType === 3) { // Text node
-            const chars = [...node.textContent];
-            const fragment = document.createDocumentFragment();
-            chars.forEach((char) => {
-                const span = document.createElement('span');
-                span.textContent = char === " " ? "\u00A0" : char;
-                span.className = 'letter';
-                fragment.appendChild(span);
-            });
-            node.parentNode.replaceChild(fragment, node);
-        } else {
-            for (let i = node.childNodes.length - 1; i >= 0; i--) {
-                processNode(node.childNodes[i]);
-            }
-        }
-    };
+  const processNode = (node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const frag = document.createDocumentFragment();
+      [...node.textContent].forEach(char => {
+        const span = document.createElement('span');
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        span.className = 'letter';
+        frag.appendChild(span);
+      });
+      node.parentNode.replaceChild(frag, node);
+    } else {
+      // Iterate backwards to avoid index shifting after replaceChild
+      [...node.childNodes].reverse().forEach(child => processNode(child));
+    }
+  };
 
-    processNode(target);
+  processNode(target);
 
-    const allLetters = target.querySelectorAll('.letter');
-    allLetters.forEach((letter, i) => {
-        letter.style.transitionDelay = `${i * 0.01}s`;
-        // Triggering the 'active' class via timeout to start animation
-        setTimeout(() => letter.classList.add('active'), 50);
+  target.querySelectorAll('.letter').forEach((letter, i) => {
+    letter.style.transitionDelay = `${i * 0.015}s`;
+    setTimeout(() => letter.classList.add('active'), 80);
+  });
+};
+
+/* ============================================================
+   3. COUNTER ANIMATION
+============================================================ */
+const animateCounter = (el) => {
+  const target = +el.getAttribute('data-target');
+  const duration = 2400;
+  let start = null;
+
+  const step = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const eased = progress * (2 - progress); // ease-out quad
+    el.textContent = Math.floor(eased * target);
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      el.textContent = target + '+';
+    }
+  };
+  requestAnimationFrame(step);
+};
+
+/* ============================================================
+   4. INTERSECTION OBSERVER
+============================================================ */
+const initObserver = () => {
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+
+      // Reveal
+      el.classList.add('active');
+
+      // Stagger children
+      if (el.classList.contains('stagger-container')) {
+        [...el.children].forEach((child, i) => {
+          setTimeout(() => {
+            child.style.opacity = '1';
+            child.style.transform = 'translateY(0)';
+            child.style.transition = 'all 0.55s cubic-bezier(0.22,1,0.36,1)';
+          }, i * 130);
+        });
+      }
+
+      // Testimonials
+      if (el.classList.contains('testimonial-card')) {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }
+
+      // Counters
+      el.querySelectorAll('.stat-number').forEach(num => {
+        num.textContent = '0';
+        animateCounter(num);
+      });
+
+      obs.unobserve(el);
     });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  // Testimonials: set initial hidden state
+  document.querySelectorAll('.testimonial-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(22px)';
+    card.style.transition = 'all 0.8s ease-out';
+  });
+
+  document.querySelectorAll(
+    '.reveal, .stagger-container, .about-stats-box, .testimonial-card'
+  ).forEach(el => observer.observe(el));
 };
 
-// C. Counter Engine
-const animateValue = (obj) => {
-    const target = +obj.getAttribute('data-target');
-    let start = null;
-    const duration = 2500; 
-    
-    const step = (timestamp) => {
-        if (!start) start = timestamp;
-        const progress = Math.min((timestamp - start) / duration, 1);
-        const easeProgress = progress * (2 - progress); // outQuad
-        
-        obj.innerHTML = Math.floor(easeProgress * target);
-        
-        if (progress < 1) {
-            window.requestAnimationFrame(step);
-        } else {
-            obj.innerHTML = target + "+";
-        }
-    };
-    window.requestAnimationFrame(step);
+/* ============================================================
+   5. HAMBURGER / MOBILE NAV
+============================================================ */
+const initNav = () => {
+  const toggle   = document.getElementById('mobile-menu');
+  const navLinks = document.getElementById('nav-links');
+  const backdrop = document.getElementById('nav-backdrop');
+  if (!toggle || !navLinks) return;
+
+  const openNav = () => {
+    navLinks.classList.add('active');
+    toggle.classList.add('is-active');
+    backdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    toggle.setAttribute('aria-expanded', 'true');
+  };
+
+  const closeNav = () => {
+    navLinks.classList.remove('active');
+    toggle.classList.remove('is-active');
+    backdrop.classList.remove('active');
+    document.body.style.overflow = '';
+    toggle.setAttribute('aria-expanded', 'false');
+  };
+
+  toggle.addEventListener('click', () => {
+    navLinks.classList.contains('active') ? closeNav() : openNav();
+  });
+
+  // Close on backdrop click
+  backdrop.addEventListener('click', closeNav);
+
+  // Close when a nav link is clicked
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeNav);
+  });
+
+  // Keyboard: close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && navLinks.classList.contains('active')) closeNav();
+  });
+
+  // Keyboard: Enter/Space on toggle
+  toggle.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      navLinks.classList.contains('active') ? closeNav() : openNav();
+    }
+  });
 };
 
-/* --- 2. CORE INITIALIZATION --- */
+/* ============================================================
+   6. SMOOTH SCROLL
+============================================================ */
+const initSmoothScroll = () => {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const id = this.getAttribute('href');
+      if (!id || id === '#') return;
+      const target = document.querySelector(id);
+      if (target) {
+        e.preventDefault();
+        const offset = 80; // navbar height
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+};
 
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // Initialize Styles & Entrance
-    initPageTransition();
-    runLetterAnimation('.slogan');
-    runLetterAnimation('.lead-text');
+/* ============================================================
+   7. OVERLAY MANAGEMENT (service & profile modals)
+============================================================ */
+const openOverlay = (id) => {
+  const overlay = document.getElementById(id);
+  if (!overlay) return;
+  overlay.style.display = 'flex';
+  // Scroll to top of overlay content
+  const content = overlay.querySelector('.overlay-content');
+  if (content) content.scrollTop = 0;
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => overlay.classList.add('show'));
+  });
+  document.body.style.overflow = 'hidden';
+};
 
-    /* --- Intersection Observer Logic --- */
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px" 
-    };
+const closeOverlay = (id) => {
+  const overlay = document.getElementById(id);
+  if (!overlay) return;
+  overlay.classList.remove('show');
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    // Restore scroll only if no other overlay/modal is open
+    if (!document.querySelector('.page-overlay.show') &&
+        !document.querySelector('.modal-overlay.show')) {
+      document.body.style.overflow = '';
+    }
+  }, 420);
+};
 
-    const globalObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = entry.target;
-
-                // Default Reveal
-                target.classList.add('active');
-
-                // Staggered Grids
-                if (target.classList.contains('stagger-container')) {
-                    Array.from(target.children).forEach((child, index) => {
-                        setTimeout(() => {
-                            child.style.opacity = "1";
-                            child.style.transform = "translateY(0)";
-                            child.style.transition = "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)";
-                        }, index * 120);
-                    });
-                }
-
-                // Testimonials
-                if (target.classList.contains('testimonial-card')) {
-                    target.style.opacity = "1";
-                    target.style.transform = "translateY(0)";
-                }
-
-                // Live Counters
-                const numbers = target.querySelectorAll('.stat-number');
-                if (numbers.length > 0) {
-                    numbers.forEach(num => {
-                        num.innerText = "0";
-                        animateValue(num);
-                    });
-                }
-
-                observer.unobserve(target);
-            }
-        });
-    }, observerOptions);
-
-    // Register all elements for observation
-    const registerAnimations = () => {
-        document.querySelectorAll('.testimonial-card').forEach(card => {
-            card.style.opacity = "0";
-            card.style.transform = "translateY(20px)";
-            card.style.transition = "all 1s ease-out";
-        });
-
-        const toAnimate = document.querySelectorAll(
-            '.reveal, .stagger-container, .about-stats-box, .stats-container, .employee-card, .service-detail-card, .testimonial-card'
-        );
-        toAnimate.forEach(el => globalObserver.observe(el));
-    };
-    registerAnimations();
-
-    /* --- Navigation Logic --- */
-    const initNavigation = () => {
-        const menu = document.querySelector('#mobile-menu');
-        const navLinks = document.querySelector('.nav-links');
-        
-        if (menu && navLinks) {
-            menu.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-                menu.classList.toggle('is-active');
-                document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
-            });
-
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    navLinks.classList.remove('active');
-                    menu.classList.remove('is-active');
-                    document.body.style.overflow = 'auto';
-                });
-            });
-        }
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    e.preventDefault();
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-    };
-    initNavigation();
-
-    /* --- Form Submission Logic --- */
-    const initContactForm = () => {
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbz0nyFjR4fLx90XyCEhhIaeXIFZUKGaUaJDLmbTQJsPIDNYboM1s77PSx4Z3V3JQ_r8/exec';
-        const modal = document.getElementById('contact-modal');
-        const contactBtns = document.querySelectorAll('.btn-contact');
-        const closeBtn = document.getElementById('close-btn');
-        const contactForm = document.getElementById('contact-form-data');
-        const submitBtn = document.getElementById('submit-btn');
-
-        if (!modal) return;
-
-        const openModal = (e) => {
-            if (e) e.preventDefault();
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('show'), 10);
-            document.body.style.overflow = 'hidden';
-        };
-
-        const closeModal = () => {
-            modal.classList.remove('show');
-            setTimeout(() => modal.style.display = 'none', 300);
-            document.body.style.overflow = 'auto';
-        };
-
-        contactBtns.forEach(btn => btn.addEventListener('click', openModal));
-        if (closeBtn) closeBtn.onclick = closeModal;
-        window.onclick = (e) => { if (e.target === modal) closeModal(); };
-
-        if (contactForm) {
-            contactForm.addEventListener('submit', e => {
-                e.preventDefault();
-                submitBtn.disabled = true;
-                submitBtn.innerText = "Sending...";
-
-                fetch(scriptURL, { 
-                    method: 'POST', 
-                    body: new FormData(contactForm),
-                    mode: 'no-cors' 
-                })
-                .then(() => {
-                    submitBtn.innerText = "Sent Successfully!";
-                    submitBtn.style.background = "#28a745";
-                    setTimeout(() => {
-                        contactForm.reset();
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = "Send Message";
-                        submitBtn.style.background = "#548888";
-                        closeModal();
-                    }, 2500);
-                })
-                .catch(error => {
-                    console.error('Error!', error.message);
-                    submitBtn.innerText = "Error, try again";
-                    submitBtn.disabled = false;
-                });
-            });
-        }
-    };
-    initContactForm();
+// Close overlay on background click
+window.addEventListener('click', (e) => {
+  if (e.target.classList.contains('page-overlay')) {
+    closeOverlay(e.target.id);
+  }
 });
 
-/* --- 3. GLOBAL OVERLAY FUNCTIONS (Accessible globally) --- */
+// Close on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  document.querySelectorAll('.page-overlay.show').forEach(o => closeOverlay(o.id));
+  const modal = document.getElementById('contact-modal');
+  if (modal && modal.classList.contains('show')) closeContactModal();
+});
 
-function openOverlay(id) {
-    const overlay = document.getElementById(id);
-    if (overlay) {
-        overlay.style.display = 'flex';
-        setTimeout(() => overlay.classList.add('show'), 10);
-        document.body.style.overflow = 'hidden';
-    }
-}
+// Expose globally (used in onclick attributes)
+window.openOverlay = openOverlay;
+window.closeOverlay = closeOverlay;
 
-function closeOverlay(id) {
-    const overlay = document.getElementById(id);
-    if (overlay) {
-        overlay.classList.remove('show');
-        setTimeout(() => { overlay.style.display = 'none'; }, 400);
-        document.body.style.overflow = 'auto';
-    }
-}
+/* ============================================================
+   8. CONTACT MODAL
+============================================================ */
+const openContactModal = () => {
+  const modal = document.getElementById('contact-modal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => modal.classList.add('show'));
+  });
+  document.body.style.overflow = 'hidden';
+};
 
-// Global click listener for closing overlays on background click
-window.addEventListener('click', (e) => {
-    if (e.target.classList.contains('page-overlay')) {
-        closeOverlay(e.target.id);
+const closeContactModal = () => {
+  const modal = document.getElementById('contact-modal');
+  if (!modal) return;
+  modal.classList.remove('show');
+  setTimeout(() => {
+    modal.style.display = 'none';
+    if (!document.querySelector('.page-overlay.show')) {
+      document.body.style.overflow = '';
     }
+  }, 320);
+};
+
+// Expose globally
+window.openContactModal = openContactModal;
+window.closeContactModal = closeContactModal;
+
+const initContactModal = () => {
+  const modal      = document.getElementById('contact-modal');
+  const closeBtn   = document.getElementById('close-btn');
+  const form       = document.getElementById('contact-form-data');
+  const submitBtn  = document.getElementById('submit-btn');
+  const navContact = document.getElementById('nav-contact-btn');
+
+  if (!modal) return;
+
+  // Open from nav
+  if (navContact) navContact.addEventListener('click', (e) => { e.preventDefault(); openContactModal(); });
+
+  // Open from any .btn-contact that isn't inside a service overlay (those call openContactModal directly)
+  document.querySelectorAll('.btn-contact:not(#nav-contact-btn)').forEach(btn => {
+    if (!btn.hasAttribute('onclick')) {
+      btn.addEventListener('click', (e) => { e.preventDefault(); openContactModal(); });
+    }
+  });
+
+  // Close button
+  if (closeBtn) closeBtn.addEventListener('click', closeContactModal);
+
+  // Click outside modal box
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeContactModal();
+  });
+
+  // Form submission
+  if (form && submitBtn) {
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz0nyFjR4fLx90XyCEhhIaeXIFZUKGaUaJDLmbTQJsPIDNYboM1s77PSx4Z3V3JQ_r8/exec';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+
+      try {
+        await fetch(scriptURL, {
+          method: 'POST',
+          body: new FormData(form),
+          mode: 'no-cors',
+        });
+        submitBtn.textContent = '✓ Sent Successfully!';
+        submitBtn.style.background = '#28a745';
+        setTimeout(() => {
+          form.reset();
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+          submitBtn.style.background = '';
+          closeContactModal();
+        }, 2600);
+      } catch (err) {
+        console.error('Submission error:', err);
+        submitBtn.textContent = 'Error — try again';
+        submitBtn.style.background = '#c0392b';
+        submitBtn.disabled = false;
+        setTimeout(() => {
+          submitBtn.textContent = 'Send Message';
+          submitBtn.style.background = '';
+        }, 3000);
+      }
+    });
+  }
+};
+
+/* ============================================================
+   INIT
+============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  initPageTransition();
+  runLetterAnimation('.slogan');
+  runLetterAnimation('.lead-text');
+  initObserver();
+  initNav();
+  initSmoothScroll();
+  initContactModal();
 });
