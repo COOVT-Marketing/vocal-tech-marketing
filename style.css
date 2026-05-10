@@ -289,6 +289,16 @@ a  { text-decoration: none; }
    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
+[class^="service-detail-card"]:hover h3,
+[class^="service-detail-card"]:hover p,
+[class^="service-detail-card"]:hover .service-link,
+[class^="service-detail-card"]:hover i,
+[class^="service-detail-card"]:hover .service-icon-wrap {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
 /* Individual hover backgrounds */
 .service-detail-card1:hover { background-image: url(images/auto.jpg); background-size: cover; background-position: center; }
 .service-detail-card2:hover { background-image: url(images/fe.jpg);   background-size: cover; background-position: center; }
