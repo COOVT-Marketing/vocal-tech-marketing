@@ -273,11 +273,9 @@ body {
 	margin-left: 40px;
 }
 
-/* @media (max-width: 768px) {
-	.hero-section {
+.hero-section {
 		height: auto;
 		padding: 120px 0 60px 0;
-		/* Space for fixed header */
 		text-align: center;
 	}
 
@@ -533,43 +531,6 @@ body {
 	display: block;
 }
 
-/* @media (max-width: 768px) {
-
-	.section-header1 {
-		margin-left: 0;
-		text-align: center;
-		padding: 0 15px;
-		margin-bottom: 30px;
-	}
-
-	.section-header2 {
-		margin-left: 0 !important;
-		text-align: center;
-		padding: 0 15px;
-		margin-bottom: 30px;
-	}
-
-	.about-text-content {
-		margin-left: 0 !important;
-		text-align: center;
-		padding: 0 15px;
-		margin-bottom: 30px;
-	}
-
-	.about-stats-box {
-		width: 95%;
-		border-radius: 25px;
-	}
-
-	.inner-stats-grid {
-		grid-template-columns: 1fr;
-	}
-
-	.employee-card {
-		margin-bottom: 30px;
- }
-} */
-
 /* --- 7. Team Cards --- */
 /*.section-divider {
   border: 0;
@@ -692,18 +653,6 @@ body {
 	color: #548888;
 }
 
-/* Mobile Responsiveness */
-/* @media (max-width: 768px) {
-	.employee-grid {
-		grid-template-columns: 1fr !important;
-		gap: 20px !important;
-	}
-
-	.overlay-content {
-		padding: 30px 20px !important;
-	}
-} */
-
 /* Specialized Service Modal Styling */
 .overlay-content.service-modal {
 	width: 95%;
@@ -736,21 +685,6 @@ body {
 .page-overlay.show .overlay-content.service-modal {
 	transform: scale(1) translateY(0);
 }
-
-/* Mobile Fixes */
-/* @media (max-width: 768px) {
-	.service-modal h1.slogan {
-		font-size: 2.2rem !important;
-	}
-
-	.service-modal .container1 {
-		padding: 40px 20px !important;
-	}
-
-	.service-modal .hero-section {
-		min-height: 350px !important;
-	}
-} */
 
 .employee-image img {
 	width: 100%;
@@ -863,28 +797,6 @@ body {
 	transition: 0.3s;
 }
 
-/* @media (max-width: 768px) {
-	.menu-toggle {
-		display: block;
-		margin-right: 10px;
-	}
-
-	.nav-links {
-		display: none;
-		position: absolute;
-		top: 85px;
-		left: 0;
-		width: 100%;
-		background: #333;
-		flex-direction: column;
-		padding: 20px 0;
-		gap: 20px;
-	}
-
-	.nav-links.active {
-		display: flex;
-	}
-} */
 
 /* --- 9. Footer Styles --- */
 .logo-group2 {
@@ -1022,86 +934,6 @@ body {
 	color: #777;
 	font-size: 0.9rem;
 }
-
-/* Mobile Responsive Footer */
-/* @media (max-width: 992px) {
-	.site-footer {
-		margin: 0 auto;
-		text-align: center;
-	}
-
-	.logo-group2 {
-		margin: auto;
-		text-align: center;
-	}
-
-	.footer-grid {
-		grid-template-columns: 1fr;
-		gap: 30px;
-		text-align: center;
-	}
-
-	.footer-col {
-		margin-left: 0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.footer-bio,
-	.social-icons,
-	.footer-col h3 {
-		margin-left: 0 !important;
-	}
-
-	.contact-list li,
-	.footer-links li {
-		justify-content: center;
-		text-align: center;
-	}
-
-	.about-stats-box {
-		width: 100%;
-		border-radius: 0;
-		padding: 40px 10px;
-	}
-
-	.inner-stats-grid {
-		grid-template-columns: 1fr;
-		gap: 30px;
-	}
-}
-
-@media (max-width: 992px) {
-	.employee-grid {
-		grid-template-columns: 1fr;
-		gap: 20px;
-	}
-
-	.bio-content {
-		text-align: center;
-	}
-
-	.stats-mini {
-		justify-content: center;
-	}
-
-	.profile-modal {
-		width: 95% !important;
-		margin: 10px auto;
-		padding: 10px;
-	}
-}
-
-@media (max-width: 600px) {
-	.bio-content h1 {
-		font-size: 1.8rem !important;
-	}
-
-	.employee-info h2 {
-		font-size: 1.5rem !important;
-	}
-} */
 
 /* --- 10. Contact Modal --- */
 /* --- Contact Modal & Form Styles --- */
