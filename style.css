@@ -273,7 +273,7 @@ body {
 	margin-left: 40px;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
 	.hero-section {
 		height: auto;
 		padding: 120px 0 60px 0;
@@ -293,7 +293,7 @@ body {
 		font-size: 0.8rem;
 		text-align: left;
 	}
-}
+} */
 
 /* --- 5. Statistics (Live Count Styling) --- */
 
@@ -533,9 +533,8 @@ body {
 	display: block;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
 
-	/* Adjusting Section Headers */
 	.section-header1 {
 		margin-left: 0;
 		text-align: center;
@@ -557,7 +556,6 @@ body {
 		margin-bottom: 30px;
 	}
 
-	/* Stats Box */
 	.about-stats-box {
 		width: 95%;
 		border-radius: 25px;
@@ -567,11 +565,10 @@ body {
 		grid-template-columns: 1fr;
 	}
 
-	/* Team/Employee Cards */
 	.employee-card {
 		margin-bottom: 30px;
-	}
-}
+ }
+} */
 
 /* --- 7. Team Cards --- */
 /*.section-divider {
@@ -696,7 +693,7 @@ body {
 }
 
 /* Mobile Responsiveness */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
 	.employee-grid {
 		grid-template-columns: 1fr !important;
 		gap: 20px !important;
@@ -705,7 +702,7 @@ body {
 	.overlay-content {
 		padding: 30px 20px !important;
 	}
-}
+} */
 
 /* Specialized Service Modal Styling */
 .overlay-content.service-modal {
@@ -741,7 +738,7 @@ body {
 }
 
 /* Mobile Fixes */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
 	.service-modal h1.slogan {
 		font-size: 2.2rem !important;
 	}
@@ -753,7 +750,7 @@ body {
 	.service-modal .hero-section {
 		min-height: 350px !important;
 	}
-}
+} */
 
 .employee-image img {
 	width: 100%;
@@ -866,7 +863,7 @@ body {
 	transition: 0.3s;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
 	.menu-toggle {
 		display: block;
 		margin-right: 10px;
@@ -879,7 +876,6 @@ body {
 		left: 0;
 		width: 100%;
 		background: #333;
-		/* Darker to match your footer/brand */
 		flex-direction: column;
 		padding: 20px 0;
 		gap: 20px;
@@ -888,7 +884,7 @@ body {
 	.nav-links.active {
 		display: flex;
 	}
-}
+} */
 
 /* --- 9. Footer Styles --- */
 .logo-group2 {
@@ -1028,7 +1024,7 @@ body {
 }
 
 /* Mobile Responsive Footer */
-@media (max-width: 992px) {
+/* @media (max-width: 992px) {
 	.site-footer {
 		margin: 0 auto;
 		text-align: center;
@@ -1041,7 +1037,6 @@ body {
 
 	.footer-grid {
 		grid-template-columns: 1fr;
-		/* Force contact details to stack vertically */
 		gap: 30px;
 		text-align: center;
 	}
@@ -1053,7 +1048,6 @@ body {
 		align-items: center;
 	}
 
-	/* Resetting margins for bio and social icons in footer */
 	.footer-bio,
 	.social-icons,
 	.footer-col h3 {
@@ -1063,15 +1057,12 @@ body {
 	.contact-list li,
 	.footer-links li {
 		justify-content: center;
-		/* Centers the icons and text */
 		text-align: center;
 	}
 
-	/* 3. Adjust the Stats Box for narrow screens */
 	.about-stats-box {
 		width: 100%;
 		border-radius: 0;
-		/* Full width looks cleaner on mobile */
 		padding: 40px 10px;
 	}
 
@@ -1084,7 +1075,6 @@ body {
 @media (max-width: 992px) {
 	.employee-grid {
 		grid-template-columns: 1fr;
-		/* Stack vertically */
 		gap: 20px;
 	}
 
@@ -1103,7 +1093,6 @@ body {
 	}
 }
 
-/* Mobile specific font sizes */
 @media (max-width: 600px) {
 	.bio-content h1 {
 		font-size: 1.8rem !important;
@@ -1112,7 +1101,7 @@ body {
 	.employee-info h2 {
 		font-size: 1.5rem !important;
 	}
-}
+} */
 
 /* --- 10. Contact Modal --- */
 /* --- Contact Modal & Form Styles --- */
