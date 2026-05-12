@@ -492,21 +492,23 @@
       </style>
 
       <script>
-         async function applyPakistanGeo() {
-            try {
-               const res = await fetch("https://ipapi.co/json/");
-               const data = await res.json();
-               if (data.country_code === "PK") {
-                  document.querySelectorAll(".pk-only").forEach(function(el) {
-                     el.classList.add("pk-visible");
-                  });
-               }
-            } catch (e) {
-               // Geo check failed — keep sections hidden for safety
-               console.warn("Geo check failed:", e);
+         // Country code is injected by Cloudflare Worker — no external API needed
+         (function() {
+            var country = (typeof window.__USER_COUNTRY__ !== "undefined")
+               ? window.__USER_COUNTRY__
+               : "XX";
+
+            console.log("Detected country:", country);
+
+            if (country === "PK") {
+               document.querySelectorAll(".pk-only").forEach(function(el) {
+                  el.classList.add("pk-visible");
+               });
+               console.log("Pakistan detected — restricted content is now visible.");
+            } else {
+               console.log("Not Pakistan (" + country + ") — restricted content stays hidden.");
             }
-         }
-         applyPakistanGeo();
+         })();
       </script>
    </body>
 </html>
