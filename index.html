@@ -125,7 +125,7 @@
                <!-- <hr class="section-divider"> -->
 
                <!-- TEAM -->
-               <!-- <div class="about-section" id="about">
+               <div class="about-section pk-only" id="about">
                   <div class="section-header2 reveal">
                      <h2>Meet Our Team</h2>
                      <p>The strategic visionaries and industry experts driving Vocal Tech Marketing forward.</p>
@@ -146,7 +146,7 @@
                         </div>
                      </a>
                   </div>
-               </div> -->
+               </div>
             </div>
          </section>
 
@@ -211,10 +211,10 @@
             <div class="footer-col reveal" id="contact">
                <h3>Contact Info</h3>
                <ul class="contact-list">
-                  <!-- <li><i class="fas fa-map-marker-alt"></i><span>Office #12, Habib Plaza, near Honda Center, Chandni Chowk, Rwp, Pakistan</span></li> -->
+                  <li class="pk-only"><i class="fas fa-map-marker-alt"></i><span>Office #12, Habib Plaza, Chandni Chowk, Rwp, Pakistan</span></li>
                   <li><i class="fas fa-envelope"></i><a href="mailto:info@vocaltechmarketing.com" style="color:#bbb;text-decoration:none;">info@vocaltechmarketing.com</a></li>
-                  <!-- <li><i class="fas fa-phone-alt"></i><a href="tel:+923390146280" style="color:#bbb;text-decoration:none;">+92 339 0146280</a></li>
-                  <li><i class="fas fa-clock"></i><span>Mon – Fri: 6PM – 6AM</span></li> -->
+                  <li class="pk-only"><i class="fas fa-phone-alt"></i><a href="tel:+923390146280" style="color:#bbb;text-decoration:none;">+92 339 0146280</a></li>
+                  <li><i class="fas fa-clock"></i><span>Mon – Fri: 6PM – 6AM</span></li>
                </ul>
             </div>
          </div>
@@ -230,7 +230,7 @@
       ======================== -->
 
       <!-- CEO -->
-      <div class="page-overlay" id="employee-sasr-overlay">
+      <div class="page-overlay pk-only" id="employee-sasr-overlay">
          <div class="overlay-content profile-modal">
             <span class="close-overlay" onclick="closeOverlay('employee-sasr-overlay')" aria-label="Close">&times;</span>
             <div class="profile-grid">
@@ -263,7 +263,7 @@
       </div>
 
       <!-- CMO -->
-      <div class="page-overlay" id="employee-bam-overlay">
+      <div class="page-overlay pk-only" id="employee-bam-overlay">
          <div class="overlay-content profile-modal">
             <span class="close-overlay" onclick="closeOverlay('employee-bam-overlay')" aria-label="Close">&times;</span>
             <div class="profile-grid">
@@ -474,5 +474,39 @@
       </div>
 
       <script src="script.js"></script>
+
+      <!-- ========================
+           PAKISTAN GEO-RESTRICTION
+      ======================== -->
+      <style>
+         .pk-only {
+            display: none !important;
+         }
+         .pk-only.pk-visible {
+            display: block !important;
+         }
+         /* For li items inside contact list */
+         li.pk-only.pk-visible {
+            display: flex !important;
+         }
+      </style>
+
+      <script>
+         async function applyPakistanGeo() {
+            try {
+               const res = await fetch("https://ipapi.co/json/");
+               const data = await res.json();
+               if (data.country_code === "PK") {
+                  document.querySelectorAll(".pk-only").forEach(function(el) {
+                     el.classList.add("pk-visible");
+                  });
+               }
+            } catch (e) {
+               // Geo check failed — keep sections hidden for safety
+               console.warn("Geo check failed:", e);
+            }
+         }
+         applyPakistanGeo();
+      </script>
    </body>
 </html>
