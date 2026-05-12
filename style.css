@@ -1050,3 +1050,28 @@ a  { text-decoration: none; }
    .service-banner-title { font-size: 1.5rem; }
    .nav-links { width: 88vw; }
 }
+/* ============================================================
+   14. Pakistan Geo-Restriction
+============================================================ */
+
+/* Hide pk-only elements by default */
+.pk-only {
+   display: none;
+}
+
+/* Pakistan confirmed — show block-level elements */
+.pk-only.pk-visible {
+   display: block;
+}
+
+/* Footer contact list items use flex layout */
+li.pk-only.pk-visible {
+   display: flex;
+}
+
+/* Overlays locked for non-PK — use data attribute so
+   script.js openOverlay() still works for PK visitors */
+.page-overlay[data-pk-locked] {
+   display: none !important;
+   pointer-events: none;
+}

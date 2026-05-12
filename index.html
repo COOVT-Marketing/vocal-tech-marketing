@@ -230,7 +230,7 @@
       ======================== -->
 
       <!-- CEO -->
-      <div class="page-overlay pk-only" id="employee-sasr-overlay">
+      <div class="page-overlay" data-pk-locked id="employee-sasr-overlay">
          <div class="overlay-content profile-modal">
             <span class="close-overlay" onclick="closeOverlay('employee-sasr-overlay')" aria-label="Close">&times;</span>
             <div class="profile-grid">
@@ -263,7 +263,7 @@
       </div>
 
       <!-- CMO -->
-      <div class="page-overlay pk-only" id="employee-bam-overlay">
+      <div class="page-overlay" data-pk-locked id="employee-bam-overlay">
          <div class="overlay-content profile-modal">
             <span class="close-overlay" onclick="closeOverlay('employee-bam-overlay')" aria-label="Close">&times;</span>
             <div class="profile-grid">
@@ -474,41 +474,5 @@
       </div>
 
       <script src="script.js"></script>
-
-      <!-- ========================
-           PAKISTAN GEO-RESTRICTION
-      ======================== -->
-      <style>
-         .pk-only {
-            display: none !important;
-         }
-         .pk-only.pk-visible {
-            display: block !important;
-         }
-         /* For li items inside contact list */
-         li.pk-only.pk-visible {
-            display: flex !important;
-         }
-      </style>
-
-      <script>
-         // Country code is injected by Cloudflare Worker — no external API needed
-         (function() {
-            var country = (typeof window.__USER_COUNTRY__ !== "undefined")
-               ? window.__USER_COUNTRY__
-               : "XX";
-
-            console.log("Detected country:", country);
-
-            if (country === "PK") {
-               document.querySelectorAll(".pk-only").forEach(function(el) {
-                  el.classList.add("pk-visible");
-               });
-               console.log("Pakistan detected — restricted content is now visible.");
-            } else {
-               console.log("Not Pakistan (" + country + ") — restricted content stays hidden.");
-            }
-         })();
-      </script>
    </body>
 </html>

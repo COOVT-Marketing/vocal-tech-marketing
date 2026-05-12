@@ -353,3 +353,31 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initContactModal();
 });
+/* ============================================================
+   9. PAKISTAN GEO-RESTRICTION
+   Country code injected by Cloudflare Worker as window.__USER_COUNTRY__
+   Falls back to "XX" (hidden) if not set.
+============================================================ */
+(function initGeoRestriction() {
+   var country = (typeof window.__USER_COUNTRY__ !== 'undefined')
+      ? window.__USER_COUNTRY__
+      : 'XX';
+
+   console.log('[GeoRestriction] Detected country:', country);
+
+   if (country === 'PK') {
+      // Show all pk-only section/element blocks
+      document.querySelectorAll('.pk-only').forEach(function(el) {
+         el.classList.add('pk-visible');
+      });
+
+      // Unlock employee overlays — remove data-pk-locked so openOverlay() works
+      document.querySelectorAll('.page-overlay[data-pk-locked]').forEach(function(el) {
+         el.removeAttribute('data-pk-locked');
+      });
+
+      console.log('[GeoRestriction] Pakistan confirmed — all restricted content unlocked.');
+   } else {
+      console.log('[GeoRestriction] Not Pakistan (' + country + ') — restricted content stays hidden.');
+   }
+})();
