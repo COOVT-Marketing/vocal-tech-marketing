@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ============================================================ */
 (function initGeoRestriction() {
    var country = (typeof window.__USER_COUNTRY__ !== 'undefined')
-      ? window.__USER_COUNTRY__
+      ? String(window.__USER_COUNTRY__).trim().toUpperCase()
       : 'XX';
 
    console.log('[GeoRestriction] Detected country:', country);
@@ -378,6 +378,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       console.log('[GeoRestriction] Pakistan confirmed — all restricted content unlocked.');
    } else {
-      console.log('[GeoRestriction] Not Pakistan (' + country + ') — restricted content stays hidden.');
+      // Actively force-hide all pk-only elements for non-PK visitors
+      document.querySelectorAll('.pk-only').forEach(function(el) {
+         el.style.setProperty('display', 'none', 'important');
+      });
+      document.querySelectorAll('.page-overlay[data-pk-locked]').forEach(function(el) {
+         el.style.setProperty('display', 'none', 'important');
+      });
+
+      console.log('[GeoRestriction] Not Pakistan (' + country + ') — restricted content force-hidden.');
    }
 })();
