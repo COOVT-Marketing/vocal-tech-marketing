@@ -355,8 +355,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 /* ============================================================
    9. PAKISTAN GEO-RESTRICTION
-   Uses multiple geo APIs with fallback chain.
-   GitHub Pages compatible — no server-side injection needed.
+   Uses a dedicated Cloudflare Worker as a CORS-friendly geo API.
+   Worker URL: https://geo-api.syedshayanabbasr15121472.workers.dev/
 ============================================================ */
 (function initGeoRestriction() {
 
@@ -388,52 +388,26 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
    }
 
-   // Try multiple APIs in sequence
-   var apis = [
-      {
-         url: 'https://ipwho.is/',
-         parse: function(d) { return d.country_code; }
-      },
-      {
-         url: 'https://ipapi.co/json/',
-         parse: function(d) { return d.country_code; }
-      },
-      {
-         url: 'https://freeipapi.com/api/json',
-         parse: function(d) { return d.countryCode; }
-      }
-   ];
+   console.log('[GeoRestriction] Fetching country from geo Worker...');
 
-   var index = 0;
-
-   function tryNext() {
-      if (index >= apis.length) {
-         console.warn('[GeoRestriction] All APIs failed — hiding restricted content.');
-         hidePK();
-         return;
-      }
-
-      var api = apis[index++];
-      console.log('[GeoRestriction] Trying:', api.url);
-
-      fetch(api.url, { mode: 'cors', cache: 'no-cache' })
-         .then(function(res) {
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            return res.json();
-         })
-         .then(function(data) {
-            var country = String(api.parse(data) || '').trim().toUpperCase();
-            console.log('[GeoRestriction] Detected country:', country);
-            if (!country || country.length !== 2) throw new Error('Invalid country: ' + country);
-            sessionStorage.setItem('vtm_country', country);
-            if (country === 'PK') showPK(); else hidePK();
-         })
-         .catch(function(err) {
-            console.warn('[GeoRestriction] API failed:', err.message, '— trying next...');
-            tryNext();
-         });
-   }
-
-   tryNext();
+   fetch('https://geo-api.syedshayanabbasr15121472.workers.dev/', {
+      mode: 'cors',
+      cache: 'no-cache'
+   })
+   .then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+   })
+   .then(function(data) {
+      var country = String(data.country || '').trim().toUpperCase();
+      console.log('[GeoRestriction] Detected country:', country);
+      sessionStorage.setItem('vtm_country', country);
+      if (country === 'PK') showPK(); else hidePK();
+   })
+   .catch(function(err) {
+      console.warn('[GeoRestriction] Worker API failed:', err.message);
+      // On failure — hide restricted content for safety
+      hidePK();
+   });
 
 })();
