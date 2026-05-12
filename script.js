@@ -355,13 +355,22 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 /* ============================================================
    9. PAKISTAN GEO-RESTRICTION
-   Country code injected by Cloudflare Worker as window.__USER_COUNTRY__
-   Falls back to "XX" (hidden) if not set.
+   Country code read from Cloudflare-injected cookie (cf_country)
+   Set by Cloudflare Transform Rule → Response Header Modification.
+   Falls back to "XX" (hidden) if cookie not found.
 ============================================================ */
 (function initGeoRestriction() {
-   var country = (typeof window.__USER_COUNTRY__ !== 'undefined')
-      ? String(window.__USER_COUNTRY__).trim().toUpperCase()
-      : 'XX';
+
+   // Read cf_country cookie set by Cloudflare Transform Rule
+   function getCookie(name) {
+      var match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+      return match ? decodeURIComponent(match[1]).trim().toUpperCase() : null;
+   }
+
+   // Also support legacy Worker injection as fallback
+   var country = getCookie('cf_country')
+      || (typeof window.__USER_COUNTRY__ !== 'undefined' ? String(window.__USER_COUNTRY__).trim().toUpperCase() : null)
+      || 'XX';
 
    console.log('[GeoRestriction] Detected country:', country);
 
@@ -378,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       console.log('[GeoRestriction] Pakistan confirmed — all restricted content unlocked.');
    } else {
-      // Actively force-hide all pk-only elements for non-PK visitors
+      // Force-hide all pk-only elements for non-PK visitors
       document.querySelectorAll('.pk-only').forEach(function(el) {
          el.style.setProperty('display', 'none', 'important');
       });
