@@ -355,46 +355,85 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 /* ============================================================
    9. PAKISTAN GEO-RESTRICTION
-   Country code read from Cloudflare-injected cookie (cf_country)
-   Set by Cloudflare Transform Rule → Response Header Modification.
-   Falls back to "XX" (hidden) if cookie not found.
+   Uses multiple geo APIs with fallback chain.
+   GitHub Pages compatible — no server-side injection needed.
 ============================================================ */
 (function initGeoRestriction() {
 
-   // Read cf_country cookie set by Cloudflare Transform Rule
-   function getCookie(name) {
-      var match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
-      return match ? decodeURIComponent(match[1]).trim().toUpperCase() : null;
-   }
-
-   // Also support legacy Worker injection as fallback
-   var country = getCookie('cf_country')
-      || (typeof window.__USER_COUNTRY__ !== 'undefined' ? String(window.__USER_COUNTRY__).trim().toUpperCase() : null)
-      || 'XX';
-
-   console.log('[GeoRestriction] Detected country:', country);
-
-   if (country === 'PK') {
-      // Show all pk-only section/element blocks
+   function showPK() {
       document.querySelectorAll('.pk-only').forEach(function(el) {
          el.classList.add('pk-visible');
       });
-
-      // Unlock employee overlays — remove data-pk-locked so openOverlay() works
       document.querySelectorAll('.page-overlay[data-pk-locked]').forEach(function(el) {
          el.removeAttribute('data-pk-locked');
       });
+      console.log('[GeoRestriction] Pakistan confirmed — restricted content unlocked.');
+   }
 
-      console.log('[GeoRestriction] Pakistan confirmed — all restricted content unlocked.');
-   } else {
-      // Force-hide all pk-only elements for non-PK visitors
+   function hidePK() {
       document.querySelectorAll('.pk-only').forEach(function(el) {
          el.style.setProperty('display', 'none', 'important');
       });
       document.querySelectorAll('.page-overlay[data-pk-locked]').forEach(function(el) {
          el.style.setProperty('display', 'none', 'important');
       });
-
-      console.log('[GeoRestriction] Not Pakistan (' + country + ') — restricted content force-hidden.');
+      console.log('[GeoRestriction] Not Pakistan — restricted content hidden.');
    }
+
+   // Check sessionStorage cache first — avoids repeat API calls on refresh
+   var cached = sessionStorage.getItem('vtm_country');
+   if (cached) {
+      console.log('[GeoRestriction] Cached country:', cached);
+      if (cached === 'PK') showPK(); else hidePK();
+      return;
+   }
+
+   // Try multiple APIs in sequence
+   var apis = [
+      {
+         url: 'https://ipwho.is/',
+         parse: function(d) { return d.country_code; }
+      },
+      {
+         url: 'https://ipapi.co/json/',
+         parse: function(d) { return d.country_code; }
+      },
+      {
+         url: 'https://freeipapi.com/api/json',
+         parse: function(d) { return d.countryCode; }
+      }
+   ];
+
+   var index = 0;
+
+   function tryNext() {
+      if (index >= apis.length) {
+         console.warn('[GeoRestriction] All APIs failed — hiding restricted content.');
+         hidePK();
+         return;
+      }
+
+      var api = apis[index++];
+      console.log('[GeoRestriction] Trying:', api.url);
+
+      fetch(api.url, { mode: 'cors', cache: 'no-cache' })
+         .then(function(res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+         })
+         .then(function(data) {
+            var country = String(api.parse(data) || '').trim().toUpperCase();
+            console.log('[GeoRestriction] Detected country:', country);
+            if (!country || country.length !== 2) throw new Error('Invalid country: ' + country);
+            sessionStorage.setItem('vtm_country', country);
+            if (country === 'PK') showPK(); else hidePK();
+         })
+         .catch(function(err) {
+            console.warn('[GeoRestriction] API failed:', err.message, '— trying next...');
+            tryNext();
+         });
+   }
+
+   tryNext();
+
 })();
