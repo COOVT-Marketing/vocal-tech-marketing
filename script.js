@@ -9,479 +9,7 @@
  *  6. Service & Profile overlay management
  *  7. Contact modal
  *  8. Contact form submission (Google Apps Script)
- *  9. Pakistan geo-restriction
- * 10. Runtime HTML injection (hides body content from View Source)
  */
-
-/* ============================================================
-   0. RENDER PAGE — Inject all HTML at runtime
-   View Source will only show <div id="root"></div>
-   The actual markup is built here and inserted by JavaScript.
-============================================================ */
-const renderPage = () => {
-  document.getElementById('root').innerHTML = `
-
-    <!-- HEADER -->
-    <header class="main-header">
-      <nav class="navbar container1">
-        <a href="#home" class="logo-group1">
-          <img src="images/logo.png" alt="Vocal Tech Marketing Logo" class="logo-img">
-          <span class="company-name">Vocal Tech Marketing</span>
-        </a>
-
-        <div class="menu-toggle" id="mobile-menu" aria-label="Toggle navigation" role="button" tabindex="0">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </div>
-
-        <div class="nav-backdrop" id="nav-backdrop"></div>
-
-        <ul class="nav-links" id="nav-links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about-detail">About Us</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="javascript:void(0)" class="btn-contact" id="nav-contact-btn">Contact Us</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <main>
-      <!-- HERO -->
-      <section class="hero-section" id="home">
-        <video autoplay muted loop playsinline class="hero-video">
-          <source src="images/vid.mp4" type="video/mp4">
-        </video>
-        <div class="hero-overlay"></div>
-        <div class="container1 hero-wrapper">
-          <div class="hero-content">
-            <h1 class="slogan reveal">Where Brands find <span style="color:#548888;">their voices</span></h1>
-            <p class="lead-text reveal">Establishing market leadership for our clients through a sophisticated blend of qualified lead generation and strategic brand development.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- SERVICES -->
-      <section class="full-services" id="services">
-        <div class="section-header1 reveal">
-          <h2>Our Specialized Solutions</h2>
-          <p>Fueling your sales pipeline with precision-targeted, ready-to-convert prospects.</p>
-        </div>
-        <div class="container1">
-          <div class="services-grid stagger-container">
-            <a class="service-detail-card1" href="javascript:void(0)" onclick="openOverlay('auto-insurance-overlay')">
-              <span class="service-icon-wrap"><i class="fas fa-car"></i></span>
-              <h3>Auto Insurance</h3>
-              <p>High-intent leads. We verify driver history and current coverage.</p>
-            </a>
-            <a class="service-detail-card2" href="javascript:void(0)" onclick="openOverlay('final-expense-overlay')">
-              <span class="service-icon-wrap"><i class="fas fa-heart"></i></span>
-              <h3>Final Expense</h3>
-              <p>Pre-screened leads for eligibility and interest.</p>
-            </a>
-            <a class="service-detail-card3" href="javascript:void(0)" onclick="openOverlay('aca-overlay')">
-              <span class="service-icon-wrap"><i class="fas fa-file-medical"></i></span>
-              <h3>ACA</h3>
-              <p>Expertly generated Affordable Care Act leads tailored for enrollment.</p>
-            </a>
-            <a class="service-detail-card4" href="javascript:void(0)" onclick="openOverlay('medicare-overlay')">
-              <span class="service-icon-wrap"><i class="fas fa-user-plus"></i></span>
-              <h3>Medicare</h3>
-              <p>Inbound &amp; outbound calls with pre-verified eligibility.</p>
-            </a>
-            <a class="service-detail-card5" href="javascript:void(0)" onclick="openOverlay('web-dev-overlay')">
-              <span class="service-icon-wrap"><i class="fas fa-laptop-code"></i></span>
-              <h3>Web Development</h3>
-              <p>High-performance full-stack websites and custom digital portals.</p>
-            </a>
-            <a class="service-detail-card6" href="javascript:void(0)" onclick="openOverlay('mva-overlay')">
-              <span class="service-icon-wrap"><i class="fas fa-car-crash"></i></span>
-              <h3>MVA</h3>
-              <p>Verified legal inquiries for high-intent personal injury claims.</p>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABOUT -->
-      <section class="about-detail-section" id="about-detail">
-        <div class="container1">
-          <div class="about-flex-row">
-            <div class="about-text-content reveal">
-              <span class="sub-heading">Who We Are</span>
-              <h2>Driving Excellence in Outsourcing</h2>
-              <p>As a premier telecommunications partner, we deliver high-performance call solutions engineered specifically for the insurance landscape.</p>
-              <p>We are dedicated to providing precision-targeted leads that translate directly into measurable growth.</p>
-            </div>
-            <div class="about-stats-box reveal">
-              <div class="inner-stats-grid">
-                <div class="stat-box-item">
-                  <h2 class="stat-number" data-target="100">0</h2>
-                  <p>Employees</p>
-                </div>
-                <div class="stat-box-item">
-                  <h2 class="stat-number" data-target="500">0</h2>
-                  <p>Calls Daily</p>
-                </div>
-                <div class="stat-box-item">
-                  <h2 class="stat-number" data-target="50">0</h2>
-                  <p>Clients</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TEAM -->
-          <div class="about-section pk-only" id="about">
-            <div class="section-header2 reveal">
-              <h2>Meet Our Team</h2>
-              <p>The strategic visionaries and industry experts driving Vocal Tech Marketing forward.</p>
-            </div>
-            <div class="employee-grid stagger-container">
-              <a href="javascript:void(0)" onclick="openOverlay('employee-sasr-overlay')" class="employee-card">
-                <div class="employee-avatar"><i class="fas fa-user-tie"></i></div>
-                <div class="employee-info">
-                  <h3>Syed Ali Sajjad Rizvi</h3>
-                  <p class="designation">Chief Executive Officer &amp; Co-founder</p>
-                </div>
-              </a>
-              <a href="javascript:void(0)" onclick="openOverlay('employee-bam-overlay')" class="employee-card">
-                <div class="employee-avatar"><i class="fas fa-user-tie"></i></div>
-                <div class="employee-info">
-                  <h3>Bilal Ahmed</h3>
-                  <p class="designation">Chief Marketing Officer &amp; Co-founder</p>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TESTIMONIALS -->
-      <section class="testimonials-section" id="testimonials">
-        <div class="container1">
-          <h2 class="section-title reveal">What Our Partners Say</h2>
-          <div class="testimonial-grid">
-            <div class="testimonial-card">
-              <div class="quote-icon">"</div>
-              <p class="testimonial-text">The quality of Medicare leads provided by Vocal Tech has been a game-changer for our conversion rates. Their verifiers are top-tier.</p>
-              <div class="client-info">
-                <span class="client-name">James Henderson</span>
-                <span class="client-role">Insurance Director</span>
-              </div>
-            </div>
-            <div class="testimonial-card">
-              <div class="quote-icon">"</div>
-              <p class="testimonial-text">Reliable, transparent, and professional. Their team handled our Auto Insurance campaign with incredible precision and scale.</p>
-              <div class="client-info">
-                <span class="client-name">Sarah Jenkins</span>
-                <span class="client-role">Operations Manager</span>
-              </div>
-            </div>
-            <div class="testimonial-card">
-              <div class="quote-icon">"</div>
-              <p class="testimonial-text">Vocal Tech Marketing isn't just an outsourcing firm; they are a growth partner. The FE leads are consistently high-intent.</p>
-              <div class="client-info">
-                <span class="client-name">Michael Chen</span>
-                <span class="client-role">Agency Owner</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="site-footer">
-      <div class="container1 footer-grid">
-        <div class="footer-col reveal">
-          <div class="logo-group2">
-            <img src="images/logo.png" alt="Logo" class="logo-img">
-            <span class="company-name" style="color:#fff;">Vocal Tech Marketing</span>
-          </div>
-          <p class="footer-bio">Empowering insurance leaders through high-precision lead acquisition and strategic brand authority. We bridge the gap between initial interest and definitive conversion.</p>
-          <div class="social-icons">
-            <a href="https://www.facebook.com/vocal.tech.marketing/" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.linkedin.com/company/vocal-tech-marketing" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            <a href="https://www.instagram.com/vocal_tech_marketing/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          </div>
-        </div>
-        <div class="footer-col reveal">
-          <h3>Quick Links</h3>
-          <ul class="footer-links">
-            <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
-            <li><a href="#about-detail"><i class="fas fa-chevron-right"></i> About Us</a></li>
-            <li><a href="#services"><i class="fas fa-chevron-right"></i> Our Services</a></li>
-            <li><a href="#testimonials"><i class="fas fa-chevron-right"></i> Testimonials</a></li>
-          </ul>
-        </div>
-        <div class="footer-col reveal" id="contact">
-          <h3>Contact Info</h3>
-          <ul class="contact-list">
-            <li class="pk-only"><i class="fas fa-map-marker-alt"></i><span>Office #12, Habib Plaza, Chandni Chowk, Rwp, Pakistan</span></li>
-            <li><i class="fas fa-envelope"></i><a href="mailto:info@vocaltechmarketing.com" style="color:#bbb;text-decoration:none;">info@vocaltechmarketing.com</a></li>
-            <li class="pk-only"><i class="fas fa-phone-alt"></i><a href="tel:+923390146280" style="color:#bbb;text-decoration:none;">+92 339 0146280</a></li>
-            <li><i class="fas fa-clock"></i><span>Mon &ndash; Fri: 6PM &ndash; 6AM</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="container1">
-          <p>&copy; Vocal Tech Marketing. All Rights Reserved.</p>
-        </div>
-      </div>
-    </footer>
-
-    <!-- ========================
-         EMPLOYEE OVERLAYS
-    ======================== -->
-
-    <!-- CEO -->
-    <div class="page-overlay" data-pk-locked id="employee-sasr-overlay">
-      <div class="overlay-content profile-modal">
-        <span class="close-overlay" onclick="closeOverlay('employee-sasr-overlay')" aria-label="Close">&times;</span>
-        <div class="profile-grid">
-          <div class="profile-card-col">
-            <div class="profile-avatar-box">
-              <i class="fas fa-user-tie profile-icon"></i>
-            </div>
-            <div class="profile-name-box">
-              <h2>Syed Ali Sajjad Rizvi</h2>
-              <p class="designation">Chief Executive Officer &amp; Co-founder</p>
-              <div class="social-icons1">
-                <a href="https://www.linkedin.com/in/syed-ali-sajjad-84462a277/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="mailto:info@vocaltechmarketing.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
-              </div>
-            </div>
-          </div>
-          <div class="bio-content">
-            <span class="bio-label">Leadership</span>
-            <h1 class="bio-title">Leading the Future of<br>Lead Generation</h1>
-            <p>As the CEO and founder of <strong>Vocal Tech Marketing</strong>, Syed Ali Sajjad Rizvi has pioneered a data-first approach to telecommunications and insurance outsourcing. With deep expertise in lead generation for Medicare, Final Expense, and Auto Insurance, he has built a firm that bridges the gap between high-volume outreach and high-quality conversion.</p>
-            <h3 class="bio-section-heading">Expertise &amp; Vision</h3>
-            <p>Ali's vision is centered on technical innovation. By integrating custom web portals and automated Google Apps Script workflows into the marketing process, he ensures that Vocal Tech Marketing operates at the cutting edge of the industry.</p>
-            <div class="stats-mini">
-              <div><span class="mini-stat-num">10+</span><small>Industry Sectors</small></div>
-              <div><span class="mini-stat-num">100%</span><small>Quality Focused</small></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CMO -->
-    <div class="page-overlay" data-pk-locked id="employee-bam-overlay">
-      <div class="overlay-content profile-modal">
-        <span class="close-overlay" onclick="closeOverlay('employee-bam-overlay')" aria-label="Close">&times;</span>
-        <div class="profile-grid">
-          <div class="profile-card-col">
-            <div class="profile-avatar-box">
-              <i class="fas fa-user-tie profile-icon"></i>
-            </div>
-            <div class="profile-name-box">
-              <h2>Bilal Ahmed</h2>
-              <p class="designation">Chief Marketing Officer &amp; Co-founder</p>
-              <div class="social-icons1">
-                <a href="https://www.linkedin.com/in/bilal-ahmed-5935b2404" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="mailto:info@vocaltechmarketing.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
-              </div>
-            </div>
-          </div>
-          <div class="bio-content">
-            <span class="bio-label">Market Evolution</span>
-            <h1 class="bio-title">Driving Strategic<br>Growth &amp; Brand</h1>
-            <p>As the Chief Marketing Officer at <strong>Vocal Tech Marketing</strong>, Bilal Ahmed leads the charge in defining our brand identity and expanding our global market presence. He specializes in bridging the gap between innovative lead generation and consumer psychology, ensuring our outreach resonates with target audiences while maintaining high-velocity growth.</p>
-            <h3 class="bio-section-heading">Revenue-Centric Marketing</h3>
-            <p>Bilal focuses on full-funnel optimization, leveraging advanced analytics to refine our customer acquisition strategies. By aligning marketing efforts with sales objectives, he ensures that every campaign not only captures attention but drives high-quality conversions for our global partners.</p>
-            <div class="stats-mini">
-              <div><span class="mini-stat-num">250+</span><small>Growth Scale</small></div>
-              <div><span class="mini-stat-num">Omni</span><small>Channel Strategy</small></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========================
-         SERVICE OVERLAYS
-    ======================== -->
-
-    <!-- Auto Insurance -->
-    <div class="page-overlay" id="auto-insurance-overlay">
-      <div class="overlay-content service-modal">
-        <span class="close-overlay service-close" onclick="closeOverlay('auto-insurance-overlay')" aria-label="Close">&times;</span>
-        <div class="service-hero-banner" style="background-image:linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.8)),url('images/autocover.jpg');">
-          <h1 class="service-banner-title">High-Intent <span style="color:#548888;">Auto Insurance</span> Leads</h1>
-          <p class="service-banner-sub">Connect with drivers actively seeking better coverage. Verified, pre-screened, and ready for your sales team.</p>
-        </div>
-        <div class="service-body-content">
-          <div class="service-intro">
-            <span class="service-label">Precision Data</span>
-            <h2 class="service-h2">Fuel Your Pipeline with Quality</h2>
-            <p>Our auto insurance lead generation process focuses on high-intent filters. We don't just find drivers; we find prospects who meet your specific risk profile and are looking to switch providers today.</p>
-          </div>
-          <div class="service-features-grid">
-            <div class="feature-card"><i class="fas fa-shield-alt"></i><h3>Verified History</h3><p>Every lead is checked for current insurance status and accident history.</p></div>
-            <div class="feature-card"><i class="fas fa-bolt"></i><h3>Real-Time Delivery</h3><p>Leads are funneled to your CRM seconds after the prospect shows interest.</p></div>
-            <div class="feature-card"><i class="fas fa-users"></i><h3>Exclusive Access</h3><p>We offer exclusive lead options so you aren't competing with 10 other agents.</p></div>
-          </div>
-          <div class="service-cta"><a href="javascript:void(0)" class="btn-contact" onclick="closeOverlay('auto-insurance-overlay');openContactModal();">Get in Touch</a></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Final Expense -->
-    <div class="page-overlay" id="final-expense-overlay">
-      <div class="overlay-content service-modal">
-        <span class="close-overlay service-close" onclick="closeOverlay('final-expense-overlay')" aria-label="Close">&times;</span>
-        <div class="service-hero-banner" style="background-image:linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.8)),url('images/fecover.jpg');">
-          <h1 class="service-banner-title">Premium <span style="color:#548888;">Final Expense</span> Leads</h1>
-          <p class="service-banner-sub">Connect with seniors seeking peace of mind. High-intent, compassion-driven prospects delivered directly to your desk.</p>
-        </div>
-        <div class="service-body-content">
-          <div class="service-intro">
-            <span class="service-label">Trust &amp; Reliability</span>
-            <h2 class="service-h2">Secure Quality Leads for Your Agency</h2>
-            <p>Final Expense leads require a delicate balance of empathy and data precision. We provide pre-qualified senior prospects who have expressed genuine interest in burial insurance and final expense planning.</p>
-          </div>
-          <div class="service-features-grid">
-            <div class="feature-card"><i class="fas fa-heart"></i><h3>Empathetic Vetting</h3><p>Our representatives ensure prospects understand the coverage before you even dial.</p></div>
-            <div class="feature-card"><i class="fas fa-filter"></i><h3>Age &amp; Health Filters</h3><p>Customized lists based on specific age brackets (50–85) and basic health markers.</p></div>
-            <div class="feature-card"><i class="fas fa-handshake"></i><h3>Inbound Transfers</h3><p>Live transfer options available to put a warm prospect on the phone immediately.</p></div>
-          </div>
-          <div class="service-cta"><a href="javascript:void(0)" class="btn-contact" onclick="closeOverlay('final-expense-overlay');openContactModal();">Get in Touch</a></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ACA -->
-    <div class="page-overlay" id="aca-overlay">
-      <div class="overlay-content service-modal">
-        <span class="close-overlay service-close" onclick="closeOverlay('aca-overlay')" aria-label="Close">&times;</span>
-        <div class="service-hero-banner" style="background-image:linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.8)),url('images/acacover.jpg');">
-          <h1 class="service-banner-title">Quality <span style="color:#548888;">ACA</span> Leads</h1>
-          <p class="service-banner-sub">Targeting subsidy-eligible individuals with high-intent health insurance needs. Reliable data for rapid enrollment.</p>
-        </div>
-        <div class="service-body-content">
-          <div class="service-intro">
-            <span class="service-label">Marketplace Growth</span>
-            <h2 class="service-h2">Maximize Your Enrollment Numbers</h2>
-            <p>Navigating the ACA marketplace requires leads that are pre-screened for household income and eligibility. Our system filters for prospects looking for affordable healthcare solutions, ensuring a higher conversion rate for your business.</p>
-          </div>
-          <div class="service-features-grid">
-            <div class="feature-card"><i class="fas fa-file-medical"></i><h3>Subsidy Pre-Screening</h3><p>We verify income ranges to ensure prospects qualify for marketplace subsidies.</p></div>
-            <div class="feature-card"><i class="fas fa-clock"></i><h3>OEP/SEP Readiness</h3><p>Fresh leads updated daily for Open Enrollment and Special Enrollment periods.</p></div>
-            <div class="feature-card"><i class="fas fa-check-double"></i><h3>TCPA Compliant</h3><p>All leads are generated with full consent and TCPA compliance for your protection.</p></div>
-          </div>
-          <div class="service-cta"><a href="javascript:void(0)" class="btn-contact" onclick="closeOverlay('aca-overlay');openContactModal();">Get in Touch</a></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Medicare -->
-    <div class="page-overlay" id="medicare-overlay">
-      <div class="overlay-content service-modal">
-        <span class="close-overlay service-close" onclick="closeOverlay('medicare-overlay')" aria-label="Close">&times;</span>
-        <div class="service-hero-banner" style="background-image:linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.8)),url('images/medcover.jpg');">
-          <h1 class="service-banner-title">Qualified <span style="color:#548888;">Medicare</span> Leads</h1>
-          <p class="service-banner-sub">Helping you reach the T65 market with precision. Quality prospects for Supplement and Advantage plans.</p>
-        </div>
-        <div class="service-body-content">
-          <div class="service-intro">
-            <span class="service-label">Senior Market Specialists</span>
-            <h2 class="service-h2">Connecting You with the T65 Demographic</h2>
-            <p>The Medicare market is highly competitive. We provide your agency with exclusive leads from individuals nearing 65 or looking to optimize their current plans during the Annual Enrollment Period (AEP).</p>
-          </div>
-          <div class="service-features-grid">
-            <div class="feature-card"><i class="fas fa-user-plus"></i><h3>Turning 65 Lists</h3><p>Accurate data for prospects just entering their Medicare eligibility window.</p></div>
-            <div class="feature-card"><i class="fas fa-phone-volume"></i><h3>Live Transfers</h3><p>Connect instantly with seniors who are ready to talk about their options and get enrolled.</p></div>
-            <div class="feature-card"><i class="fas fa-laptop-medical"></i><h3>Plan Optimized</h3><p>Leads filtered for specific interest in Part C (Advantage) or Medigap plans.</p></div>
-          </div>
-          <div class="service-cta"><a href="javascript:void(0)" class="btn-contact" onclick="closeOverlay('medicare-overlay');openContactModal();">Get in Touch</a></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Web Development -->
-    <div class="page-overlay" id="web-dev-overlay">
-      <div class="overlay-content service-modal">
-        <span class="close-overlay service-close" onclick="closeOverlay('web-dev-overlay')" aria-label="Close">&times;</span>
-        <div class="service-hero-banner" style="background-image:linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.8)),url('images/webcover.jpg');">
-          <h1 class="service-banner-title">Custom <span style="color:#548888;">Web</span> Solutions</h1>
-          <p class="service-banner-sub">Bridging the gap between marketing and technology with high-performance portals and automated workflows.</p>
-        </div>
-        <div class="service-body-content">
-          <div class="service-intro">
-            <span class="service-label">Next-Gen Development</span>
-            <h2 class="service-h2">More Than Just a Website</h2>
-            <p>At Vocal Tech Marketing, we specialize in building functional digital ecosystems. From responsive corporate sites to complex Google Apps Script integrations, we develop tools that automate your data entry, track your leads in real-time, and streamline your entire operation.</p>
-          </div>
-          <div class="service-features-grid">
-            <div class="feature-card"><i class="fas fa-code"></i><h3>Customer Portals</h3><p>Bespoke agent portals and CRM integrations built with HTML, CSS, and JavaScript.</p></div>
-            <div class="feature-card"><i class="fas fa-robot"></i><h3>Apps Script Automation</h3><p>Automated data syncing, timestamping, and reporting with the Google Workspace ecosystem.</p></div>
-            <div class="feature-card"><i class="fas fa-vial"></i><h3>Performance UI/UX</h3><p>Focusing on speed, SEO, and user experience to ensure your site converts visitors into clients.</p></div>
-          </div>
-          <div class="service-cta"><a href="javascript:void(0)" class="btn-contact" onclick="closeOverlay('web-dev-overlay');openContactModal();">Get in Touch</a></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MVA -->
-    <div class="page-overlay" id="mva-overlay">
-      <div class="overlay-content service-modal">
-        <span class="close-overlay service-close" onclick="closeOverlay('mva-overlay')" aria-label="Close">&times;</span>
-        <div class="service-hero-banner" style="background-image:linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.8)),url('images/mvacover.jpg');">
-          <h1 class="service-banner-title">High-Settlement <span style="color:#548888;">MVA</span> Leads</h1>
-          <p class="service-banner-sub">Connecting personal injury firms and insurance providers with qualified accident victims. Real-time data for rapid response.</p>
-        </div>
-        <div class="service-body-content">
-          <div class="service-intro">
-            <span class="service-label">Legal &amp; Insurance Support</span>
-            <h2 class="service-h2">Qualified Accident Leads</h2>
-            <p>Our Motor Vehicle Accident (MVA) campaigns are built on rigorous qualification standards. We identify individuals involved in recent accidents who are seeking assistance, ensuring each lead is screened for liability, injury status, and representation status.</p>
-          </div>
-          <div class="service-features-grid">
-            <div class="feature-card"><i class="fas fa-car-crash"></i><h3>Injury Verification</h3><p>Leads are pre-qualified based on injury severity and medical treatment status.</p></div>
-            <div class="feature-card"><i class="fas fa-gavel"></i><h3>Attorney-Ready</h3><p>We verify that the prospect is not currently represented by legal counsel.</p></div>
-            <div class="feature-card"><i class="fas fa-map-marker-alt"></i><h3>Geo-Targeted</h3><p>Campaigns optimized to deliver leads in specific states or jurisdictions where you operate.</p></div>
-          </div>
-          <div class="service-cta"><a href="javascript:void(0)" class="btn-contact" onclick="closeOverlay('mva-overlay');openContactModal();">Get in Touch</a></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CONTACT MODAL -->
-    <div class="modal-overlay" id="contact-modal">
-      <div class="modal-content">
-        <span class="close-modal" id="close-btn" aria-label="Close">&times;</span>
-        <div class="modal-header">
-          <h2>Get in Touch</h2>
-          <p>Fill out the form below and we'll reach out shortly.</p>
-        </div>
-        <form class="contact-form" id="contact-form-data">
-          <div class="form-group"><input type="text" name="fullName" placeholder="Full Name" required></div>
-          <div class="form-group"><input type="email" name="email" placeholder="Email Address" required></div>
-          <div class="form-group"><input type="tel" name="phone" placeholder="Phone Number" required></div>
-          <div class="form-group">
-            <select name="service" required>
-              <option value="" disabled selected>Select Service</option>
-              <option value="Auto Insurance">Auto Insurance</option>
-              <option value="Final Expense">Final Expense</option>
-              <option value="Medicare">Medicare</option>
-              <option value="ACA">ACA</option>
-              <option value="Web Development">Web Development</option>
-              <option value="MVA">MVA</option>
-              <option value="Others">Others</option>
-            </select>
-          </div>
-          <div class="form-group"><textarea name="message" placeholder="Your Message" rows="4"></textarea></div>
-          <button type="submit" class="submit-btn" id="submit-btn">Send Message</button>
-        </form>
-      </div>
-    </div>
-
-  `; // end of innerHTML
-};
 
 /* ============================================================
    1. PAGE ENTRANCE
@@ -514,6 +42,7 @@ const runLetterAnimation = (selector) => {
       });
       node.parentNode.replaceChild(frag, node);
     } else {
+      // Iterate backwards to avoid index shifting after replaceChild
       [...node.childNodes].reverse().forEach(child => processNode(child));
     }
   };
@@ -537,7 +66,7 @@ const animateCounter = (el) => {
   const step = (timestamp) => {
     if (!start) start = timestamp;
     const progress = Math.min((timestamp - start) / duration, 1);
-    const eased = progress * (2 - progress);
+    const eased = progress * (2 - progress); // ease-out quad
     el.textContent = Math.floor(eased * target);
     if (progress < 1) {
       requestAnimationFrame(step);
@@ -557,8 +86,10 @@ const initObserver = () => {
       if (!entry.isIntersecting) return;
       const el = entry.target;
 
+      // Reveal
       el.classList.add('active');
 
+      // Stagger children
       if (el.classList.contains('stagger-container')) {
         [...el.children].forEach((child, i) => {
           setTimeout(() => {
@@ -569,11 +100,13 @@ const initObserver = () => {
         });
       }
 
+      // Testimonials
       if (el.classList.contains('testimonial-card')) {
         el.style.opacity = '1';
         el.style.transform = 'translateY(0)';
       }
 
+      // Counters
       el.querySelectorAll('.stat-number').forEach(num => {
         num.textContent = '0';
         animateCounter(num);
@@ -583,6 +116,7 @@ const initObserver = () => {
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
+  // Testimonials: set initial hidden state
   document.querySelectorAll('.testimonial-card').forEach(card => {
     card.style.opacity = '0';
     card.style.transform = 'translateY(22px)';
@@ -623,16 +157,20 @@ const initNav = () => {
     navLinks.classList.contains('active') ? closeNav() : openNav();
   });
 
+  // Close on backdrop click
   backdrop.addEventListener('click', closeNav);
 
+  // Close when a nav link is clicked
   navLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', closeNav);
   });
 
+  // Keyboard: close on Escape
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && navLinks.classList.contains('active')) closeNav();
   });
 
+  // Keyboard: Enter/Space on toggle
   toggle.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -652,7 +190,7 @@ const initSmoothScroll = () => {
       const target = document.querySelector(id);
       if (target) {
         e.preventDefault();
-        const offset = 80;
+        const offset = 80; // navbar height
         const top = target.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: 'smooth' });
       }
@@ -667,6 +205,7 @@ const openOverlay = (id) => {
   const overlay = document.getElementById(id);
   if (!overlay) return;
   overlay.style.display = 'flex';
+  // Scroll to top of overlay content
   const content = overlay.querySelector('.overlay-content');
   if (content) content.scrollTop = 0;
   requestAnimationFrame(() => {
@@ -681,6 +220,7 @@ const closeOverlay = (id) => {
   overlay.classList.remove('show');
   setTimeout(() => {
     overlay.style.display = 'none';
+    // Restore scroll only if no other overlay/modal is open
     if (!document.querySelector('.page-overlay.show') &&
         !document.querySelector('.modal-overlay.show')) {
       document.body.style.overflow = '';
@@ -688,12 +228,14 @@ const closeOverlay = (id) => {
   }, 420);
 };
 
+// Close overlay on background click
 window.addEventListener('click', (e) => {
   if (e.target.classList.contains('page-overlay')) {
     closeOverlay(e.target.id);
   }
 });
 
+// Close on Escape
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
   document.querySelectorAll('.page-overlay.show').forEach(o => closeOverlay(o.id));
@@ -701,7 +243,8 @@ document.addEventListener('keydown', (e) => {
   if (modal && modal.classList.contains('show')) closeContactModal();
 });
 
-window.openOverlay  = openOverlay;
+// Expose globally (used in onclick attributes)
+window.openOverlay = openOverlay;
 window.closeOverlay = closeOverlay;
 
 /* ============================================================
@@ -729,7 +272,8 @@ const closeContactModal = () => {
   }, 320);
 };
 
-window.openContactModal  = openContactModal;
+// Expose globally
+window.openContactModal = openContactModal;
 window.closeContactModal = closeContactModal;
 
 const initContactModal = () => {
@@ -741,20 +285,25 @@ const initContactModal = () => {
 
   if (!modal) return;
 
+  // Open from nav
   if (navContact) navContact.addEventListener('click', (e) => { e.preventDefault(); openContactModal(); });
 
+  // Open from any .btn-contact that isn't inside a service overlay (those call openContactModal directly)
   document.querySelectorAll('.btn-contact:not(#nav-contact-btn)').forEach(btn => {
     if (!btn.hasAttribute('onclick')) {
       btn.addEventListener('click', (e) => { e.preventDefault(); openContactModal(); });
     }
   });
 
+  // Close button
   if (closeBtn) closeBtn.addEventListener('click', closeContactModal);
 
+  // Click outside modal box
   modal.addEventListener('click', (e) => {
     if (e.target === modal) closeContactModal();
   });
 
+  // Form submission
   if (form && submitBtn) {
     const scriptURL = 'https://script.google.com/macros/s/AKfycbz0nyFjR4fLx90XyCEhhIaeXIFZUKGaUaJDLmbTQJsPIDNYboM1s77PSx4Z3V3JQ_r8/exec';
 
@@ -793,10 +342,9 @@ const initContactModal = () => {
 };
 
 /* ============================================================
-   INIT — render HTML first, then wire everything up
+   INIT
 ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  renderPage();           // ← inject all HTML into #root FIRST
   initPageTransition();
   runLetterAnimation('.slogan');
   runLetterAnimation('.lead-text');
@@ -805,7 +353,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initContactModal();
 });
-
 /* ============================================================
    9. PAKISTAN GEO-RESTRICTION
    Uses a dedicated Cloudflare Worker as a CORS-friendly geo API.
@@ -813,57 +360,54 @@ document.addEventListener('DOMContentLoaded', () => {
 ============================================================ */
 (function initGeoRestriction() {
 
-  function showPK() {
-    document.querySelectorAll('.pk-only').forEach(function(el) {
-      el.classList.add('pk-visible');
-    });
-    document.querySelectorAll('.page-overlay[data-pk-locked]').forEach(function(el) {
-      el.removeAttribute('data-pk-locked');
-    });
-    console.log('[GeoRestriction] Pakistan confirmed — restricted content unlocked.');
-  }
+   function showPK() {
+      document.querySelectorAll('.pk-only').forEach(function(el) {
+         el.classList.add('pk-visible');
+      });
+      document.querySelectorAll('.page-overlay[data-pk-locked]').forEach(function(el) {
+         el.removeAttribute('data-pk-locked');
+      });
+      console.log('[GeoRestriction] Pakistan confirmed — restricted content unlocked.');
+   }
 
-  function hidePK() {
-    document.querySelectorAll('.pk-only').forEach(function(el) {
-      el.style.setProperty('display', 'none', 'important');
-    });
-    document.querySelectorAll('.page-overlay[data-pk-locked]').forEach(function(el) {
-      el.style.setProperty('display', 'none', 'important');
-    });
-    console.log('[GeoRestriction] Not Pakistan — restricted content hidden.');
-  }
+   function hidePK() {
+      document.querySelectorAll('.pk-only').forEach(function(el) {
+         el.style.setProperty('display', 'none', 'important');
+      });
+      document.querySelectorAll('.page-overlay[data-pk-locked]').forEach(function(el) {
+         el.style.setProperty('display', 'none', 'important');
+      });
+      console.log('[GeoRestriction] Not Pakistan — restricted content hidden.');
+   }
 
-  // Wait for renderPage() to inject the DOM before querying it
-  document.addEventListener('DOMContentLoaded', function() {
-
-    var cached = sessionStorage.getItem('vtm_country');
-    if (cached) {
+   // Check sessionStorage cache first — avoids repeat API calls on refresh
+   var cached = sessionStorage.getItem('vtm_country');
+   if (cached) {
       console.log('[GeoRestriction] Cached country:', cached);
       if (cached === 'PK') showPK(); else hidePK();
       return;
-    }
+   }
 
-    console.log('[GeoRestriction] Fetching country from geo Worker...');
+   console.log('[GeoRestriction] Fetching country from geo Worker...');
 
-    fetch('https://geo-api.syedshayanabbasr15121472.workers.dev/', {
+   fetch('https://geo-api.syedshayanabbasr15121472.workers.dev/', {
       mode: 'cors',
       cache: 'no-cache'
-    })
-    .then(function(res) {
+   })
+   .then(function(res) {
       if (!res.ok) throw new Error('HTTP ' + res.status);
       return res.json();
-    })
-    .then(function(data) {
+   })
+   .then(function(data) {
       var country = String(data.country || '').trim().toUpperCase();
       console.log('[GeoRestriction] Detected country:', country);
       sessionStorage.setItem('vtm_country', country);
       if (country === 'PK') showPK(); else hidePK();
-    })
-    .catch(function(err) {
+   })
+   .catch(function(err) {
       console.warn('[GeoRestriction] Worker API failed:', err.message);
+      // On failure — hide restricted content for safety
       hidePK();
-    });
-
-  });
+   });
 
 })();
