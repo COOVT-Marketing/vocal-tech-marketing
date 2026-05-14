@@ -221,7 +221,7 @@ const renderPage = () => {
             <li class="pk-only"><i class="fas fa-map-marker-alt"></i><span>Office #12, Habib Plaza, Chandni Chowk, Rwp, Pakistan</span></li>
             <li><i class="fas fa-envelope"></i><a href="mailto:info@vocaltechmarketing.com" style="color:#bbb;text-decoration:none;">info@vocaltechmarketing.com</a></li>
             <li class="pk-only"><i class="fas fa-phone-alt"></i><a href="tel:+923390146280" style="color:#bbb;text-decoration:none;">+92 339 0146280</a></li>
-            <li><i class="fas fa-clock"></i><span>Mon &ndash; Fri: 9AM &ndash; 6PM</span></li>
+           <!-- <li><i class="fas fa-clock"></i><span>Mon &ndash; Fri: 9AM &ndash; 6PM</span></li> -->
           </ul>
         </div>
       </div>
