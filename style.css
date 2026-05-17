@@ -883,58 +883,591 @@ img { max-width: 100%; display: block; }
    MOBILE NAV OVERLAY
 ═══════════════════════════════════════════ */
 .nav-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: #0d1a1a; /* Your dark background color */
-  z-index: 9999; /* Keeps it above everything else */
-  display: flex;
+  display: none; position: fixed; inset: 0; z-index: 999;
+  background: rgba(13,26,26,0.98);
+  backdrop-filter: blur(20px);
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  align-items: center; justify-content: center; gap: 8px;
 }
-.nav-overlay.open {
-    opacity: 1;
-    pointer-events: auto;
-}
-.close-nav {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: #ffffff; /* Make sure it pops */
-    font-size: 2rem;
-    cursor: pointer;
-}
-.nav-overlay .nav-links {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px; /* Adds space between each link */
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%; /* Prevents text compression collapse */
-}
+.nav-overlay.open { display: flex; }
 .nav-overlay .nav-link {
-    color: #ffffff !important; 
-    font-size: 1.5rem;
-    text-decoration: none;
-    font-weight: 500;
-    letter-spacing: 1px;
-    transition: color 0.2s ease;
-}
-.nav-overlay .nav-link:hover {
-    color: #548888; /* Your brand teal accent color */
+  font-size: 1.5rem; font-weight: 800; padding: 14px 28px;
+  color: var(--text-primary); letter-spacing: 0.04em;
 }
 .nav-overlay .close-btn {
   position: absolute; top: 24px; right: 24px;
   background: none; border: none; color: var(--text-muted);
   font-size: 1.5rem; cursor: pointer;
+}
+
+/* ============================================================
+  16. RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* ── Hamburger: hide lines when mobile nav overlay is open ── */
+.hamburger.is-open span:nth-child(1) { opacity: 0; transform: translateY(7px) rotate(0deg); }
+.hamburger.is-open span:nth-child(2) { opacity: 0; }
+.hamburger.is-open span:nth-child(3) { opacity: 0; transform: translateY(-7px) rotate(0deg); }
+
+/* ── Large tablets / small desktops (≤ 1200px) ── */
+@media (max-width: 1200px) {
+    .hero-inner {
+        margin-left: 28px;
+        max-width: calc(100% - 320px);
+    }
+    .hero-right-visual {
+        right: 28px;
+        width: 260px;
+    }
+    .footer-inner {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .footer-brand { grid-column: 1 / -1; }
+}
+
+/* ── Tablets — 1100px ── */
+@media (max-width: 1100px) {
+    .hero-right-visual { display: none; }
+    .hero-inner {
+        max-width: 100%;
+        margin-left: 0;
+        padding: clamp(110px, 18vw, 160px) clamp(20px, 5vw, 40px) clamp(80px, 14vw, 120px);
+    }
+}
+
+/* ── Medium tablets (≤ 900px) ── */
+@media (max-width: 900px) {
+    .services-grid      { grid-template-columns: repeat(2, 1fr); }
+    .results-grid       { grid-template-columns: repeat(2, 1fr); }
+    .testimonials-grid  { grid-template-columns: 1fr 1fr; }
+    .about-wrap         { grid-template-columns: 1fr; gap: 40px; }
+    .contact-inner      { grid-template-columns: 1fr; gap: 40px; }
+    .wd-inner           { grid-template-columns: 1fr; gap: 40px; }
+    .footer-inner       { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-brand       { grid-column: 1 / -1; }
+    .about-float-badge,
+    .about-float-badge--2 { right: 0; }
+
+    .nav-links          { gap: 2px; }
+    .nav-link           { padding: 6px 10px; font-size: 0.78rem; }
+
+    /* Section padding tightening */
+    .section-header     { padding-top: 80px; }
+    .results-section .section-header { padding-top: 80px; }
+    .testimonials-section { padding: 80px 0; }
+    .webdev-section     { padding: 80px 0; }
+    .contact-section    { padding: 80px 0; }
+}
+
+/* ── Small tablets / large phones (≤ 768px) ── */
+@media (max-width: 768px) {
+    /* Hide desktop nav, show hamburger */
+    .nav-links          { display: none; }
+    .nav-cta            { display: none; }
+    .hamburger          { display: flex; }
+
+    /* Nav inner tighter on mid-size */
+    .nav-inner          { padding: 16px 20px; gap: 0; }
+
+    .hero-title { font-size: clamp(1.8rem, 6.5vw, 2.6rem); }
+    .hero-desc  { font-size: 1rem; }
+
+    .services-grid      { grid-template-columns: repeat(2, 1fr); }
+    .testimonials-grid  { grid-template-columns: 1fr; }
+
+    .process-strip      { flex-direction: column; }
+    .ps-step            { border-right: none; border-bottom: 1px solid var(--dark-border); }
+    .ps-step:last-child { border-bottom: none; }
+
+    .section-sub        { margin-bottom: 40px; font-size: 0.95rem; }
+
+    /* Contact form padding */
+    .contact-form-wrap  { padding: 28px 24px; }
+
+    /* Footer columns */
+    .footer-inner       { grid-template-columns: 1fr 1fr; padding: 60px 20px 40px; }
+    .footer-bottom      { padding: 20px; }
+
+    /* Code window on web dev section */
+    .code-window        { font-size: 0.75rem; }
+    .cw-body            { padding: 16px 14px; }
+}
+
+/* ── Mobile (≤ 640px) ── */
+@media (max-width: 640px) {
+    /* Single column grids */
+    .services-grid      { grid-template-columns: 1fr; }
+    .results-grid       { grid-template-columns: 1fr 1fr; }
+    .testimonials-grid  { grid-template-columns: 1fr; }
+    .footer-inner       { grid-template-columns: 1fr; }
+    .footer-brand       { grid-column: auto; }
+    .cf-row             { grid-template-columns: 1fr; }
+
+    /* Section wrap padding */
+    .section-wrap       { padding: 0 16px; }
+
+    /* Hero stats wrap */
+    .hstat-div          { display: none; }
+    .hero-stats         { flex-wrap: wrap; gap: 20px; }
+    .hstat              { padding: 0; }
+
+    /* Hero actions stack */
+    .hero-actions       { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .btn-primary,
+    .btn-ghost          { width: 100%; justify-content: center; }
+
+    /* Process strip stacks */
+    .process-strip      { flex-direction: column; }
+    .ps-step            { border-right: none; border-bottom: 1px solid var(--dark-border); padding: 24px 20px; }
+    .ps-step:last-child { border-bottom: none; }
+
+    /* Footer bottom stacks */
+    .footer-bottom      { flex-direction: column; gap: 12px; text-align: center; }
+    .footer-bottom-links { justify-content: center; }
+
+    /* Floating badges — hide on small screens */
+    .about-float-badge,
+    .about-float-badge--2 { display: none; }
+
+    /* Scroll top button position */
+    .scroll-top { bottom: 16px; right: 16px; }
+
+    /* Reduce hero scroll hint at mobile */
+    .hero-scroll-hint { display: none; }
+
+    /* Tighten section headers */
+    .section-header { padding-top: clamp(50px, 12vw, 80px); }
+
+    /* About img card min-height reduction */
+    .about-img-card { min-height: 260px; }
+
+    /* Web dev section stacks */
+    .wd-inner           { grid-template-columns: 1fr; gap: 32px; }
+
+    /* Testimonials section padding */
+    .testimonials-section { padding: 60px 0; }
+    .testimonials-grid  { margin-top: 40px; }
+
+    /* Results grid margin */
+    .results-grid       { margin: 40px 0 40px; }
+}
+
+/* ── Extra small phones (≤ 400px) ── */
+@media (max-width: 400px) {
+    .results-grid { grid-template-columns: 1fr; }
+    .hero-title   { font-size: clamp(1.6rem, 8vw, 2rem); letter-spacing: -0.01em; }
+    .hero-badge   { font-size: 0.65rem; padding: 6px 12px; }
+
+    .logo-sub     { display: none; }
+    .nav-logo     { gap: 6px; }
+    .nav-inner    { padding: 14px 16px; }
+
+    .acard-tags   { gap: 6px; }
+    .acard-tags span { font-size: 0.65rem; padding: 4px 10px; }
+
+    .contact-form-wrap { padding: 20px 16px; }
+    .testi-card        { padding: 20px 16px; }
+    .svc-card          { padding: 20px 16px; }
+    .result-card       { padding: 22px 14px; }
+
+    .hero-stats        { gap: 14px; }
+    .hstat-num         { font-size: 1.8rem; }
+
+    /* Tighten process strip on tiny screens */
+    .ps-step           { padding: 20px 16px; }
+    .ps-num            { font-size: 1.5rem; }
+}
+
+/* ── Touch & hover improvements ── */
+@media (hover: none) and (pointer: coarse) {
+    .svc-card:hover,
+    .result-card:hover,
+    .testi-card:hover,
+    .hrv-card:hover,
+    .cd-item:hover { transform: none; }
+
+    .btn-primary:hover,
+    .btn-ghost:hover { transform: none; }
+}
+/* ═══════════════════════════════════════════
+   RESPONSIVE SUPPLEMENT — Full-width coverage
+   Adds targeted fixes for every remaining gap.
+   No existing rules are modified here.
+═══════════════════════════════════════════ */
+
+/* ── Fluid container safety ── */
+.section-wrap,
+.about-wrap,
+.nav-inner,
+.footer-inner,
+.footer-bottom {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Prevent any element from causing horizontal overflow ── */
+.hero-inner,
+.contact-inner,
+.wd-inner,
+.services-grid,
+.results-grid,
+.testimonials-grid,
+.process-strip,
+.footer-inner {
+  min-width: 0;
+}
+
+/* ── Ensure images never break layout ── */
+img { max-width: 100%; height: auto; }
+
+/* ── Ticker always wraps properly ── */
+.ticker-band { width: 100%; overflow: hidden; }
+
+/* ════════════════════════════
+   BREAKPOINT: 1400px+ (wide screens)
+   Prevent hero inner from drifting too far left
+════════════════════════════ */
+@media (min-width: 1400px) {
+  .hero-inner {
+    margin-left: calc(50vw - 590px);
+  }
+  .hero-right-visual {
+    right: calc(50vw - 590px);
+  }
+}
+
+/* ════════════════════════════
+   BREAKPOINT: ≤ 1024px
+════════════════════════════ */
+@media (max-width: 1024px) {
+  .about-wrap {
+    gap: 48px;
+  }
+  .wd-inner {
+    gap: 48px;
+  }
+  .contact-inner {
+    gap: 48px;
+  }
+  /* Keep nav readable before hamburger kicks in */
+  .nav-link {
+    font-size: 0.8rem;
+    padding: 6px 9px;
+  }
+}
+
+/* ════════════════════════════
+   BREAKPOINT: ≤ 860px
+   Team/Meet section (pk-only) + misc tightening
+════════════════════════════ */
+@media (max-width: 860px) {
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .rc-num {
+    font-size: 2.4rem;
+  }
+  /* about badges don't bleed */
+  .about-float-badge {
+    left: 0;
+  }
+  .about-float-badge--2 {
+    right: 0;
+  }
+}
+
+/* ════════════════════════════
+   BREAKPOINT: ≤ 768px — supplement
+════════════════════════════ */
+@media (max-width: 768px) {
+  /* Hero inner safe inset */
+  .hero-inner {
+    padding-left: clamp(16px, 5vw, 28px);
+    padding-right: clamp(16px, 5vw, 28px);
+  }
+
+  /* Cycler min-width scales with viewport */
+  .cycler-wrap {
+    min-width: clamp(140px, 45vw, 220px);
+  }
+
+  /* About grid stacked */
+  .about-wrap {
+    padding: 0 16px;
+    gap: 36px;
+  }
+
+  /* Web dev section padding */
+  .webdev-section {
+    padding: 60px 0;
+  }
+
+  /* Results process strip  */
+  .process-strip {
+    flex-direction: column;
+  }
+
+  /* Tighten contact inner */
+  .contact-inner {
+    gap: 32px;
+  }
+
+  /* Footer brand col full-width already — ensure text doesn't overflow */
+  .footer-brand p {
+    max-width: 100%;
+  }
+
+  /* Nav overlay links scale */
+  .nav-overlay .nav-link {
+    font-size: 1.25rem;
+  }
+}
+
+/* ════════════════════════════
+   BREAKPOINT: ≤ 640px — supplement
+════════════════════════════ */
+@media (max-width: 640px) {
+  /* Hero title never clips */
+  .hero-title {
+    word-break: break-word;
+  }
+
+  /* Hero stats — keep visible & centered */
+  .hero-stats {
+    padding-top: 24px;
+  }
+
+  /* About section full bleed */
+  .about-section {
+    padding: 60px 0;
+  }
+  .about-wrap {
+    padding: 0 16px;
+  }
+  .about-img-card {
+    padding: 32px 24px;
+  }
+  .acard-logo {
+    font-size: 2.6rem;
+  }
+
+  /* Services section tighter top */
+  .services-section {
+    padding-bottom: 60px;
+  }
+  .services-grid {
+    margin-top: 40px;
+  }
+
+  /* Results section */
+  .results-section {
+    padding-bottom: 60px;
+  }
+  .results-section .section-header {
+    padding-top: 60px;
+  }
+
+  /* Process strip — already stacked, ensure padding */
+  .ps-step {
+    padding: 24px 16px;
+  }
+
+  /* Testimonials */
+  .testi-card {
+    padding: 24px 20px;
+  }
+
+  /* Web dev section */
+  .wd-inner {
+    gap: 28px;
+  }
+  .code-window {
+    overflow-x: auto;
+  }
+  .cw-body {
+    min-width: 280px;
+  }
+
+  /* Contact section */
+  .contact-section {
+    padding: 60px 0;
+  }
+  .contact-form-wrap {
+    border-radius: var(--radius-lg);
+  }
+
+  /* Footer tighter */
+  .footer-inner {
+    padding: 48px 16px 36px;
+    gap: 28px;
+  }
+}
+
+/* ════════════════════════════
+   BREAKPOINT: ≤ 480px
+════════════════════════════ */
+@media (max-width: 480px) {
+  /* Section chip wraps gracefully */
+  .section-chip {
+    font-size: 0.65rem;
+    padding: 5px 12px;
+  }
+
+  /* Hero badge tighter */
+  .hero-badge {
+    font-size: 0.68rem;
+    padding: 6px 12px;
+  }
+
+  /* Hero actions already stacked — ensure no side overflow */
+  .hero-actions {
+    width: 100%;
+  }
+  .btn-primary,
+  .btn-ghost {
+    font-size: 0.85rem;
+    padding: 13px 20px;
+  }
+
+  /* Stats grid on tiny phones — 3-col row */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    border-top: 1px solid var(--dark-border);
+    padding-top: 24px;
+  }
+  .hstat-div { display: none; }
+  .hstat {
+    padding: 0;
+    text-align: center;
+    align-items: center;
+  }
+  .hstat div:first-of-type {
+    justify-content: center;
+  }
+  .hstat-num {
+    font-size: 1.6rem;
+  }
+  .hstat-num + span {
+    font-size: 1.1rem;
+  }
+  .hstat-label {
+    font-size: 0.65rem;
+    text-align: center;
+  }
+
+  /* Results grid 1-col for readability */
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+  .result-card {
+    padding: 28px 20px;
+  }
+  .rc-num {
+    font-size: 2.6rem;
+  }
+
+  /* Service cards */
+  .svc-card {
+    padding: 24px 20px 20px;
+  }
+  .svc-card h3 {
+    font-size: 1.05rem;
+  }
+
+  /* Testimonial cards */
+  .testi-body {
+    font-size: 0.85rem;
+  }
+
+  /* Contact form */
+  .contact-form-wrap {
+    padding: 24px 18px;
+  }
+  .cf-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .cf-field input,
+  .cf-field select,
+  .cf-field textarea {
+    font-size: 0.95rem; /* prevents iOS zoom on focus */
+  }
+
+  /* Footer */
+  .footer-inner {
+    padding: 40px 14px 28px;
+    gap: 24px;
+  }
+  .footer-logo {
+    font-size: 1rem;
+  }
+  .footer-bottom {
+    padding: 16px 14px;
+  }
+}
+
+/* ════════════════════════════
+   BREAKPOINT: ≤ 360px (smallest common phones)
+════════════════════════════ */
+@media (max-width: 360px) {
+  .hero-inner {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .section-wrap {
+    padding: 0 14px;
+  }
+  .hero-title {
+    font-size: clamp(1.45rem, 9vw, 1.8rem);
+  }
+  .hero-badge {
+    font-size: 0.62rem;
+  }
+  .acard-logo {
+    font-size: 2rem;
+  }
+  .about-img-card {
+    padding: 24px 16px;
+    min-height: 220px;
+  }
+  .svc-card, .testi-card, .result-card {
+    padding: 18px 14px;
+  }
+  .contact-form-wrap {
+    padding: 18px 14px;
+  }
+  .footer-inner {
+    padding: 32px 12px 24px;
+  }
+  /* Nav logo — hide subtitle on very tiny screens */
+  .logo-sub {
+    display: none;
+  }
+  .nav-inner {
+    padding: 12px 14px;
+  }
+}
+
+/* ════════════════════════════
+   SAFE HORIZONTAL SCROLL GUARD
+   Applied globally — catches any rogue wide element
+════════════════════════════ */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+  .hero {
+    overflow: hidden;
+  }
+}
+
+/* ════════════════════════════
+   INPUT FONT SIZE — prevents iOS zoom
+════════════════════════════ */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
 }
