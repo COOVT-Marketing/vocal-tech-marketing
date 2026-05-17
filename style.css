@@ -2,7 +2,7 @@
    Vocal Tech Marketing — style.css
    ============================================================
    Table of Contents:
-    0. Custom Properties (Design Tokens)
+    0. DESIGN TOKENS
     1. Reset & Base
     2. Utility Classes
     3. Buttons
@@ -22,173 +22,108 @@
    ============================================================ */
 
 
-/* ============================================================
-   0. CUSTOM PROPERTIES
-   ============================================================ */
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
 :root {
-    /* Teal palette */
-    --teal-primary:  #548888;
-    --teal-dark:     #4f8383;
-    --teal-deep:     #3a6363;
-    --teal-deeper:   #2c4f4f;
-    --teal-light:    #6fa8a8;
-    --teal-pale:     #a8cece;
-    --teal-faint:    #e4f0f0;
-
-    /* Accent colors */
-    --accent-gold:   #c9a84c;
-    --accent-amber:  #e8b84b;
-    --accent-coral:  #d4756a;
-    --accent-sky:    #7bbfd4;
-
-    /* Dark backgrounds */
-    --dark-bg:       #0d1a1a;
-    --dark-surface:  #122020;
-    --dark-card:     #162929;
-    --dark-border:   #254040;
-    --mid-surface:   #1e3535;
-
-    /* Text */
-    --text-primary:   #f0f7f7;
-    --text-secondary: #a8cece;
-    --text-muted:     #6fa8a8;
-    --white:          #ffffff;
-
-    /* Typography */
-    --font-head: 'Syne', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-
-    /* Border radii */
-    --radius-sm: 6px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --radius-xl: 32px;
-
-    /* Shadows */
-    --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.25);
-    --shadow-md:   0 8px 32px rgba(0, 0, 0, 0.35);
-    --shadow-teal: 0 8px 40px rgba(84, 136, 136, 0.25);
-    --glow-teal:   0 0 40px rgba(84, 136, 136, 0.4);
-
-    /* Global transition */
-    --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --teal-primary:   #548888;
+  --teal-dark:      #4f8383;
+  --teal-deep:      #3a6363;
+  --teal-deeper:    #2c4f4f;
+  --teal-light:     #6fa8a8;
+  --teal-pale:      #a8cece;
+  --teal-faint:     #e4f0f0;
+  --accent-gold:    #c9a84c;
+  --accent-amber:   #e8b84b;
+  --accent-coral:   #d4756a;
+  --accent-sky:     #7bbfd4;
+  --dark-bg:        #0d1a1a;
+  --dark-surface:   #122020;
+  --dark-card:      #162929;
+  --dark-border:    #254040;
+  --mid-surface:    #1e3535;
+  --text-primary:   #f0f7f7;
+  --text-secondary: #a8cece;
+  --text-muted:     #6fa8a8;
+  --white:          #ffffff;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.35);
+  --shadow-teal: 0 8px 40px rgba(84,136,136,0.25);
+  --glow-teal: 0 0 40px rgba(84,136,136,0.4);
+  --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
 }
 
 
 /* ============================================================
    1. RESET & BASE
    ============================================================ */
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
-    font-size: 16px;
-}
-
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 body {
-    font-family: var(--font-body);
-    background: var(--dark-bg);
-    color: var(--text-primary);
-    line-height: 1.65;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-body);
+  background: var(--dark-bg);
+  color: var(--text-primary);
+  line-height: 1.65;
+  overflow-x: hidden;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-ul {
-    list-style: none;
-}
-
-img {
-    max-width: 100%;
-    display: block;
-}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
 
 /* Scrollbar */
-::-webkit-scrollbar          { width: 6px; }
-::-webkit-scrollbar-track    { background: var(--dark-bg); }
-::-webkit-scrollbar-thumb    { background: var(--teal-deep); border-radius: 3px; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: var(--teal-deep); border-radius: 3px; }
 
 
 /* ============================================================
    2. UTILITY CLASSES
    ============================================================ */
-.section-wrap {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 clamp(16px, 5vw, 28px);
-}
-
-.section-header {
-    text-align: center;
-    padding-top: clamp(60px, 10vw, 100px);
-}
-
+.section-wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
 .section-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(84, 136, 136, 0.15);
-    border: 1px solid rgba(84, 136, 136, 0.35);
-    color: var(--teal-pale);
-    font-family: var(--font-head);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 6px 16px;
-    border-radius: 100px;
-    margin-bottom: 20px;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(84,136,136,0.15);
+  border: 1px solid rgba(84,136,136,0.35);
+  color: var(--teal-pale);
+  font-family: var(--font-head);
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 6px 16px; border-radius: 100px; margin-bottom: 20px;
 }
-
 .section-chip::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--teal-light);
-    display: block;
-    flex-shrink: 0;
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal-light); display: block;
 }
-
 .section-title {
-    font-family: var(--font-head);
-    font-size: clamp(1.75rem, 3.5vw, 3rem);
-    font-weight: 800;
-    line-height: 1.12;
-    color: var(--text-primary);
-    margin-bottom: 20px;
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800; line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 20px;
 }
-.section-title.left  { text-align: left; }
+.section-title.left { text-align: left; }
 .section-title.light { color: var(--white); }
-
 .section-sub {
-    font-size: clamp(0.9rem, 2vw, 1.05rem);
-    color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto 60px;
+  font-size: 1.05rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 60px;
 }
+.section-header { text-align: center; padding-top: 100px; }
 
 /* Scroll reveal */
 .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s, transform 0.7s;
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
-.reveal.visible       { opacity: 1; transform: translateY(0); }
-.reveal-delay-1       { transition-delay: 0.12s; }
-.reveal-delay-2       { transition-delay: 0.24s; }
-.reveal-delay-3       { transition-delay: 0.36s; }
-.reveal-delay-4       { transition-delay: 0.48s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.12s; }
+.reveal-delay-2 { transition-delay: 0.24s; }
+.reveal-delay-3 { transition-delay: 0.36s; }
+.reveal-delay-4 { transition-delay: 0.48s; }
 
 
 /* ============================================================
