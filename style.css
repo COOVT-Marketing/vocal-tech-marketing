@@ -883,16 +883,55 @@ img { max-width: 100%; display: block; }
    MOBILE NAV OVERLAY
 ═══════════════════════════════════════════ */
 .nav-overlay {
-  display: none; position: fixed; inset: 0; z-index: 999;
-  background: rgba(13,26,26,0.98);
-  backdrop-filter: blur(20px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #0d1a1a; /* Your dark background color */
+  z-index: 9999; /* Keeps it above everything else */
+  display: flex;
   flex-direction: column;
-  align-items: center; justify-content: center; gap: 8px;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
-.nav-overlay.open { display: flex; }
+.nav-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+.close-nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #ffffff; /* Make sure it pops */
+    font-size: 2rem;
+    cursor: pointer;
+}
+.nav-overlay .nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px; /* Adds space between each link */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%; /* Prevents text compression collapse */
+}
 .nav-overlay .nav-link {
-  font-size: 1.5rem; font-weight: 800; padding: 14px 28px;
-  color: var(--text-primary); letter-spacing: 0.04em;
+    color: #ffffff !important; 
+    font-size: 1.5rem;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: color 0.2s ease;
+}
+.nav-overlay .nav-link:hover {
+    color: #548888; /* Your brand teal accent color */
 }
 .nav-overlay .close-btn {
   position: absolute; top: 24px; right: 24px;
