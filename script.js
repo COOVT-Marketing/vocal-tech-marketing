@@ -619,7 +619,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </footer>
 
 <!-- Scroll to top -->
-<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593;</button>
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593;</button>
 
     `;
 
@@ -785,24 +785,23 @@ function initializeSiteEngine() {
 
     /* ─── Interactive Mobile Menu Events ─── */
     const hamburger = document.getElementById("hamburger");
-    const closeNav = document.getElementById("closeNav");
-    const navOverlay = document.getElementById("navOverlay");
+    const navLinks = document.getElementById("navLinks"); // Targets the existing UL
 
-    function openNav() {
-        navOverlay?.classList.add("open");
-        hamburger?.classList.add("is-open");
-    }
-    function closeNavMenu() {
-        navOverlay?.classList.remove("open");
-        hamburger?.classList.remove("is-open");
-    }
-
-    hamburger?.addEventListener("click", openNav);
-    closeNav?.addEventListener("click", closeNavMenu);
-    
-    document.querySelectorAll(".nav-overlay .nav-link").forEach(link => {
-        link.addEventListener("click", closeNavMenu);
+        if (hamburger && navLinks) {
+        hamburger.addEventListener("click", () => {
+        // Toggles classes on both elements simultaneously
+        hamburger.classList.toggle("is-open");
+        navLinks.classList.toggle("open");
     });
+
+        // Close the menu automatically when a link inside it is clicked
+        navLinks.querySelectorAll(".nav-link").forEach(link => {
+        link.addEventListener("click", () => {
+            hamburger.classList.remove("is-open");
+            navLinks.classList.remove("open");
+        });
+    });
+}
 
     /* ─── Contact Form Callback Route Submission ─── */
     const formElement = document.getElementById("campaignContactForm");
