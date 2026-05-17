@@ -1651,6 +1651,11 @@ img {
   16. RESPONSIVE BREAKPOINTS
    ============================================================ */
 
+/* ── Hamburger: hide lines when mobile nav overlay is open ── */
+.hamburger.is-open span:nth-child(1) { opacity: 0; transform: translateY(7px) rotate(0deg); }
+.hamburger.is-open span:nth-child(2) { opacity: 0; }
+.hamburger.is-open span:nth-child(3) { opacity: 0; transform: translateY(-7px) rotate(0deg); }
+
 /* ── Large tablets / small desktops (≤ 1200px) ── */
 @media (max-width: 1200px) {
     .hero-inner {
@@ -1692,6 +1697,13 @@ img {
 
     .nav-links          { gap: 2px; }
     .nav-link           { padding: 6px 10px; font-size: 0.78rem; }
+
+    /* Section padding tightening */
+    .section-header     { padding-top: 80px; }
+    .results-section .section-header { padding-top: 80px; }
+    .testimonials-section { padding: 80px 0; }
+    .webdev-section     { padding: 80px 0; }
+    .contact-section    { padding: 80px 0; }
 }
 
 /* ── Small tablets / large phones (≤ 768px) ── */
@@ -1701,7 +1713,11 @@ img {
     .nav-cta            { display: none; }
     .hamburger          { display: flex; }
 
+    /* Nav inner tighter on mid-size */
+    .nav-inner          { padding: 16px 20px; gap: 0; }
+
     .hero-title { font-size: clamp(1.8rem, 6.5vw, 2.6rem); }
+    .hero-desc  { font-size: 1rem; }
 
     .services-grid      { grid-template-columns: repeat(2, 1fr); }
     .testimonials-grid  { grid-template-columns: 1fr; }
@@ -1710,7 +1726,18 @@ img {
     .ps-step            { border-right: none; border-bottom: 1px solid var(--dark-border); }
     .ps-step:last-child { border-bottom: none; }
 
-    .section-sub        { margin-bottom: 40px; }
+    .section-sub        { margin-bottom: 40px; font-size: 0.95rem; }
+
+    /* Contact form padding */
+    .contact-form-wrap  { padding: 28px 24px; }
+
+    /* Footer columns */
+    .footer-inner       { grid-template-columns: 1fr 1fr; padding: 60px 20px 40px; }
+    .footer-bottom      { padding: 20px; }
+
+    /* Code window on web dev section */
+    .code-window        { font-size: 0.75rem; }
+    .cw-body            { padding: 16px 14px; }
 }
 
 /* ── Mobile (≤ 640px) ── */
@@ -1722,6 +1749,9 @@ img {
     .footer-inner       { grid-template-columns: 1fr; }
     .footer-brand       { grid-column: auto; }
     .cf-row             { grid-template-columns: 1fr; }
+
+    /* Section wrap padding */
+    .section-wrap       { padding: 0 16px; }
 
     /* Hero stats wrap */
     .hstat-div          { display: none; }
@@ -1735,7 +1765,7 @@ img {
 
     /* Process strip stacks */
     .process-strip      { flex-direction: column; }
-    .ps-step            { border-right: none; border-bottom: 1px solid var(--dark-border); }
+    .ps-step            { border-right: none; border-bottom: 1px solid var(--dark-border); padding: 24px 20px; }
     .ps-step:last-child { border-bottom: none; }
 
     /* Footer bottom stacks */
@@ -1757,6 +1787,16 @@ img {
 
     /* About img card min-height reduction */
     .about-img-card { min-height: 260px; }
+
+    /* Web dev section stacks */
+    .wd-inner           { grid-template-columns: 1fr; gap: 32px; }
+
+    /* Testimonials section padding */
+    .testimonials-section { padding: 60px 0; }
+    .testimonials-grid  { margin-top: 40px; }
+
+    /* Results grid margin */
+    .results-grid       { margin: 40px 0 40px; }
 }
 
 /* ── Extra small phones (≤ 400px) ── */
@@ -1767,6 +1807,7 @@ img {
 
     .logo-sub     { display: none; }
     .nav-logo     { gap: 6px; }
+    .nav-inner    { padding: 14px 16px; }
 
     .acard-tags   { gap: 6px; }
     .acard-tags span { font-size: 0.65rem; padding: 4px 10px; }
@@ -1775,6 +1816,13 @@ img {
     .testi-card        { padding: 20px 16px; }
     .svc-card          { padding: 20px 16px; }
     .result-card       { padding: 22px 14px; }
+
+    .hero-stats        { gap: 14px; }
+    .hstat-num         { font-size: 1.8rem; }
+
+    /* Tighten process strip on tiny screens */
+    .ps-step           { padding: 20px 16px; }
+    .ps-num            { font-size: 1.5rem; }
 }
 
 /* ── Touch & hover improvements ── */
