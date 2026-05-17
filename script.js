@@ -26,7 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </nav>
 
+<!-- ══════════ HERO ══════════ -->
 <section class="hero" id="home">
+    <!-- Particle canvas background -->
     <canvas id="heroCanvas"></canvas>
 
     <div class="hero-mesh"></div>
@@ -76,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
     </div>
 
+    <!-- Hero right visual cards -->
     <div class="hero-right-visual">
         <div class="hrv-card">
             <div class="hrv-card-top">
@@ -108,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="scroll-line"></div>
     </div>
 
+    <!-- Animated wave bottom divider -->
     <div class="hero-wave">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#0d1a1a"/>
@@ -115,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </section>
 
+<!-- ══════════ TICKER ══════════ -->
 <div class="ticker-band">
     <div class="ticker-track">
         <span>Medicare</span><span class="t-sep">&#9670;</span>
@@ -136,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </div>
 
+<!-- ══════════ SERVICES ══════════ -->
 <section class="services-section" id="services">
     <div class="section-wrap">
         <div class="section-header">
@@ -247,6 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </section>
 
+<!-- ══════════ ABOUT ══════════ -->
 <section class="about-section" id="about">
     <div class="about-wrap">
         <div class="about-visual reveal">
@@ -319,6 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </section>
 
+<!-- ══════════ RESULTS ══════════ -->
 <section class="results-section" id="results">
     <div class="results-mesh"></div>
     <div class="section-wrap">
@@ -374,6 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </section>
 
+<!-- ══════════ TESTIMONIALS ══════════ -->
 <section class="testimonials-section">
     <div class="section-wrap">
         <div class="section-header" style="padding-top:0">
@@ -418,6 +427,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </section>
 
+<!-- ══════════ WEB DEV ══════════ -->
 <section class="webdev-section" id="webdev">
     <div class="section-wrap">
         <div class="wd-inner">
@@ -471,6 +481,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </section>
 
+<!-- ══════════ CONTACT ══════════ -->
 <section class="contact-section" id="contact">
     <div class="contact-mesh"></div>
     <div class="section-wrap">
@@ -510,7 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <div class="contact-form-wrap reveal reveal-delay-2">
-                <form class="contact-form" id="contactForm">
+                <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
                     <div class="cf-row">
                         <div class="cf-field">
                             <label>Your Name</label>
@@ -549,6 +560,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </section>
 
+<!-- ══════════ FOOTER ══════════ -->
 <footer class="main-footer">
     <div class="footer-inner">
         <div class="footer-brand">
@@ -596,7 +608,21 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </footer>
 
-<button class="scroll-top" id="scrollTop" aria-label="Back to top">&#8593;</button>
+<!-- Scroll to top -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593;</button>
+
+<!-- Mobile nav overlay -->
+<div class="nav-overlay" id="navOverlay">
+    <button class="close-btn" id="closeNav" aria-label="Close menu">&#10005;</button>
+    <a href="#home"     class="nav-link">Home</a>
+    <a href="#services" class="nav-link">Services</a>
+    <a href="#about"    class="nav-link">About</a>
+    <a href="#results"  class="nav-link">Results</a>
+    <a href="#webdev"   class="nav-link">Web Dev</a>
+    <a href="#contact"  class="nav-link">Contact</a>
+    <a href="#contact"  class="btn-primary" style="margin-top:16px">Get Started</a>
+</div>
+
     `;
 
     // Initialize layout scripts, observers, events, and render modules
@@ -732,7 +758,7 @@ function initializeSiteEngine() {
 
     /* ─── Scroll Event Handlers (Navbar / Scroll Top Button) ─── */
     const navbar = document.getElementById("navbar");
-    const scrollTopBtn = document.getElementById("scrollTop"); // FIXED ID TYPO FROM scrollTopBtn
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
 
     window.addEventListener("scroll", () => {
         if (window.scrollY > 40) {
@@ -761,25 +787,27 @@ function initializeSiteEngine() {
 
     /* ─── Interactive Mobile Menu Events ─── */
     const hamburger = document.getElementById("hamburger");
-    const navLinks = document.getElementById("navLinks"); // UPDATED TO TOGGLE EXISTING NAV CONTAINER
+    const closeNav = document.getElementById("closeNav");
+    const navOverlay = document.getElementById("navOverlay");
 
-    if (hamburger && navLinks) {
-        hamburger.addEventListener("click", () => {
-            hamburger.classList.toggle("is-open");
-            navLinks.classList.toggle("open");
-        });
-
-        // Close mobile dropdown automatically when any nav item link is clicked
-        navLinks.querySelectorAll(".nav-link").forEach(link => {
-            link.addEventListener("click", () => {
-                hamburger.classList.remove("is-open");
-                navLinks.classList.remove("open");
-            });
-        });
+    function openNav() {
+        navOverlay?.classList.add("open");
+        hamburger?.classList.add("is-open");
+    }
+    function closeNavMenu() {
+        navOverlay?.classList.remove("open");
+        hamburger?.classList.remove("is-open");
     }
 
+    hamburger?.addEventListener("click", openNav);
+    closeNav?.addEventListener("click", closeNavMenu);
+    
+    document.querySelectorAll(".nav-overlay .nav-link").forEach(link => {
+        link.addEventListener("click", closeNavMenu);
+    });
+
     /* ─── Contact Form Callback Route Submission ─── */
-    const formElement = document.getElementById("contactForm"); // FIXED ID TYPO FROM campaignContactForm
+    const formElement = document.getElementById("campaignContactForm");
     formElement?.addEventListener("submit", (e) => {
         e.preventDefault();
         const btn = e.target.querySelector('button[type=submit]');
