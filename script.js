@@ -25,7 +25,17 @@ document.addEventListener("DOMContentLoaded", () => {
         </button>
     </div>
 </nav>
-
+<div class="nav-overlay" id="navOverlay">
+    <button class="close-nav" id="closeNav" aria-label="Close menu">&times;</button>
+    <ul class="nav-links">
+        <li><a href="#home"     class="nav-link">Home</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#about"    class="nav-link">About</a></li>
+        <li><a href="#results"  class="nav-link">Results</a></li>
+        <li><a href="#webdev"   class="nav-link">Web Dev</a></li>
+        <li><a href="#contact"  class="nav-link">Contact</a></li>
+    </ul>
+</div>
 <!-- ══════════ HERO ══════════ -->
 <section class="hero" id="home">
     <!-- Particle canvas background -->
