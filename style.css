@@ -552,7 +552,7 @@ img {
 /* ── HERO TITLE — smaller, tighter, more impactful ── */
 .hero-title {
     font-family: var(--font-head);
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.08;
     color: var(--white);
     margin-bottom: 24px;
