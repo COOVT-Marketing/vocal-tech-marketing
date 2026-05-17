@@ -771,7 +771,6 @@
       .ps-step            { padding: 24px 20px; }
       .footer-bottom      { flex-direction: column; gap: 12px; text-align: center; }
       .footer-bottom-links{ justify-content: center; }
-      .about-float-badge, .about-float-badge--2 { display: none; }
       .scroll-top         { bottom: 16px; right: 16px; }
       .hero-scroll-hint   { display: none; }
       .section-header     { padding-top: clamp(50px,12vw,80px); }
