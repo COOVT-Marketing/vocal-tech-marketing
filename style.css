@@ -667,8 +667,11 @@
       display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px;
     }
     .footer-logo {
-      font-family: var(--font-head); font-size: 1.1rem; font-weight: 800; letter-spacing: 0.08em;
-      display: flex; align-items: center; gap: 6px; margin-bottom: 16px;
+      font-family: var(--font-head); font-weight: 800;
+      letter-spacing: 0.04em; line-height: 1;
+      display: flex; align-items: center; gap: 12px;
+      flex: 1; min-width: 0;
+      font-size: clamp(0.55rem, 3.8vw, 1.15rem);
     }
     .footer-brand p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; max-width: 280px; }
     .footer-col h4 {
