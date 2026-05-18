@@ -155,8 +155,8 @@
      flex-direction: column;
      gap: 2px;
     }
-    .logo-v       { color: var(--teal-light); font-size: 1em; white-space: nowrap; }
-    .logo-sub     { color: var(--teal-faint); font-size: 1em; letter-spacing: 0.12em; font-weight: 600; white-space: nowrap; }
+    .logo-v       { color: var(--teal-light); font-size: 1.5em; white-space: nowrap; }
+    .logo-sub     { color: var(--teal-faint); font-size: 1.5em; letter-spacing: 0.12em; font-weight: 600; white-space: nowrap; }
     .logo-mark    { width: 34px; height: 34px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 
     .nav-links { display: flex; align-items: center; gap: 4px; margin-left: auto; }
