@@ -687,21 +687,10 @@
       font-size: 0.85rem; font-weight: 700; margin-bottom: 0; transition: var(--transition);
     }
     .footer-socials a:hover { background: rgba(84,136,136,0.2); border-color: var(--teal-deep); }
-    .instagram-footer-link i {
-      font-size: 24px;
-      color: #ffffff;
-      margin-left: 15px;
-      transition: transform 0.3s ease, color 0.3s ease;
-    }
     .footer-bottom {
       max-width: 1180px; margin: 0 auto; padding: 20px 28px;
       border-top: 1px solid var(--dark-border);
       text-align: center; font-family: var(--font-body-clean);
-    }
-    .instagram-footer-link:hover i {
-      transform: scale(1.2);
-      color: #E4405F;
-    }
     .footer-bottom p { font-size: 0.8rem; color: var(--text-muted); }
     .footer-bottom-links { display: flex; gap: 20px; }
     .footer-bottom-links a { font-size: 0.8rem; color: var(--text-muted); transition: var(--transition); }
