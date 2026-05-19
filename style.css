@@ -154,6 +154,7 @@
      display: flex;
      flex-direction: column;
      gap: 2px;
+     line-height: 1;
     }
     .logo-v       { color: var(--teal-light); font-size: 1.5em; white-space: nowrap; }
     .logo-sub     { color: var(--teal-faint); font-size: 1.5em; letter-spacing: 0.12em; font-weight: 600; white-space: nowrap; }
