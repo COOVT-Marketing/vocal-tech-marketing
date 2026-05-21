@@ -163,17 +163,6 @@
     font-size: 13px; color: #a32d2d;
   }
   .error-toast i { font-size: 18px; }
-
-  .vici-footer {
-    border-top: 0.5px solid var(--color-border-tertiary);
-    padding: 10px 2rem; display: flex; align-items: center; gap: 8px;
-  }
-  .vici-footer span { font-size: 11px; color: var(--color-text-tertiary); font-family: 'DM Mono', monospace; }
-  .url-pill {
-    margin-left: auto; font-size: 11px; color: var(--color-text-tertiary);
-    font-family: 'DM Mono', monospace; background: var(--color-background-secondary);
-    padding: 3px 10px; border-radius: 20px; border: 0.5px solid var(--color-border-tertiary);
-  }
 </style>
 
 <div class="vici-wrap" id="app"></div>
@@ -184,11 +173,11 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZo2WecH8AbJ2r
 // Fallback validation if VICIdial data drops parameters
 const REQUIRED_PARAMS = ['phone', 'first', 'last'];
 
-// Automated company detection based on campaign configuration
+// Automated company detection matrix matching your campaigns
 const COMPANY_MAP = {
   'CAMPAIGN_A': 'SecureDrive Insurance',
   'CAMPAIGN_B': 'Vocal Tech Marketing',
-  'DEFAULT': '' // Leaving blank if not found to fall back on URL param or typing
+  'DEFAULT': '' 
 };
 
 function getParam(name) {
@@ -231,12 +220,15 @@ function autoFill(id, value) {
   const el = document.getElementById(id);
   if (!el || !value) return;
   el.value = value;
-  el.classList.add('auto-filled');
+  if (el.type !== 'hidden') {
+    el.classList.add('auto-filled');
+  }
 }
 
 function setStateByValue(value) {
   if (!value) return;
   const sel = document.getElementById('state');
+  if (!sel) return;
   for (let opt of sel.options) {
     if (opt.value.toLowerCase() === value.toLowerCase() || opt.text.toLowerCase() === value.toLowerCase()) {
       sel.value = opt.value;
@@ -249,7 +241,10 @@ function setStateByValue(value) {
 function clearForm() {
   ['agentName','firstName','lastName','phone','age','state','zip','dob','company','campaign','did','comments'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) { el.value = ''; el.classList.remove('auto-filled'); }
+    if (el) { 
+      el.value = ''; 
+      el.classList.remove('auto-filled'); 
+    }
   });
   document.getElementById('successToast').style.display = 'none';
   document.getElementById('errorToast').style.display = 'none';
@@ -304,7 +299,7 @@ function renderForm() {
   const states = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
   const stateOptions = states.map(s => `<option>${s}</option>`).join('');
 
-  // Auto-detect corporate name logic
+  // Auto-detect corporate context parameters
   const campaignParam = getParam('campaign');
   const urlCompanyParam = getParam('company');
   const detectedCompany = urlCompanyParam || COMPANY_MAP[campaignParam] || COMPANY_MAP['DEFAULT'];
@@ -326,32 +321,25 @@ function renderForm() {
           <span class="call-id">CALL-${Math.random().toString(36).substring(2,8).toUpperCase()}</span>
         </div>
 
+        <input type="hidden" id="campaign" />
+        <input type="hidden" id="company" value="${detectedCompany}" />
+        <input type="hidden" id="zip" />
+        <input type="hidden" id="dob" />
+
         <div class="section-label">Agent Information</div>
-        <div class="field-grid">
+        <div class="field-grid full">
           <div class="field-group">
             <label for="agentName">Agent Name</label>
             <div class="input-wrap"><i class="ti ti-id" aria-hidden="true"></i>
               <input type="text" id="agentName" placeholder="Agent Name/ID" />
             </div>
           </div>
-          <div class="field-group">
-            <label for="campaign">Campaign ID</label>
-            <div class="input-wrap"><i class="ti ti-target" aria-hidden="true"></i>
-              <input type="text" id="campaign" placeholder="Campaign Context" />
-            </div>
-          </div>
         </div>
-        <div class="field-grid">
+        <div class="field-grid full">
           <div class="field-group">
             <label for="did">DID</label>
             <div class="input-wrap"><i class="ti ti-hash" aria-hidden="true"></i>
               <input type="text" id="did" placeholder="e.g, D1" />
-            </div>
-          </div>
-          <div class="field-group">
-            <label for="company">Company</label>
-            <div class="input-wrap"><i class="ti ti-building" aria-hidden="true"></i>
-              <input type="text" id="company" placeholder="Company Name" value="${detectedCompany}" />
             </div>
           </div>
         </div>
@@ -385,25 +373,11 @@ function renderForm() {
             </div>
           </div>
         </div>
-        <div class="field-grid">
-          <div class="field-group">
-            <label for="zip">Zip Code</label>
-            <div class="input-wrap"><i class="ti ti-mailbox" aria-hidden="true"></i>
-              <input type="text" id="zip" placeholder="ZIP Code" maxlength="5" />
-            </div>
-          </div>
+        <div class="field-grid full">
           <div class="field-group">
             <label for="age">Age</label>
             <div class="input-wrap"><i class="ti ti-calendar-event" aria-hidden="true"></i>
               <input type="number" id="age" placeholder="Age" min="0" max="120" />
-            </div>
-          </div>
-        </div>
-        <div class="field-grid full">
-          <div class="field-group">
-            <label for="dob">D.O.B</label>
-            <div class="input-wrap"><i class="ti ti-cake" aria-hidden="true"></i>
-              <input type="text" id="dob" placeholder="MM/DD/YYYY" />
             </div>
           </div>
         </div>
@@ -435,7 +409,7 @@ function renderForm() {
       </div>
     </div>`;
 
-  // Apply autofill parameters safely
+  // Apply URL param data injection to visible and hidden elements
   autoFill('agentName', getParam('agentName'));
   autoFill('phone',     getParam('phone'));
   autoFill('firstName', getParam('first'));
@@ -447,10 +421,6 @@ function renderForm() {
   autoFill('did',       getParam('did'));
   autoFill('comments',  getParam('comments'));
   setStateByValue(getParam('state'));
-
-  if (detectedCompany) {
-    document.getElementById('company').classList.add('auto-filled');
-  }
 }
 
 if (isValidCallSession()) {
