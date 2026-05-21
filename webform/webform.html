@@ -184,6 +184,13 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZo2WecH8AbJ2r
 // Fallback validation if VICIdial data drops parameters
 const REQUIRED_PARAMS = ['phone', 'first', 'last'];
 
+// Automated company detection based on campaign configuration
+const COMPANY_MAP = {
+  'CAMPAIGN_A': 'SecureDrive Insurance',
+  'CAMPAIGN_B': 'Vocal Tech Marketing',
+  'DEFAULT': '' // Leaving blank if not found to fall back on URL param or typing
+};
+
 function getParam(name) {
   const aliases = {
     agentName: ['agentName', 'agent_name', 'agent', 'user'],
@@ -240,12 +247,10 @@ function setStateByValue(value) {
 }
 
 function clearForm() {
-  ['agentName','firstName','lastName','phone','age','zip','dob','company','campaign','did','comments'].forEach(id => {
+  ['agentName','firstName','lastName','phone','age','state','zip','dob','company','campaign','did','comments'].forEach(id => {
     const el = document.getElementById(id);
     if (el) { el.value = ''; el.classList.remove('auto-filled'); }
   });
-  const stateEl = document.getElementById('state');
-  if (stateEl) { stateEl.value = ''; stateEl.classList.remove('auto-filled'); }
   document.getElementById('successToast').style.display = 'none';
   document.getElementById('errorToast').style.display = 'none';
 }
@@ -299,6 +304,11 @@ function renderForm() {
   const states = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
   const stateOptions = states.map(s => `<option>${s}</option>`).join('');
 
+  // Auto-detect corporate name logic
+  const campaignParam = getParam('campaign');
+  const urlCompanyParam = getParam('company');
+  const detectedCompany = urlCompanyParam || COMPANY_MAP[campaignParam] || COMPANY_MAP['DEFAULT'];
+
   document.getElementById('app').innerHTML = `
     <div class="vici-card">
       <div class="vici-header">
@@ -338,6 +348,12 @@ function renderForm() {
               <input type="text" id="did" placeholder="e.g, D1" />
             </div>
           </div>
+          <div class="field-group">
+            <label for="company">Company</label>
+            <div class="input-wrap"><i class="ti ti-building" aria-hidden="true"></i>
+              <input type="text" id="company" placeholder="Company Name" value="${detectedCompany}" />
+            </div>
+          </div>
         </div>
 
         <div class="section-label">Customer information</div>
@@ -371,9 +387,23 @@ function renderForm() {
         </div>
         <div class="field-grid">
           <div class="field-group">
+            <label for="zip">Zip Code</label>
+            <div class="input-wrap"><i class="ti ti-mailbox" aria-hidden="true"></i>
+              <input type="text" id="zip" placeholder="ZIP Code" maxlength="5" />
+            </div>
+          </div>
+          <div class="field-group">
             <label for="age">Age</label>
             <div class="input-wrap"><i class="ti ti-calendar-event" aria-hidden="true"></i>
               <input type="number" id="age" placeholder="Age" min="0" max="120" />
+            </div>
+          </div>
+        </div>
+        <div class="field-grid full">
+          <div class="field-group">
+            <label for="dob">D.O.B</label>
+            <div class="input-wrap"><i class="ti ti-cake" aria-hidden="true"></i>
+              <input type="text" id="dob" placeholder="MM/DD/YYYY" />
             </div>
           </div>
         </div>
@@ -405,7 +435,7 @@ function renderForm() {
       </div>
     </div>`;
 
-  // Process mapping arrays and load URL query variables string safely
+  // Apply autofill parameters safely
   autoFill('agentName', getParam('agentName'));
   autoFill('phone',     getParam('phone'));
   autoFill('firstName', getParam('first'));
@@ -413,11 +443,14 @@ function renderForm() {
   autoFill('age',       getParam('age'));
   autoFill('zip',       getParam('zip'));
   autoFill('dob',       getParam('dob'));
-  autoFill('company',   getParam('company'));
   autoFill('campaign',  getParam('campaign'));
   autoFill('did',       getParam('did'));
   autoFill('comments',  getParam('comments'));
   setStateByValue(getParam('state'));
+
+  if (detectedCompany) {
+    document.getElementById('company').classList.add('auto-filled');
+  }
 }
 
 if (isValidCallSession()) {
