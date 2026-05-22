@@ -103,7 +103,9 @@
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
 </style>
 
-<input id="apiKey" type="hidden" value="" />
+<input id="apiKey" type="hidden" value="YOUR_ABSTRACT_API_KEY_HERE" />
+<input id="ftcApiKey" type="hidden" value="YOUR_DATA_GOV_API_KEY_HERE" />
+
 <div class="input-row-hidden">
   <input id="phoneInput" type="tel" />
   <input id="firstName" type="hidden" />
@@ -333,11 +335,17 @@ async function runCheck() {
   setSummary('checking', 'Running DNC compliance checks…', 'Verifying registries and litigator databases', '');
   resetUI();
 
-  let fccOnDnc = false, lineType = 'Unknown', carrier = '', isLitigator = false;
+  let fccOnDnc = false;
+  let lineType = 'Unknown';
+  let carrier = '';
+  let isLitigator = false;
+  let hasComplaints = false;
   let flagCount = 0;
 
+  // 1. Local Pattern Verification (Free Litigator Screening)
   isLitigator = LITIGATOR_PATTERNS.some(p => raw.includes(p));
 
+  // 2. FCC National Registry Route
   try {
     const fccRes = await fetch(`https://api.fcc.gov/bureaus/eb/do-not-call/dnc/check?number=${raw}&output=json`);
     if (fccRes.ok) {
@@ -346,8 +354,24 @@ async function runCheck() {
     }
   } catch(e) { fccOnDnc = false; }
 
+  // 3. FTC Consumer Robocall & Complaint Database API Execution
+  const ftcKey = document.getElementById('ftcApiKey').value.trim();
+  if (ftcKey && ftcKey !== 'YOUR_DATA_GOV_API_KEY_HERE') {
+    try {
+      const ftcRes = await fetch(`https://api.ftc.gov/v0/dnc-complaints?api_key=${ftcKey}&phone=${raw}`);
+      if (ftcRes.ok) {
+        const ftcData = await ftcRes.json();
+        // Check if complaints are registered matching this string array sequence
+        if (ftcData && ftcData.meta && ftcData.meta.total_records > 0) {
+          hasComplaints = true;
+        }
+      }
+    } catch(e) { hasComplaints = false; }
+  }
+
+  // 4. AbstractAPI Carrier Info & Telecom Routing Execution
   const apiKey = document.getElementById('apiKey').value.trim();
-  if (apiKey) {
+  if (apiKey && apiKey !== 'YOUR_ABSTRACT_API_KEY_HERE') {
     try {
       const absRes = await fetch(`https://phonevalidation.abstractapi.com/v1/?api_key=${apiKey}&phone=${raw}`);
       if (absRes.ok) {
@@ -360,12 +384,15 @@ async function runCheck() {
     lineType = 'Active';
   }
 
+  // Threat Matrix Calculation
   if (fccOnDnc) flagCount++;
   if (isLitigator) flagCount++;
+  if (hasComplaints) flagCount++;
 
   const dncStatus = fccOnDnc ? 'flagged' : 'clean';
   const litStatus = isLitigator ? 'flagged' : 'clean';
 
+  // Update Status Matrix UI Pills
   document.getElementById('s-dnc').className = 'cp-status ' + dncStatus;
   document.getElementById('s-dnc').textContent = fccOnDnc ? 'On DNC' : 'Clean';
   document.querySelector('#pill-dnc .cp-icon i').style.color = fccOnDnc ? 'var(--danger)' : 'var(--success)';
@@ -378,16 +405,30 @@ async function runCheck() {
   document.getElementById('s-state').textContent = 'Clean';
   document.querySelector('#pill-state .cp-icon i').style.color = 'var(--success)';
 
+  // Update Line Info Layout Matrix
   const ltDisplay = lineType !== 'Unknown' && lineType !== 'Active' ? lineType + (carrier ? ` · ${carrier}` : '') : lineType;
   setStatus('lineType', 'clean', ltDisplay);
-  setStatus('complainStatus', 'clean', 'No active complaints');
+  
+  if (hasComplaints) {
+    setStatus('complainStatus', 'flagged', 'Active Robocall Complaints Found');
+  } else {
+    setStatus('complainStatus', 'clean', 'No active complaints');
+  }
 
+  // Render Pipeline Summary Outputs
   if (flagCount === 0) {
     setStatus('overallStatus', 'clean', 'PASS — Secure to Dial');
-    setSummary('clean', `${raw.slice(0,3)}-${raw.slice(3,6)}-${raw.slice(6)} is CLEAN`, 'Verified completely clear against DNC registries', 'FCC Data Network');
+    setSummary('clean', `${raw.slice(0,3)}-${raw.slice(3,6)}-${raw.slice(6)} is CLEAN`, 'Verified completely clear against DNC registries', 'FCC/FTC Network Data');
   } else {
     setStatus('overallStatus', 'flagged', `BLOCKED — ${flagCount} Compliance violations identified`);
-    setSummary('flagged', `${raw.slice(0,3)}-${raw.slice(3,6)}-${raw.slice(6)} RESTRICTED`, [fccOnDnc?'Federal DNC Registry Match':'',isLitigator?'Litigator Flagged Pattern':''].filter(Boolean).join(' · '), 'Compliance Engine');
+    
+    const elementsArray = [
+      fccOnDnc ? 'Federal DNC Registry Match' : '',
+      isLitigator ? 'Litigator Flagged Pattern' : '',
+      hasComplaints ? 'Active FTC Complainant' : ''
+    ].filter(Boolean).join(' · ');
+
+    setSummary('flagged', `${raw.slice(0,3)}-${raw.slice(3,6)}-${raw.slice(6)} RESTRICTED`, elementsArray, 'Compliance Engine');
   }
 }
 
