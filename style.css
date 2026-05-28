@@ -785,6 +785,7 @@
       background: rgba(240,245,245,0.95);
       border-bottom: 1px solid var(--dark-border);
     }
+    [data-theme="light"] .logo-sub { color: #0d2a2a; font-size: 1.5em; letter-spacing: 0.12em; font-weight: 600; white-space: nowrap; }
     [data-theme="light"] .nav-overlay { background: rgba(240,245,245,0.99); }
     [data-theme="light"] .nav-overlay .nav-link { color: var(--text-primary); }
     [data-theme="light"] .about-section { background: #f0f5f5; }
