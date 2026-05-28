@@ -636,6 +636,7 @@
       background: var(--dark-card); border: 1px solid var(--dark-border);
       font-size: 0.85rem; font-weight: 700; margin-bottom: 0; transition: var(--transition);
     }
+    .footer-socials svg { fill: var(--text-secondary); }
     .footer-socials a:hover { background: rgba(84,136,136,0.2); border-color: var(--teal-deep); }
     .footer-bottom {
       max-width: 1350px; margin: 0 auto; padding: 20px 28px;
