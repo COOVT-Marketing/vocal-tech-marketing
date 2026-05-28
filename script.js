@@ -1,6 +1,31 @@
 (function () {
   'use strict';
 
+  /* ── Theme Toggle ── */
+  const themeToggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+
+  function getTheme() {
+    return localStorage.getItem('vtm-theme') || 'dark';
+  }
+  function setTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('vtm-theme', theme);
+    /* Update hero wave fill to match new surface color */
+    const wavePath = document.querySelector('.hero-wave path');
+    if (wavePath) {
+      wavePath.setAttribute('fill', theme === 'light' ? '#e4eeed' : '#0d1a1a');
+    }
+  }
+
+  themeToggle?.addEventListener('click', () => {
+    const next = getTheme() === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+  });
+
+  /* Apply on load (already set by inline script, but sync wave fill) */
+  setTheme(getTheme());
+
   /* ── Particle Canvas ── */
   const canvas = document.getElementById('heroCanvas');
   if (canvas) {
@@ -46,7 +71,7 @@
         ctx.fillStyle = p.color; ctx.fill();
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j], dx = p.x - p2.x, dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy); // fixed: was dx*dy
+          const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < maxDist) drawConnection(p, p2, dist, maxDist);
         }
       });
@@ -99,7 +124,6 @@
     navbar?.classList.toggle('scrolled', y > 40);
     scrollTopBtn?.classList.toggle('show', y > 300);
 
-    // Active nav link tracking
     let current = '';
     sections.forEach(sec => { if (y >= sec.offsetTop - 100) current = sec.id; });
     navLinks.forEach(link => {
