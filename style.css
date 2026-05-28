@@ -813,7 +813,7 @@
     [data-theme="light"] .cf-field textarea {
       background: #f0f8f8; color: var(--text-primary); border-color: var(--dark-border);
     }
-    [data-theme="light"] .instagram-footer-link { display: block; margin: auto; fill: #2c5050;}
+    [data-theme="light"] .instagram-footer-link {fill: #2c5050;}
     [data-theme="light"] .cf-field input::placeholder,
     [data-theme="light"] .cf-field textarea::placeholder { color: var(--text-muted); }
 
