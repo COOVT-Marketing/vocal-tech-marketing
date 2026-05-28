@@ -813,13 +813,6 @@
     [data-theme="light"] .cf-field textarea {
       background: #f0f8f8; color: var(--text-primary); border-color: var(--dark-border);
     }
-    [data-theme="light"] .footer-socials { display: flex; gap: 10px; margin-top: 16px; color: #0d2a2a;}
-    [data-theme="light"] .footer-socials a {
-      width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
-      background: var(--dark-card); border: 1px solid var(--dark-border);
-      font-size: 0.85rem; font-weight: 700; margin-bottom: 0; transition: var(--transition);
-    }
-    [data-theme="light"] .footer-socials a:hover { background: rgba(84,136,136,0.2); border-color: var(--teal-deep); }
     [data-theme="light"] .cf-field input::placeholder,
     [data-theme="light"] .cf-field textarea::placeholder { color: var(--text-muted); }
 
