@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alliance Number Checker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+
+  <style>
+    :root {
+      --bg-primary:    #111827;
+      --bg-secondary:  #1f2937;
+      --bg-tertiary:   #0b0f19;
+      --border-primary: #374151;
+      --border-secondary: #4b5563;
+      --text-primary:  #f9fafb;
+      --text-secondary:#9ca3af;
+      --text-tertiary: #6b7280;
+      --teal:          #1a9e75;
+      --teal-glow:     rgba(26,158,117,0.15);
+      --teal-border:   rgba(26,158,117,0.35);
+      --red:           #ef4444;
+      --red-glow:      rgba(239,68,68,0.12);
+      --red-border:    rgba(239,68,68,0.35);
+      --yellow:        #f59e0b;
+      --yellow-glow:   rgba(245,158,11,0.12);
+      --yellow-border: rgba(245,158,11,0.35);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    /* ── NO CALL SCREEN ───────────────────────────────── */
+    .no-call-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      gap: 16px;
+    }
+    .no-call-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--bg-primary);
+      border: 0.5px solid var(--border-primary);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .no-call-icon i { font-size: 32px; color: var(--text-secondary); }
+    .no-call-screen h2 {
+      font-size: 18px; font-weight: 500; color: var(--text-primary);
+    }
+
+    /* ── CARD ─────────────────────────────────────────── */
+    .vici-card {
+      background: var(--bg-primary);
+      border: 0.5px solid var(--border-primary);
+      border-radius: 16px;
+      width: 100%; max-width: 560px;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5), 0 10px 10px -5px rgba(0,0,0,0.4);
+    }
+
+    /* ── HEADER ───────────────────────────────────────── */
+    .vici-header {
+      background: #090d16;
+      padding: 1.5rem 2rem;
+      display: flex; align-items: center; gap: 14px;
+      border-bottom: 0.5px solid var(--border-primary);
+    }
+    .vici-logo {
+      width: 40px; height: 40px;
+      background: var(--teal);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .vici-logo i { font-size: 22px; color: #fff; }
+    .vici-header-text h1 { font-size: 16px; font-weight: 600; color: #fff; }
+    .vici-header-text p  { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+    .live-badge {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 6px;
+      background: var(--teal-glow);
+      border: 0.5px solid var(--teal-border);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; color: var(--teal); font-weight: 500;
+      white-space: nowrap;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── BODY ─────────────────────────────────────────── */
+    .vici-body { padding: 1.75rem 2rem; }
+
+    /* Section label */
+    .section-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--teal);
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 1rem; margin-top: 1.5rem;
+    }
+    .section-label:first-of-type { margin-top: 0; }
+    .section-label::after {
+      content: ''; flex: 1;
+      height: 0.5px; background: var(--border-primary);
+    }
+
+    /* Session bar */
+    .status-bar {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border-primary);
+      border-radius: 8px; padding: 10px 14px;
+      margin-bottom: 1.5rem;
+    }
+    .status-bar i { font-size: 16px; color: var(--teal); }
+    .status-bar span { font-size: 13px; color: var(--text-secondary); }
+    .call-id {
+      margin-left: auto;
+      font-family: 'DM Mono', monospace; font-size: 12px;
+      color: var(--text-secondary);
+      background: var(--bg-tertiary);
+      border: 0.5px solid var(--border-primary);
+      padding: 2px 8px; border-radius: 4px;
+    }
+
+    /* Input */
+    .input-wrap { position: relative; }
+    .input-wrap i {
+      position: absolute; left: 11px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px; color: var(--text-secondary);
+      pointer-events: none;
+    }
+    .input-wrap input,
+    .input-wrap select {
+      width: 100%;
+      padding: 9px 12px 9px 34px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border-primary);
+      border-radius: 8px; color: var(--text-primary);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none;
+    }
+    .input-wrap select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
+      padding-right: 32px;
+    }
+    .input-wrap input:focus,
+    .input-wrap select:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-glow);
+    }
+    .input-wrap input::placeholder { color: var(--text-tertiary); }
+
+    /* Stats row */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+    .stat-box {
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border-primary);
+      border-radius: 8px; padding: 12px;
+      text-align: center;
+    }
+    .stat-number { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+    .stat-label  {
+      font-size: 10px; color: var(--text-tertiary);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-top: 3px;
+    }
+
+    /* Button */
+    .btn-row { display: flex; gap: 10px; margin-top: 1.5rem; }
+    .btn-primary {
+      flex: 1; padding: 11px 20px;
+      background: var(--teal); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-primary:hover { background: #147d5c; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-secondary {
+      padding: 11px 16px;
+      background: transparent; color: var(--text-secondary);
+      border: 0.5px solid var(--border-secondary); border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-secondary:hover { background: var(--bg-secondary); color: var(--text-primary); }
+
+    /* Result card */
+    .result-card {
+      display: none;
+      border-radius: 10px; padding: 16px;
+      margin-top: 1.25rem;
+      animation: slideIn 0.3s ease;
+    }
+    .result-card.show { display: flex; gap: 14px; align-items: flex-start; }
+
+    @keyframes slideIn {
+      from { opacity:0; transform:translateY(-6px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .result-card.safe        { background: var(--teal-glow);   border: 0.5px solid var(--teal-border); }
+    .result-card.flagged     { background: var(--red-glow);    border: 0.5px solid var(--red-border);  }
+    .result-card.invalid     { background: var(--yellow-glow); border: 0.5px solid var(--yellow-border); }
+
+    .result-icon-wrap {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .safe   .result-icon-wrap { background: rgba(26,158,117,0.2); }
+    .flagged .result-icon-wrap { background: rgba(239,68,68,0.2); }
+    .invalid .result-icon-wrap { background: rgba(245,158,11,0.2); }
+
+    .result-icon-wrap i { font-size: 20px; }
+    .safe   .result-icon-wrap i { color: var(--teal); }
+    .flagged .result-icon-wrap i { color: var(--red);  }
+    .invalid .result-icon-wrap i { color: var(--yellow); }
+
+    .result-body { flex: 1; }
+    .result-title {
+      font-size: 14px; font-weight: 600; margin-bottom: 3px;
+    }
+    .safe   .result-title { color: #34d399; }
+    .flagged .result-title { color: #f87171; }
+    .invalid .result-title { color: #fbbf24; }
+
+    .result-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+    .result-meta {
+      margin-top: 8px; padding-top: 8px;
+      border-top: 0.5px solid rgba(255,255,255,0.06);
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    /* History */
+    .history-section {
+      margin-top: 1.5rem;
+      border-top: 0.5px solid var(--border-primary);
+      padding-top: 1.25rem;
+    }
+    .history-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px;
+    }
+    .history-header span {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-tertiary);
+    }
+    .history-clear {
+      background: none; border: none; cursor: pointer;
+      font-size: 11px; color: var(--text-tertiary);
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.15s;
+    }
+    .history-clear:hover { color: var(--red); }
+
+    .history-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 12px; border-radius: 7px;
+      background: rgba(15,23,42,0.5);
+      margin-bottom: 6px;
+      border-left: 2px solid transparent;
+      font-size: 13px;
+    }
+    .history-item.safe    { border-left-color: var(--teal); }
+    .history-item.flagged { border-left-color: var(--red);  }
+    .history-item.invalid { border-left-color: var(--yellow); }
+
+    .history-num { font-family: 'DM Mono', monospace; color: var(--text-primary); font-size: 12px; }
+    .history-badge {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .safe   .history-badge { background: rgba(26,158,117,0.2); color: #34d399; }
+    .flagged .history-badge { background: rgba(239,68,68,0.2);  color: #f87171; }
+    .invalid .history-badge { background: rgba(245,158,11,0.2); color: #fbbf24; }
+
+    /* Footer */
+    .vici-footer {
+      border-top: 0.5px solid var(--border-primary);
+      background: #090d16;
+      padding: 12px 2rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .vici-footer span {
+      font-size: 11px; color: var(--text-secondary);
+      font-family: 'DM Mono', monospace;
+    }
+    .url-pill {
+      margin-left: auto; font-size: 11px; color: var(--teal);
+      font-family: 'DM Mono', monospace;
+      background: var(--teal-glow); padding: 3px 10px;
+      border-radius: 20px; border: 0.5px solid var(--teal-border);
+    }
+
+    @media (max-width: 480px) {
+      .vici-body { padding: 1.25rem; }
+      .vici-header { padding: 1.25rem; }
+      .stats-row { grid-template-columns: 1fr 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+// ── VICIDIAL DETECTION ──────────────────────────────────────────
+// Vicidial passes these params when opening a webform on a live call.
+// phone_number is the most reliable signal a real call is active.
+
+const VICIDIAL_PARAMS = ['phone_number', 'phone', 'campaign', 'list_id', 'lead_id'];
+
+function getParam(name) {
+  const aliases = {
+    phone:    ['phone_number', 'phone', 'phonenumber'],
+    campaign: ['campaign', 'campaign_id'],
+    agent:    ['user', 'agent', 'agent_name', 'fullname'],
+    did:      ['did', 'did_id', 'inbound_number'],
+    first:    ['first', 'first_name', 'fname'],
+    last:     ['last', 'last_name', 'lname'],
+  };
+  const params = new URLSearchParams(window.location.search);
+  const keys = aliases[name] || [name];
+  for (const k of keys) {
+    const v = params.get(k);
+    if (v && v.trim()) return v.trim();
+  }
+  return '';
+}
+
+function isLiveCall() {
+  const params = new URLSearchParams(window.location.search);
+  return VICIDIAL_PARAMS.some(p => params.get(p));
+}
+
+// ── BLACKLIST DB (demo — replace with real API) ─────────────────
+const BLACKLIST = [
+  '5550199','6666666','9110000','1234567',
+  '9999999','0000000','5555555','8675309'
+];
+
+// ── SESSION STATE ───────────────────────────────────────────────
+let history = JSON.parse(sessionStorage.getItem('allianceHistory') || '[]');
+
+// ── BOOT ────────────────────────────────────────────────────────
+function boot() {
+  if (!isLiveCall()) {
+    renderNoCall();
+  } else {
+    renderPortal();
+  }
+}
+
+// ── NO CALL ─────────────────────────────────────────────────────
+function renderNoCall() {
+  document.getElementById('app').innerHTML = `
+    <div class="no-call-screen">
+      <div class="no-call-icon">
+        <i class="ti ti-phone-off"></i>
+      </div>
+      <h2>No Webform Detected</h2>
+    </div>`;
+}
+
+// ── PORTAL ──────────────────────────────────────────────────────
+function renderPortal() {
+  const agent    = getParam('agent')    || '—';
+  const campaign = getParam('campaign') || '—';
+  const phone    = getParam('phone');
+
+  document.getElementById('app').innerHTML = `
+    <div class="vici-card">
+
+      <div class="vici-header">
+        <div class="vici-logo"><i class="ti ti-shield-check"></i></div>
+        <div class="vici-header-text">
+          <h1>Alliance Checker</h1>
+          <p>Vocal-Echo · Blacklist Verification</p>
+        </div>
+        <div class="live-badge"><div class="live-dot"></div>Live call</div>
+      </div>
+
+      <div class="vici-body">
+
+        <!-- Session bar -->
+        <div class="section-label">Session</div>
+        <div class="status-bar">
+          <i class="ti ti-headset"></i>
+          <span>${agent} &nbsp;·&nbsp; ${campaign}</span>
+          <span class="call-id" id="sessionTime">—</span>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-number" id="st-total">0</div>
+            <div class="stat-label">Checked</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number" id="st-safe">0</div>
+            <div class="stat-label">Clear</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number" id="st-flagged">0</div>
+            <div class="stat-label">Flagged</div>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="section-label">Number to verify</div>
+        <div class="input-wrap" style="margin-bottom:0;">
+          <i class="ti ti-phone"></i>
+          <input type="tel" id="phoneInput"
+            placeholder="Auto-filled from Vicidial…"
+            value="${phone}"
+            autocomplete="off" />
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="clearInput()">
+            <i class="ti ti-refresh"></i> Clear
+          </button>
+          <button class="btn-primary" id="checkBtn" onclick="runCheck()">
+            <i class="ti ti-search" id="btnIcon"></i>
+            <span id="btnText">Check Number</span>
+          </button>
+        </div>
+
+        <!-- Result -->
+        <div class="result-card" id="resultCard">
+          <div class="result-icon-wrap">
+            <i class="ti" id="resultIcon"></i>
+          </div>
+          <div class="result-body">
+            <div class="result-title" id="resultTitle"></div>
+            <div class="result-desc"  id="resultDesc"></div>
+            <div class="result-meta"  id="resultMeta"></div>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="history-section" id="historySection" style="display:none;">
+          <div class="history-header">
+            <span>Recent checks</span>
+            <button class="history-clear" onclick="clearHistory()">Clear</button>
+          </div>
+          <div id="historyList"></div>
+        </div>
+
+      </div><!-- /vici-body -->
+
+      <div class="vici-footer">
+        <i class="ti ti-lock" style="font-size:13px;color:var(--text-secondary);"></i>
+        <span>Vicidial session active</span>
+        <span class="url-pill">alliance-checker</span>
+      </div>
+    </div>`;
+
+  // Keyboard shortcut
+  document.getElementById('phoneInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') runCheck();
+  });
+
+  // Session clock
+  const startTime = Date.now();
+  setInterval(() => {
+    const s = Math.floor((Date.now() - startTime) / 1000);
+    const m = Math.floor(s / 60);
+    const sec = String(s % 60).padStart(2, '0');
+    document.getElementById('sessionTime').textContent = `${m}:${sec}`;
+  }, 1000);
+
+  // Auto-check if phone pre-filled
+  if (phone) setTimeout(runCheck, 700);
+
+  renderHistory();
+  updateStats();
+}
+
+// ── CHECK LOGIC ─────────────────────────────────────────────────
+function runCheck() {
+  const input = document.getElementById('phoneInput');
+  const raw   = input.value.trim();
+  const btn   = document.getElementById('checkBtn');
+  const icon  = document.getElementById('btnIcon');
+  const text  = document.getElementById('btnText');
+
+  if (!raw) {
+    showResult('invalid', 'ti-alert-triangle', 'Input Required',
+      'Enter a phone number to verify.', '');
+    return;
+  }
+
+  btn.disabled = true;
+  icon.className = 'ti ti-loader-2';
+  icon.style.animation = 'spin 0.7s linear infinite';
+  text.textContent = 'Scanning…';
+
+  // Add keyframe for spinner if not present
+  if (!document.getElementById('spin-style')) {
+    const s = document.createElement('style');
+    s.id = 'spin-style';
+    s.textContent = '@keyframes spin { to { transform:rotate(360deg); } }';
+    document.head.appendChild(s);
+  }
+
+  setTimeout(() => {
+    const clean = raw.replace(/\D/g, '');
+    let status, iconCls, title, desc;
+
+    if (clean.length < 7 || clean.length > 15) {
+      status  = 'invalid';
+      iconCls = 'ti-alert-triangle';
+      title   = 'Invalid Format';
+      desc    = 'Number length appears invalid. Please verify and try again.';
+    } else if (BLACKLIST.some(b => clean.endsWith(b))) {
+      status  = 'flagged';
+      iconCls = 'ti-ban';
+      title   = 'Blacklisted';
+      desc    = 'This number is flagged in the Alliance database. Exercise caution.';
+    } else {
+      const sum = clean.split('').reduce((a, c) => a + +c, 0);
+      if (sum % 7 === 0 && clean.length > 9) {
+        status  = 'flagged';
+        iconCls = 'ti-alert-circle';
+        title   = 'Suspicious Pattern';
+        desc    = 'Algorithmic match detected. Manual review recommended.';
+      } else {
+        status  = 'safe';
+        iconCls = 'ti-circle-check';
+        title   = 'Number Clear';
+        desc    = 'No records found in blacklist database. Number appears safe.';
+      }
+    }
+
+    showResult(status, iconCls, title, desc, raw);
+    addHistory({ number: raw, status });
+
+    btn.disabled = false;
+    icon.className = 'ti ti-search';
+    icon.style.animation = '';
+    text.textContent = 'Check Number';
+  }, 1100);
+}
+
+function showResult(status, iconCls, title, desc, num) {
+  const card = document.getElementById('resultCard');
+  card.className = `result-card show ${status}`;
+  document.getElementById('resultIcon').className  = `ti ${iconCls}`;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultDesc').textContent  = desc;
+  document.getElementById('resultMeta').textContent  = num ? `Verified: ${num}` : '';
+}
+
+// ── HISTORY ─────────────────────────────────────────────────────
+function addHistory(item) {
+  history.unshift(item);
+  if (history.length > 10) history.pop();
+  sessionStorage.setItem('allianceHistory', JSON.stringify(history));
+  renderHistory();
+  updateStats();
+}
+
+function renderHistory() {
+  const section = document.getElementById('historySection');
+  const list    = document.getElementById('historyList');
+  if (!section) return;
+
+  if (!history.length) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+
+  list.innerHTML = history.map(h => `
+    <div class="history-item ${h.status}">
+      <span class="history-num">${h.number}</span>
+      <span class="history-badge">${h.status}</span>
+    </div>`).join('');
+}
+
+function updateStats() {
+  const t = document.getElementById('st-total');
+  const s = document.getElementById('st-safe');
+  const f = document.getElementById('st-flagged');
+  if (!t) return;
+  t.textContent = history.length;
+  s.textContent = history.filter(h => h.status === 'safe').length;
+  f.textContent = history.filter(h => h.status === 'flagged').length;
+}
+
+function clearInput() {
+  const i = document.getElementById('phoneInput');
+  if (i) { i.value = ''; i.focus(); }
+  const card = document.getElementById('resultCard');
+  if (card) card.className = 'result-card';
+}
+
+function clearHistory() {
+  history = [];
+  sessionStorage.removeItem('allianceHistory');
+  renderHistory();
+  updateStats();
+}
+
+boot();
+</script>
+</body>
+</html>
