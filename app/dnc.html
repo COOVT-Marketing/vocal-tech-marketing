@@ -36,7 +36,6 @@ body{
   display:flex;align-items:center;justify-content:center;
   padding:2rem 1rem;
 }
-
 .card{
   background:var(--card);
   border:0.5px solid var(--border);
@@ -45,8 +44,6 @@ body{
   overflow:hidden;
   box-shadow:0 25px 30px -8px rgba(0,0,0,0.6);
 }
-
-/* HEADER */
 .header{
   background:#090d16;
   padding:1.4rem 2rem;
@@ -72,11 +69,7 @@ body{
 }
 .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-
-/* BODY */
 .body{padding:2rem}
-
-/* SESSION BAR */
 .session-bar{
   display:flex;align-items:center;gap:8px;
   background:var(--card2);
@@ -94,8 +87,6 @@ body{
   border:0.5px solid var(--border);
   padding:2px 8px;border-radius:4px;
 }
-
-/* STATS */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:2rem}
 .stat{
   background:var(--card2);
@@ -105,8 +96,6 @@ body{
 }
 .stat-n{font-size:24px;font-weight:700}
 .stat-l{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
-
-/* STATUS DISPLAY */
 .status-display{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:2.5rem 1.5rem;
@@ -114,35 +103,13 @@ body{
   border:0.5px solid var(--border);
   background:var(--card2);
   min-height:200px;
-  position:relative;
-  overflow:hidden;
   transition:background 0.5s ease, border-color 0.5s ease;
 }
-
-/* idle */
-.status-display.idle{
-  background:var(--card2);
-  border-color:var(--border);
-}
-.status-display.loading{
-  background:var(--card2);
-  border-color:var(--teal-b);
-}
-.status-display.clean{
-  background:var(--green-glow);
-  border-color:var(--green-b);
-  animation:greenPulse 2s ease forwards;
-}
-.status-display.bad{
-  background:var(--red-glow);
-  border-color:var(--red-b);
-  animation:redPulse 2s ease forwards;
-}
-.status-display.invalid{
-  background:var(--yellow-glow);
-  border-color:var(--yellow-b);
-}
-
+.status-display.idle{background:var(--card2);border-color:var(--border);}
+.status-display.loading{background:var(--card2);border-color:var(--teal-b);}
+.status-display.clean{background:var(--green-glow);border-color:var(--green-b);animation:greenPulse 2s ease forwards;}
+.status-display.bad{background:var(--red-glow);border-color:var(--red-b);animation:redPulse 2s ease forwards;}
+.status-display.invalid{background:var(--yellow-glow);border-color:var(--yellow-b);}
 @keyframes greenPulse{
   0%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)}
   50%{box-shadow:0 0 40px 8px rgba(34,197,94,0.25)}
@@ -153,7 +120,6 @@ body{
   50%{box-shadow:0 0 40px 8px rgba(239,68,68,0.25)}
   100%{box-shadow:0 0 20px 4px rgba(239,68,68,0.1)}
 }
-
 .status-icon{
   width:72px;height:72px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
@@ -170,9 +136,7 @@ body{
 .bad .status-icon i{font-size:36px;color:var(--red)}
 .invalid .status-icon{background:rgba(245,158,11,0.2)}
 .invalid .status-icon i{font-size:36px;color:var(--yellow)}
-
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .status-number{
   font-family:'DM Mono',monospace;
   font-size:22px;font-weight:500;
@@ -185,7 +149,6 @@ body{
 .clean .status-number{color:var(--green)}
 .bad .status-number{color:var(--red)}
 .invalid .status-number{color:var(--yellow)}
-
 .status-verdict{
   font-size:28px;font-weight:700;
   letter-spacing:.02em;
@@ -196,23 +159,13 @@ body{
 .clean .status-verdict{color:var(--green)}
 .bad .status-verdict{color:var(--red)}
 .invalid .status-verdict{color:var(--yellow);font-size:18px}
-
-.status-sub{
-  margin-top:.4rem;
-  font-size:12px;color:var(--txt2);
-  text-align:center;
-}
-
-/* HISTORY */
+.status-sub{margin-top:.4rem;font-size:12px;color:var(--txt2);text-align:center;}
 .history-section{
   margin-top:1.5rem;
   border-top:0.5px solid var(--border);
   padding-top:1.25rem;
 }
-.hist-hdr{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:10px;
-}
+.hist-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 .hist-hdr span{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3)}
 .hist-clear{
   background:none;border:none;cursor:pointer;
@@ -231,16 +184,10 @@ body{
 .hist-item.bad{border-left-color:var(--red)}
 .hist-item.invalid{border-left-color:var(--yellow)}
 .hist-num{font-family:'DM Mono',monospace;color:var(--txt);font-size:12px}
-.hist-badge{
-  font-size:10px;font-weight:700;
-  padding:2px 8px;border-radius:20px;
-  text-transform:uppercase;letter-spacing:.04em;
-}
+.hist-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;}
 .clean .hist-badge{background:rgba(34,197,94,.2);color:#4ade80}
 .bad   .hist-badge{background:rgba(239,68,68,.2);color:#f87171}
 .invalid .hist-badge{background:rgba(245,158,11,.2);color:#fbbf24}
-
-/* FOOTER */
 .footer{
   border-top:0.5px solid var(--border);
   background:#090d16;
@@ -254,31 +201,25 @@ body{
   background:var(--teal-glow);padding:3px 10px;
   border-radius:20px;border:0.5px solid var(--teal-b);
 }
-
-/* NO CALL */
-.no-call{
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;min-height:60vh;
-  text-align:center;gap:16px;
-}
-.no-call-icon{
-  width:72px;height:72px;border-radius:50%;
-  background:var(--card);border:0.5px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-}
+.no-call{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;gap:16px;}
+.no-call-icon{width:72px;height:72px;border-radius:50%;background:var(--card);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;}
 .no-call-icon i{font-size:32px;color:var(--txt2)}
 .no-call h2{font-size:18px;font-weight:500}
-
-@media(max-width:480px){
-  .body{padding:1.25rem}
-  .header{padding:1.25rem}
-}
+@media(max-width:480px){.body{padding:1.25rem}.header{padding:1.25rem}}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-// ── PARAMS ──────────────────────────────────────────────────────
+
+// ── YOUR API KEY — insert it here ────────────────────────────────
+const API_KEY = 'JPrCbnW3PbgraP97d8BW';
+
+// ── API ENDPOINT ─────────────────────────────────────────────────
+// Phone number is appended automatically at the end
+const API_BASE = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${API_KEY}/response/json/phone/`;
+
+// ── PARAMS ───────────────────────────────────────────────────────
 const ALIASES = {
   phone:    ['phone_number','phone','phonenumber'],
   campaign: ['campaign','campaign_id'],
@@ -288,32 +229,26 @@ function getParam(name){
   const params = new URLSearchParams(window.location.search);
   for(const k of (ALIASES[name]||[name])){
     const v = params.get(k);
-    if(v&&v.trim()) return v.trim();
+    if(v && v.trim()) return v.trim();
   }
   return '';
 }
 function isLiveCall(){
   const params = new URLSearchParams(window.location.search);
-  return ['phone_number','phone','campaign','list_id','lead_id'].some(p=>params.get(p));
+  return ['phone_number','phone','campaign','list_id','lead_id'].some(p => params.get(p));
 }
 
-// ── BLACKLIST (replace with real API call) ──────────────────────
-const BLACKLIST = ['5550199','6666666','9110000','1234567','9999999','0000000','5555555','8675309'];
+// ── STATE ────────────────────────────────────────────────────────
+let history = JSON.parse(sessionStorage.getItem('allianceHistory') || '[]');
 
-// ── STATE ───────────────────────────────────────────────────────
-let history = JSON.parse(sessionStorage.getItem('allianceHistory')||'[]');
-
-// ── BOOT ────────────────────────────────────────────────────────
+// ── BOOT ─────────────────────────────────────────────────────────
 function boot(){
-  /* For demo purposes, if no URL params, render portal in demo mode */
-  if(!isLiveCall()){
-    renderNoCall(); return;
-  }
+  if(!isLiveCall()){ renderNoCall(); return; }
   renderPortal();
 }
 
 function renderNoCall(){
-  document.getElementById('app').innerHTML=`
+  document.getElementById('app').innerHTML = `
     <div class="no-call">
       <div class="no-call-icon"><i class="ti ti-phone-off"></i></div>
       <h2>No Webform Detected</h2>
@@ -325,23 +260,18 @@ function renderPortal(){
   const campaign = getParam('campaign') || '—';
   const phone    = getParam('phone');
 
-  document.getElementById('app').innerHTML=`
+  document.getElementById('app').innerHTML = `
     <div class="card">
       <div class="header">
         <div class="logo"><i class="ti ti-shield-check"></i></div>
         <div class="header-txt">
-          <h1>Alliance Checker</h1>
-          <p>Vocal-Echo · Blacklist Verification</p>
+          <h1>DNC Checker</h1>
+          <p>Vocal Tech Marketing · DNC Portal</p>
         </div>
         <div class="live-badge"><div class="dot"></div>Live call</div>
       </div>
 
       <div class="body">
-        <div class="session-bar">
-          <i class="ti ti-headset"></i>
-          <span>${agent} &nbsp;·&nbsp; ${campaign}</span>
-          <span class="time" id="sessionTime">0:00</span>
-        </div>
 
         <div class="stats">
           <div class="stat"><div class="stat-n" id="st-total">0</div><div class="stat-l">Checked</div></div>
@@ -349,104 +279,111 @@ function renderPortal(){
           <div class="stat"><div class="stat-n" id="st-bad">0</div><div class="stat-l">Flagged</div></div>
         </div>
 
-        <!-- STATUS DISPLAY — phone auto-checked from backend -->
         <div class="status-display idle" id="statusDisplay">
           <div class="status-icon"><i class="ti ti-shield" id="statusIcon"></i></div>
           <div class="status-number" id="statusNumber">—</div>
-          <div class="status-verdict" id="statusVerdict">Awaiting verification…</div>
+          <div class="status-verdict" id="statusVerdict">Checking...</div>
           <div class="status-sub" id="statusSub"></div>
         </div>
 
-        <div class="history-section" id="historySection" style="display:none">
-          <div class="hist-hdr">
-            <span>Recent checks</span>
-            <button class="hist-clear" onclick="clearHistory()">Clear</button>
-          </div>
-          <div id="historyList"></div>
-        </div>
-      </div>
-
-      <div class="footer">
-        <i class="ti ti-lock" style="font-size:13px;color:var(--txt2)"></i>
-        <span>Vicidial session active</span>
-        <span class="url-pill">alliance-checker</span>
       </div>
     </div>`;
 
   // Session clock
   const t0 = Date.now();
-  setInterval(()=>{
-    const s=Math.floor((Date.now()-t0)/1000);
-    document.getElementById('sessionTime').textContent=
+  setInterval(() => {
+    const s = Math.floor((Date.now() - t0) / 1000);
+    document.getElementById('sessionTime').textContent =
       `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
-  },1000);
+  }, 1000);
 
   renderHistory();
   updateStats();
 
-  // Auto-check phone from URL immediately
-  if(phone) setTimeout(()=>runCheck(phone), 700);
+  if(phone) setTimeout(() => runCheck(phone), 700);
 }
 
-// ── CHECK ────────────────────────────────────────────────────────
-function runCheck(rawPhone){
+// ── CHECK via Alliance API ────────────────────────────────────────
+async function runCheck(rawPhone){
   const display = document.getElementById('statusDisplay');
   const icon    = document.getElementById('statusIcon');
   const numEl   = document.getElementById('statusNumber');
   const verdict = document.getElementById('statusVerdict');
   const sub     = document.getElementById('statusSub');
 
+  const clean = rawPhone.replace(/\D/g,'');
+
+  // Basic format check before hitting API
+  if(clean.length < 7 || clean.length > 15){
+    display.className   = 'status-display invalid';
+    icon.className      = 'ti ti-alert-triangle';
+    numEl.textContent   = rawPhone;
+    verdict.textContent = 'INVALID';
+    sub.textContent     = 'Number format is invalid.';
+    addHistory({number: rawPhone, status: 'invalid'});
+    return;
+  }
+
   // Loading state
-  display.className = 'status-display loading';
-  icon.className    = 'ti ti-loader-2';
-  numEl.textContent = rawPhone;
+  display.className   = 'status-display loading';
+  icon.className      = 'ti ti-loader-2';
+  numEl.textContent   = rawPhone;
   verdict.textContent = 'Scanning database…';
-  sub.textContent   = '';
+  sub.textContent     = '';
 
-  setTimeout(()=>{
-    const clean = rawPhone.replace(/\D/g,'');
-    let status, iconCls, verdictText, subText;
+  try {
+    const response = await fetch(`${API_BASE}${clean}`);
 
-    if(clean.length < 7 || clean.length > 15){
-      status      = 'invalid';
-      iconCls     = 'ti-alert-triangle';
-      verdictText = 'INVALID';
-      subText     = 'Number format is invalid.';
-    } else if(BLACKLIST.some(b => clean.endsWith(b))){
-      status      = 'bad';
-      iconCls     = 'ti-ban';
-      verdictText = 'BAD';
-      subText     = 'Found in Alliance blacklist database.';
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const data = await response.json();
+    
+    // Debugging backup: Logs exact data to the browser console (F12)
+    console.log("Alliance API Payload Response:", data);
+
+    // Look for various ways BLA marks a number unsafe (DNC flags, Litigator flags, or custom text)
+    const isDnc = data.dnc === 'Y' || data.dnc === 'Yes' || String(data.message).toLowerCase().includes('dnc');
+    const isLitigator = data.litigator === 'Y' || data.litigator === 'Yes' || String(data.message).toLowerCase().includes('litigator');
+    const explicitlyListed = data.result === 'blacklisted' || data.status === 'blacklisted' || data.code === 400;
+
+    if (isDnc || isLitigator || explicitlyListed) {
+      // It's bad / flagged
+      display.className   = 'status-display bad';
+      icon.className      = 'ti ti-ban';
+      verdict.textContent = 'Do Not Transfer';
+      
+      // Determine explicit reason to display to the agent
+      if (isDnc && isLitigator) sub.textContent = 'CRITICAL: Found in Litigator & DNC Registries!';
+      else if (isLitigator) sub.textContent = 'FOUND: Abusive Litigator Database (TCPA Risk)';
+      else if (isDnc) sub.textContent = 'FOUND: Do Not Call (DNC) Registry';
+      else sub.textContent = data.message || 'Found in Alliance database restrictions.';
+      
+      addHistory({number: rawPhone, status: 'bad'});
     } else {
-      const sum = clean.split('').reduce((a,c)=>a+ +c,0);
-      if(sum%7===0 && clean.length>9){
-        status      = 'bad';
-        iconCls     = 'ti-alert-circle';
-        verdictText = 'BAD';
-        subText     = 'Suspicious algorithmic pattern detected.';
-      } else {
-        status      = 'clean';
-        iconCls     = 'ti-circle-check';
-        verdictText = 'CLEAN';
-        subText     = 'No records found in blacklist database.';
-      }
+      // Safe to call
+      display.className   = 'status-display clean';
+      icon.className      = 'ti ti-circle-check';
+      verdict.textContent = 'CLEAN';
+      sub.textContent     = 'No records found in blacklist or DNC databases.';
+      addHistory({number: rawPhone, status: 'clean'});
     }
 
-    display.className   = `status-display ${status}`;
-    icon.className      = `ti ${iconCls}`;
-    numEl.textContent   = rawPhone;
-    verdict.textContent = verdictText;
-    sub.textContent     = subText;
+    numEl.textContent = rawPhone;
 
-    addHistory({number: rawPhone, status});
-  }, 1100);
+  } catch(err) {
+    display.className   = 'status-display invalid';
+    icon.className      = 'ti ti-wifi-off';
+    numEl.textContent   = rawPhone;
+    verdict.textContent = 'API ERROR';
+    sub.textContent     = 'Could not reach Alliance API. Check your key, server CORS policy, or connection.';
+  }
 }
 
-// ── HISTORY ──────────────────────────────────────────────────────
+// ── HISTORY ───────────────────────────────────────────────────────
 function addHistory(item){
   history.unshift(item);
-  if(history.length>10) history.pop();
-  sessionStorage.setItem('allianceHistory',JSON.stringify(history));
+  if(history.length > 10) history.pop();
+  sessionStorage.setItem('allianceHistory', JSON.stringify(history));
   renderHistory();
   updateStats();
 }
@@ -455,27 +392,27 @@ function renderHistory(){
   const section = document.getElementById('historySection');
   const list    = document.getElementById('historyList');
   if(!section) return;
-  if(!history.length){section.style.display='none';return;}
-  section.style.display='block';
-  list.innerHTML = history.map(h=>`
+  if(!history.length){ section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  list.innerHTML = history.map(h => `
     <div class="hist-item ${h.status}">
       <span class="hist-num">${h.number}</span>
-      <span class="hist-badge">${h.status==='clean'?'CLEAN':h.status==='bad'?'BAD':'INVALID'}</span>
+      <span class="hist-badge">${h.status === 'clean' ? 'CLEAN' : h.status === 'bad' ? 'BAD' : 'INVALID'}</span>
     </div>`).join('');
 }
 
 function updateStats(){
-  const t=document.getElementById('st-total');
-  const c=document.getElementById('st-clean');
-  const b=document.getElementById('st-bad');
-  if(!t)return;
-  t.textContent=history.length;
-  c.textContent=history.filter(h=>h.status==='clean').length;
-  b.textContent=history.filter(h=>h.status==='bad').length;
+  const t = document.getElementById('st-total');
+  const c = document.getElementById('st-clean');
+  const b = document.getElementById('st-bad');
+  if(!t) return;
+  t.textContent = history.length;
+  c.textContent = history.filter(h => h.status === 'clean').length;
+  b.textContent = history.filter(h => h.status === 'bad').length;
 }
 
 function clearHistory(){
-  history=[];
+  history = [];
   sessionStorage.removeItem('allianceHistory');
   renderHistory();
   updateStats();
