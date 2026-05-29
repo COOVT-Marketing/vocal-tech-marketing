@@ -326,7 +326,7 @@ function submitForm() {
     setTimeout(() => successToast.style.display = 'none', 5000);
   })
   .catch(() => {
-    btn.innerHTML = '<i class="ti ti-device-floppy" aria-hidden="true"></i> Save & submit';
+    btn.innerHTML = '<i class="ti ti-device-floppy" aria-hidden="true"></i> Submit';
     btn.disabled = false;
     errorToast.style.display = 'flex';
   });
