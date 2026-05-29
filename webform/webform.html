@@ -219,7 +219,7 @@ const COMPANY_MAP = {
 
 function getParam(name) {
   const aliases = {
-    agentName: ['agentName', 'agent_name', 'agent', 'user'],
+    agentName: ['fullname', 'agentName', 'agent_name', 'agent', 'user'],
     phone:     ['phone', 'phone_number', 'phonenumber', 'phone_code'],
     first:     ['first', 'first_name', 'fname'],
     last:      ['last', 'last_name', 'lname'],
@@ -276,7 +276,7 @@ function setStateByValue(value) {
 }
 
 function clearForm() {
-  ['agentName','firstName','lastName','phone','age','state','zip','dob','company','campaign','did','comments'].forEach(id => {
+  ['fullname','firstName','lastName','phone','age','state','zip','dob','company','campaign','did','comments'].forEach(id => {
     const el = document.getElementById(id);
     if (el) { 
       el.value = ''; 
@@ -299,7 +299,7 @@ function submitForm() {
   btn.disabled = true;
 
   const payload = {
-    agentName: document.getElementById('agentName').value,
+    agentName: document.getElementById('fullname').value,
     phone:     document.getElementById('phone').value,
     firstName: document.getElementById('firstName').value,
     lastName:  document.getElementById('lastName').value,
@@ -320,7 +320,7 @@ function submitForm() {
     body: JSON.stringify(payload)
   })
   .then(() => {
-    btn.innerHTML = '<i class="ti ti-device-floppy" aria-hidden="true"></i> Save & submit';
+    btn.innerHTML = '<i class="ti ti-device-floppy" aria-hidden="true"></i> Submit';
     btn.disabled = false;
     successToast.style.display = 'flex';
     setTimeout(() => successToast.style.display = 'none', 5000);
@@ -353,11 +353,6 @@ function renderForm() {
         <div class="live-badge"><div class="live-dot"></div>Live call</div>
       </div>
       <div class="vici-body">
-        <div class="status-bar">
-          <i class="ti ti-phone-call" aria-hidden="true"></i>
-          <span>Active call connected</span>
-          <span class="call-id">CALL-${Math.random().toString(36).substring(2,8).toUpperCase()}</span>
-        </div>
 
         <input type="hidden" id="campaign" />
         <input type="hidden" id="company" value="${detectedCompany}" />
@@ -444,11 +439,6 @@ function renderForm() {
           <i class="ti ti-alert-circle" aria-hidden="true"></i>
           Submission failed. Check your connection and try again.
         </div>
-      </div>
-      <div class="vici-footer">
-        <i class="ti ti-lock" style="font-size:13px;color:var(--color-text-secondary);" aria-hidden="true"></i>
-        <span>VICIdial webform integration</span>
-        <span class="url-pill">Live session</span>
       </div>
     </div>`;
 
