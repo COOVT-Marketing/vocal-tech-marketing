@@ -87,15 +87,6 @@ body{
   border:0.5px solid var(--border);
   padding:2px 8px;border-radius:4px;
 }
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:2rem}
-.stat{
-  background:var(--card2);
-  border:0.5px solid var(--border);
-  border-radius:8px;padding:14px;
-  text-align:center;
-}
-.stat-n{font-size:24px;font-weight:700}
-.stat-l{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
 .status-display{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:2.5rem 1.5rem;
@@ -160,47 +151,6 @@ body{
 .bad .status-verdict{color:var(--red)}
 .invalid .status-verdict{color:var(--yellow);font-size:18px}
 .status-sub{margin-top:.4rem;font-size:12px;color:var(--txt2);text-align:center;}
-.history-section{
-  margin-top:1.5rem;
-  border-top:0.5px solid var(--border);
-  padding-top:1.25rem;
-}
-.hist-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.hist-hdr span{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3)}
-.hist-clear{
-  background:none;border:none;cursor:pointer;
-  font-size:11px;color:var(--txt3);font-family:'DM Sans',sans-serif;
-  transition:color .15s;
-}
-.hist-clear:hover{color:var(--red)}
-.hist-item{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:8px 12px;border-radius:7px;
-  background:rgba(15,23,42,.5);
-  margin-bottom:6px;
-  border-left:2px solid transparent;
-}
-.hist-item.clean{border-left-color:var(--green)}
-.hist-item.bad{border-left-color:var(--red)}
-.hist-item.invalid{border-left-color:var(--yellow)}
-.hist-num{font-family:'DM Mono',monospace;color:var(--txt);font-size:12px}
-.hist-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;}
-.clean .hist-badge{background:rgba(34,197,94,.2);color:#4ade80}
-.bad   .hist-badge{background:rgba(239,68,68,.2);color:#f87171}
-.invalid .hist-badge{background:rgba(245,158,11,.2);color:#fbbf24}
-.footer{
-  border-top:0.5px solid var(--border);
-  background:#090d16;
-  padding:12px 2rem;
-  display:flex;align-items:center;gap:8px;
-}
-.footer span{font-size:11px;color:var(--txt2);font-family:'DM Mono',monospace}
-.url-pill{
-  margin-left:auto;font-size:11px;color:var(--teal);
-  font-family:'DM Mono',monospace;
-  background:var(--teal-glow);padding:3px 10px;
-  border-radius:20px;border:0.5px solid var(--teal-b);
-}
 .no-call{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;gap:16px;}
 .no-call-icon{width:72px;height:72px;border-radius:50%;background:var(--card);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;}
 .no-call-icon i{font-size:32px;color:var(--txt2)}
@@ -216,7 +166,6 @@ body{
 const API_KEY = 'JPrCbnW3PbgraP97d8BW';
 
 // ── API ENDPOINT ─────────────────────────────────────────────────
-// Phone number is appended automatically at the end
 const API_BASE = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${API_KEY}/response/json/phone/`;
 
 // ── PARAMS ───────────────────────────────────────────────────────
@@ -238,9 +187,6 @@ function isLiveCall(){
   return ['phone_number','phone','campaign','list_id','lead_id'].some(p => params.get(p));
 }
 
-// ── STATE ────────────────────────────────────────────────────────
-let history = JSON.parse(sessionStorage.getItem('allianceHistory') || '[]');
-
 // ── BOOT ─────────────────────────────────────────────────────────
 function boot(){
   if(!isLiveCall()){ renderNoCall(); return; }
@@ -256,9 +202,7 @@ function renderNoCall(){
 }
 
 function renderPortal(){
-  const agent    = getParam('agent')    || '—';
-  const campaign = getParam('campaign') || '—';
-  const phone    = getParam('phone');
+  const phone = getParam('phone');
 
   document.getElementById('app').innerHTML = `
     <div class="card">
@@ -272,33 +216,14 @@ function renderPortal(){
       </div>
 
       <div class="body">
-
-        <div class="stats">
-          <div class="stat"><div class="stat-n" id="st-total">0</div><div class="stat-l">Checked</div></div>
-          <div class="stat"><div class="stat-n" id="st-clean">0</div><div class="stat-l">Clean</div></div>
-          <div class="stat"><div class="stat-n" id="st-bad">0</div><div class="stat-l">Flagged</div></div>
-        </div>
-
         <div class="status-display idle" id="statusDisplay">
           <div class="status-icon"><i class="ti ti-shield" id="statusIcon"></i></div>
           <div class="status-number" id="statusNumber">—</div>
           <div class="status-verdict" id="statusVerdict">Checking...</div>
           <div class="status-sub" id="statusSub"></div>
         </div>
-
       </div>
     </div>`;
-
-  // Session clock
-  const t0 = Date.now();
-  setInterval(() => {
-    const s = Math.floor((Date.now() - t0) / 1000);
-    document.getElementById('sessionTime').textContent =
-      `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
-  }, 1000);
-
-  renderHistory();
-  updateStats();
 
   if(phone) setTimeout(() => runCheck(phone), 700);
 }
@@ -320,7 +245,6 @@ async function runCheck(rawPhone){
     numEl.textContent   = rawPhone;
     verdict.textContent = 'INVALID';
     sub.textContent     = 'Number format is invalid.';
-    addHistory({number: rawPhone, status: 'invalid'});
     return;
   }
 
@@ -338,34 +262,26 @@ async function runCheck(rawPhone){
 
     const data = await response.json();
     
-    // Debugging backup: Logs exact data to the browser console (F12)
     console.log("Alliance API Payload Response:", data);
 
-    // Look for various ways BLA marks a number unsafe (DNC flags, Litigator flags, or custom text)
     const isDnc = data.dnc === 'Y' || data.dnc === 'Yes' || String(data.message).toLowerCase().includes('dnc');
     const isLitigator = data.litigator === 'Y' || data.litigator === 'Yes' || String(data.message).toLowerCase().includes('litigator');
     const explicitlyListed = data.result === 'blacklisted' || data.status === 'blacklisted' || data.code === 400;
 
     if (isDnc || isLitigator || explicitlyListed) {
-      // It's bad / flagged
       display.className   = 'status-display bad';
       icon.className      = 'ti ti-ban';
       verdict.textContent = 'Do Not Transfer';
       
-      // Determine explicit reason to display to the agent
       if (isDnc && isLitigator) sub.textContent = 'CRITICAL: Found in Litigator & DNC Registries!';
       else if (isLitigator) sub.textContent = 'FOUND: Abusive Litigator Database (TCPA Risk)';
       else if (isDnc) sub.textContent = 'FOUND: Do Not Call (DNC) Registry';
       else sub.textContent = data.message || 'Found in Alliance database restrictions.';
-      
-      addHistory({number: rawPhone, status: 'bad'});
     } else {
-      // Safe to call
       display.className   = 'status-display clean';
       icon.className      = 'ti ti-circle-check';
       verdict.textContent = 'CLEAN';
       sub.textContent     = 'No records found in blacklist or DNC databases.';
-      addHistory({number: rawPhone, status: 'clean'});
     }
 
     numEl.textContent = rawPhone;
@@ -375,47 +291,8 @@ async function runCheck(rawPhone){
     icon.className      = 'ti ti-wifi-off';
     numEl.textContent   = rawPhone;
     verdict.textContent = 'API ERROR';
-    sub.textContent     = 'Could not reach Alliance API. Check your key, server CORS policy, or connection.';
+    sub.textContent = 'Could not reach Alliance API. Check your key, server CORS policy, or connection.';
   }
-}
-
-// ── HISTORY ───────────────────────────────────────────────────────
-function addHistory(item){
-  history.unshift(item);
-  if(history.length > 10) history.pop();
-  sessionStorage.setItem('allianceHistory', JSON.stringify(history));
-  renderHistory();
-  updateStats();
-}
-
-function renderHistory(){
-  const section = document.getElementById('historySection');
-  const list    = document.getElementById('historyList');
-  if(!section) return;
-  if(!history.length){ section.style.display = 'none'; return; }
-  section.style.display = 'block';
-  list.innerHTML = history.map(h => `
-    <div class="hist-item ${h.status}">
-      <span class="hist-num">${h.number}</span>
-      <span class="hist-badge">${h.status === 'clean' ? 'CLEAN' : h.status === 'bad' ? 'BAD' : 'INVALID'}</span>
-    </div>`).join('');
-}
-
-function updateStats(){
-  const t = document.getElementById('st-total');
-  const c = document.getElementById('st-clean');
-  const b = document.getElementById('st-bad');
-  if(!t) return;
-  t.textContent = history.length;
-  c.textContent = history.filter(h => h.status === 'clean').length;
-  b.textContent = history.filter(h => h.status === 'bad').length;
-}
-
-function clearHistory(){
-  history = [];
-  sessionStorage.removeItem('allianceHistory');
-  renderHistory();
-  updateStats();
 }
 
 boot();
