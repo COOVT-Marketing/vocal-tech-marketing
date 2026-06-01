@@ -1,464 +1,472 @@
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght=300;400;500;600&family=DM+Mono:wght=400;500&display=swap');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  :root {
-    --color-background-primary: #111827;    /* Deep dark card background */
-    --color-background-secondary: #1f2937;  /* Slightly lighter dark for inputs/status */
-    --color-background-tertiary: #0b0f19;   /* Pure dark body canvas background */
-    --color-border-primary: #374151;        /* Mid-tone gray border */
-    --color-border-secondary: #4b5563;      /* Accent gray border */
-    --color-border-tertiary: #1f2937;       /* Dark base container separation */
-    --color-text-primary: #f9fafb;          /* Bright white-gray text */
-    --color-text-secondary: #9ca3af;        /* Subdued neutral gray text */
-    --color-text-tertiary: #6b7280;         /* Deep disabled gray text */
-    --color-teal-accent: #1a9e75;           /* Primary vibrant Teal accent */
-    --color-teal-glow: rgba(26, 158, 117, 0.15);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body, .vici-wrap {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--color-background-tertiary);
-    color: var(--color-text-primary);
-    min-height: 100vh;
-    padding: 2rem 1rem;
-  }
-
-  .no-call-screen {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    min-height: 70vh; text-align: center; gap: 16px;
-  }
-
-  .no-call-icon {
-    width: 72px; height: 72px; border-radius: 50%;
-    background: var(--color-background-secondary);
-    border: 0.5px solid var(--color-border-primary);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .no-call-icon i { font-size: 32px; color: var(--color-text-secondary); }
-  .no-call-screen h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
-
-  .vici-card {
-    background: var(--color-background-primary);
-    border: 0.5px solid var(--color-border-primary);
-    border-radius: 16px; max-width: 620px;
-    margin: 0 auto; overflow: hidden;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
-  }
-
-  .vici-header {
-    background: #090d16; padding: 1.5rem 2rem;
-    display: flex; align-items: center; gap: 14px;
-    border-bottom: 0.5px solid var(--color-border-primary);
-  }
-  .vici-logo {
-    width: 40px; height: 40px; background: var(--color-teal-accent);
-    border-radius: 10px; display: flex; align-items: center; justify-content: center;
-  }
-  .vici-logo i { font-size: 22px; color: #fff; }
-  .vici-header-text h1 { font-size: 16px; font-weight: 600; color: #fff; }
-  .vici-header-text p { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+  <title>Sale Form | Vocal-Echo</title>
+  <link rel="icon" type="image/x-icon" href="https://example.com/favicon.ico">
   
-  .live-badge {
-    margin-left: auto; display: flex; align-items: center; gap: 6px;
-    background: rgba(26,158,117,0.15); border: 0.5px solid rgba(26,158,117,0.4);
-    border-radius: 20px; padding: 4px 12px;
-    font-size: 12px; color: var(--color-teal-accent); font-weight: 500;
-  }
-  .live-dot {
-    width: 7px; height: 7px; border-radius: 50%; background: var(--color-teal-accent);
-    animation: pulse 1.4s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
-  .vici-body { padding: 1.75rem 2rem; }
-
-  .section-label {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
-    color: var(--color-teal-accent); text-transform: uppercase;
-    margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;
-    margin-top: 1.5rem;
-  }
-  .section-label:first-of-type { margin-top: 0; }
-  .section-label::after { content:''; flex:1; height:0.5px; background: var(--color-border-primary); }
-
-  .status-bar {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--color-background-secondary);
-    border: 0.5px solid var(--color-border-primary);
-    border-radius: 8px; padding: 10px 14px; margin-bottom: 1.5rem;
-  }
-  .status-bar i { font-size: 16px; color: var(--color-teal-accent); }
-  .status-bar span { font-size: 13px; color: var(--color-text-secondary); }
-  .call-id {
-    margin-left: auto; font-family: 'DM Mono', monospace; font-size: 12px;
-    color: var(--color-text-secondary); background: var(--color-background-tertiary);
-    border: 0.5px solid var(--color-border-primary); padding: 2px 8px; border-radius: 4px;
-  }
-
-  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-  .field-grid.full { grid-template-columns: 1fr; }
-  .field-group { display: flex; flex-direction: column; gap: 5px; }
-
-  label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); }
-
-  .input-wrap { position: relative; }
-  .input-wrap i {
-    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
-    font-size: 16px; color: var(--color-text-secondary); pointer-events: none;
-  }
-  .input-wrap input,
-  .input-wrap select {
-    width: 100%; padding: 9px 12px 9px 34px;
-    font-family: 'DM Sans', sans-serif; font-size: 14px;
-    background: var(--color-background-secondary);
-    border: 0.5px solid var(--color-border-primary);
-    border-radius: 8px; color: var(--color-text-primary);
-    transition: border-color 0.15s, box-shadow 0.15s; appearance: none;
-  }
-  /* Fix select indicator color styling in dark skin layouts */
-  .input-wrap select {
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
-    padding-right: 32px;
-  }
-  .input-wrap input:focus,
-  .input-wrap select:focus {
-    outline: none; border-color: var(--color-teal-accent);
-    box-shadow: 0 0 0 3px var(--color-teal-glow);
-  }
-  .input-wrap input.auto-filled,
-  .input-wrap select.auto-filled {
-    border-color: rgba(26, 158, 117, 0.6);
-    background: rgba(26, 158, 117, 0.06);
-  }
-  
-  .textarea-wrap { position: relative; }
-  .textarea-wrap i {
-    position: absolute; left: 11px; top: 12px;
-    font-size: 16px; color: var(--color-text-secondary); pointer-events: none;
-  }
-  textarea {
-    width: 100%; padding: 10px 12px 10px 34px;
-    font-family: 'DM Sans', sans-serif; font-size: 14px;
-    background: var(--color-background-secondary);
-    border: 0.5px solid var(--color-border-primary);
-    border-radius: 8px; color: var(--color-text-primary);
-    resize: vertical; min-height: 90px;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-  textarea:focus {
-    outline: none; border-color: var(--color-teal-accent);
-    box-shadow: 0 0 0 3px var(--color-teal-glow);
-  }
-
-  .btn-row { display: flex; gap: 10px; margin-top: 1.5rem; }
-  .btn-primary {
-    flex: 1; padding: 11px 20px; background: var(--color-teal-accent); color: #fff;
-    border: none; border-radius: 8px;
-    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
-    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: background 0.15s, transform 0.1s;
-  }
-  .btn-primary:hover { background: #147d5c; }
-  .btn-primary:active { transform: scale(0.98); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-  
-  .btn-secondary {
-    padding: 11px 16px; background: transparent; color: var(--color-text-secondary);
-    border: 0.5px solid var(--color-border-secondary); border-radius: 8px;
-    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-    cursor: pointer; display: flex; align-items: center; gap: 6px;
-    transition: background 0.15s, color 0.15s;
-  }
-  .btn-secondary:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
-
-  .success-toast {
-    display: none; align-items: center; gap: 10px;
-    background: rgba(26,158,117,0.12); border: 0.5px solid rgba(26,158,117,0.4);
-    border-radius: 8px; padding: 12px 16px; margin-top: 1rem;
-    font-size: 13px; color: #34d399;
-  }
-  .success-toast i { font-size: 18px; }
-
-  .error-toast {
-    display: none; align-items: center; gap: 10px;
-    background: rgba(239, 68, 68, 0.1); border: 0.5px solid rgba(239, 68, 68, 0.3);
-    border-radius: 8px; padding: 12px 16px; margin-top: 1rem;
-    font-size: 13px; color: #f87171;
-  }
-  .error-toast i { font-size: 18px; }
-
-  .vici-footer {
-    border-top: 0.5px solid var(--color-border-primary);
-    background: #090d16; padding: 12px 2rem; display: flex; align-items: center; gap: 8px;
-  }
-  .vici-footer span { font-size: 11px; color: var(--color-text-secondary); font-family: 'DM Mono', monospace; }
-  .url-pill {
-    margin-left: auto; font-size: 11px; color: var(--color-teal-accent);
-    font-family: 'DM Mono', monospace; background: rgba(26,158,117,0.12);
-    padding: 3px 10px; border-radius: 20px; border: 0.5px solid rgba(26,158,117,0.3);
-  }
-</style>
-
-<div class="vici-wrap" id="app"></div>
-
-<script>
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZo2WecH8AbJ2rx6-YM7nVzO6D7l7Qn8tMmYQdVMopnIyuCy3SkfZibVS5ibHFtces-w/exec';
-
-// Fallback validation framework parameters
-const REQUIRED_PARAMS = ['phone', 'first', 'last'];
-
-// Tracking automated mapping dictionary configuration
-const COMPANY_MAP = {
-  'CAMPAIGN_A': 'SecureDrive Insurance',
-  'CAMPAIGN_B': 'Vocal Tech Marketing',
-  'DEFAULT': '' 
-};
-
-function getParam(name) {
-  const aliases = {
-    agentName: ['fullname', 'agentName', 'agent_name', 'agent', 'user'],
-    phone:     ['phone', 'phone_number', 'phonenumber', 'phone_code'],
-    first:     ['first', 'first_name', 'fname'],
-    last:      ['last', 'last_name', 'lname'],
-    age:       ['age'],
-    state:     ['state'],
-    zip:       ['zip', 'postal', 'postal_code', 'zipcode'],
-    dob:       ['dob', 'birthdate', 'd_o_b'],
-    company:   ['company', 'vendor'],
-    campaign:  ['campaign', 'campaign_id'],
-    did:       ['did', 'did_id', 'inbound_number'],
-    comments:  ['comments', 'notes', 'comment']
-  };
-  const params = new URLSearchParams(window.location.search);
-  const keys = aliases[name] || [name];
-  for (const k of keys) {
-    const v = params.get(k);
-    if (v && v.trim()) return v.trim();
-  }
-  return '';
-}
-
-function isValidCallSession() {
-  return REQUIRED_PARAMS.some(p => getParam(p) !== '');
-}
-
-function renderNoCall() {
-  document.getElementById('app').innerHTML = `
-    <div class="no-call-screen">
-      <div class="no-call-icon"><i class="ti ti-phone-off" aria-hidden="true"></i></div>
-      <h2>No webform found</h2>
-    </div>`;
-}
-
-function autoFill(id, value) {
-  const el = document.getElementById(id);
-  if (!el || !value) return;
-  el.value = value;
-  if (el.type !== 'hidden') {
-    el.classList.add('auto-filled');
-  }
-}
-
-function setStateByValue(value) {
-  if (!value) return;
-  const sel = document.getElementById('state');
-  if (!sel) return;
-  for (let opt of sel.options) {
-    if (opt.value.toLowerCase() === value.toLowerCase() || opt.text.toLowerCase() === value.toLowerCase()) {
-      sel.value = opt.value;
-      sel.classList.add('auto-filled');
-      break;
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght=300;400;500;600&family=DM+Mono:wght=400;500&display=swap');
+    
+    :root {
+      --color-background-primary: #111827;    /* Deep dark card background */
+      --color-background-secondary: #1f2937;  /* Slightly lighter dark for inputs/status */
+      --color-background-tertiary: #0b0f19;   /* Pure dark body canvas background */
+      --color-border-primary: #374151;        /* Mid-tone gray border */
+      --color-border-secondary: #4b5563;      /* Accent gray border */
+      --color-border-tertiary: #1f2937;       /* Dark base container separation */
+      --color-text-primary: #f9fafb;          /* Bright white-gray text */
+      --color-text-secondary: #9ca3af;        /* Subdued neutral gray text */
+      --color-text-tertiary: #6b7280;         /* Deep disabled gray text */
+      --color-teal-accent: #1a9e75;           /* Primary vibrant Teal accent */
+      --color-teal-glow: rgba(26, 158, 117, 0.15);
     }
-  }
-}
 
-function clearForm() {
-  ['fullname','firstName','lastName','phone','age','state','zip','dob','company','campaign','did','comments'].forEach(id => {
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body, .vici-wrap {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--color-background-tertiary);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .no-call-screen {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 70vh; text-align: center; gap: 16px;
+    }
+
+    .no-call-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--color-background-secondary);
+      border: 0.5px solid var(--color-border-primary);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .no-call-icon i { font-size: 32px; color: var(--color-text-secondary); }
+    .no-call-screen h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
+
+    .vici-card {
+      background: var(--color-background-primary);
+      border: 0.5px solid var(--color-border-primary);
+      border-radius: 16px; max-width: 620px;
+      margin: 0 auto; overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+    }
+
+    .vici-header {
+      background: #090d16; padding: 1.5rem 2rem;
+      display: flex; align-items: center; gap: 14px;
+      border-bottom: 0.5px solid var(--color-border-primary);
+    }
+    .vici-logo {
+      width: 40px; height: 40px; background: var(--color-teal-accent);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    }
+    .vici-logo i { font-size: 22px; color: #fff; }
+    .vici-header-text h1 { font-size: 16px; font-weight: 600; color: #fff; }
+    .vici-header-text p { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+    
+    .live-badge {
+      margin-left: auto; display: flex; align-items: center; gap: 6px;
+      background: rgba(26,158,117,0.15); border: 0.5px solid rgba(26,158,117,0.4);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; color: var(--color-teal-accent); font-weight: 500;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--color-teal-accent);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .vici-body { padding: 1.75rem 2rem; }
+
+    .section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      color: var(--color-teal-accent); text-transform: uppercase;
+      margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;
+      margin-top: 1.5rem;
+    }
+    .section-label:first-of-type { margin-top: 0; }
+    .section-label::after { content:''; flex:1; height:0.5px; background: var(--color-border-primary); }
+
+    .status-bar {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--color-background-secondary);
+      border: 0.5px solid var(--color-border-primary);
+      border-radius: 8px; padding: 10px 14px; margin-bottom: 1.5rem;
+    }
+    .status-bar i { font-size: 16px; color: var(--color-teal-accent); }
+    .status-bar span { font-size: 13px; color: var(--color-text-secondary); }
+    .call-id {
+      margin-left: auto; font-family: 'DM Mono', monospace; font-size: 12px;
+      color: var(--color-text-secondary); background: var(--color-background-tertiary);
+      border: 0.5px solid var(--color-border-primary); padding: 2px 8px; border-radius: 4px;
+    }
+
+    .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .field-grid.full { grid-template-columns: 1fr; }
+    .field-group { display: flex; flex-direction: column; gap: 5px; }
+
+    label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); }
+
+    .input-wrap { position: relative; }
+    .input-wrap i {
+      position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+      font-size: 16px; color: var(--color-text-secondary); pointer-events: none;
+    }
+    .input-wrap input,
+    .input-wrap select {
+      width: 100%; padding: 9px 12px 9px 34px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      background: var(--color-background-secondary);
+      border: 0.5px solid var(--color-border-primary);
+      border-radius: 8px; color: var(--color-text-primary);
+      transition: border-color 0.15s, box-shadow 0.15s; appearance: none;
+    }
+    .input-wrap select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
+      padding-right: 32px;
+    }
+    .input-wrap input:focus,
+    .input-wrap select:focus {
+      outline: none; border-color: var(--color-teal-accent);
+      box-shadow: 0 0 0 3px var(--color-teal-glow);
+    }
+    .input-wrap input.auto-filled,
+    .input-wrap select.auto-filled {
+      border-color: rgba(26, 158, 117, 0.6);
+      background: rgba(26, 158, 117, 0.06);
+    }
+    
+    .textarea-wrap { position: relative; }
+    .textarea-wrap i {
+      position: absolute; left: 11px; top: 12px;
+      font-size: 16px; color: var(--color-text-secondary); pointer-events: none;
+    }
+    textarea {
+      width: 100%; padding: 10px 12px 10px 34px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      background: var(--color-background-secondary);
+      border: 0.5px solid var(--color-border-primary);
+      border-radius: 8px; color: var(--color-text-primary);
+      resize: vertical; min-height: 90px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    textarea:focus {
+      outline: none; border-color: var(--color-teal-accent);
+      box-shadow: 0 0 0 3px var(--color-teal-glow);
+    }
+
+    .btn-row { display: flex; gap: 10px; margin-top: 1.5rem; }
+    .btn-primary {
+      flex: 1; padding: 11px 20px; background: var(--color-teal-accent); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-primary:hover { background: #147d5c; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .btn-secondary {
+      padding: 11px 16px; background: transparent; color: var(--color-text-secondary);
+      border: 0.5px solid var(--color-border-secondary); border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-secondary:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+
+    .success-toast {
+      display: none; align-items: center; gap: 10px;
+      background: rgba(26,158,117,0.12); border: 0.5px solid rgba(26,158,117,0.4);
+      border-radius: 8px; padding: 12px 16px; margin-top: 1rem;
+      font-size: 13px; color: #34d399;
+    }
+    .success-toast i { font-size: 18px; }
+
+    .error-toast {
+      display: none; align-items: center; gap: 10px;
+      background: rgba(239, 68, 68, 0.1); border: 0.5px solid rgba(239, 68, 68, 0.3);
+      border-radius: 8px; padding: 12px 16px; margin-top: 1rem;
+      font-size: 13px; color: #f87171;
+    }
+    .error-toast i { font-size: 18px; }
+
+    .vici-footer {
+      border-top: 0.5px solid var(--color-border-primary);
+      background: #090d16; padding: 12px 2rem; display: flex; align-items: center; gap: 8px;
+    }
+    .vici-footer span { font-size: 11px; color: var(--color-text-secondary); font-family: 'DM Mono', monospace; }
+    .url-pill {
+      margin-left: auto; font-size: 11px; color: var(--color-teal-accent);
+      font-family: 'DM Mono', monospace; background: rgba(26,158,117,0.12);
+      padding: 3px 10px; border-radius: 20px; border: 0.5px solid rgba(26,158,117,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="vici-wrap" id="app"></div>
+
+  <script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZo2WecH8AbJ2rx6-YM7nVzO6D7l7Qn8tMmYQdVMopnIyuCy3SkfZibVS5ibHFtces-w/exec';
+  const REQUIRED_PARAMS = ['phone', 'first', 'last'];
+
+  const COMPANY_MAP = {
+    'CAMPAIGN_A': 'SecureDrive Insurance',
+    'CAMPAIGN_B': 'Vocal Tech Marketing',
+    'DEFAULT': '' 
+  };
+
+  function getParam(name) {
+    const aliases = {
+      agentName: ['fullname', 'agentName', 'agent_name', 'agent', 'user'],
+      phone:     ['phone', 'phone_number', 'phonenumber', 'phone_code'],
+      first:     ['first', 'first_name', 'fname'],
+      last:      ['last', 'last_name', 'lname'],
+      age:       ['age'],
+      state:     ['state'],
+      zip:       ['zip', 'postal', 'postal_code', 'zipcode'],
+      dob:       ['dob', 'birthdate', 'd_o_b'],
+      company:   ['company', 'vendor'],
+      campaign:  ['campaign', 'campaign_id'],
+      did:       ['did', 'did_id', 'inbound_number'],
+      comments:  ['comments', 'notes', 'comment']
+    };
+    const params = new URLSearchParams(window.location.search);
+    const keys = aliases[name] || [name];
+    for (const k of keys) {
+      const v = params.get(k);
+      if (v && v.trim()) return v.trim();
+    }
+    return '';
+  }
+
+  function isValidCallSession() {
+    return REQUIRED_PARAMS.some(p => getParam(p) !== '');
+  }
+
+  function renderNoCall() {
+    document.getElementById('app').innerHTML = `
+      <div class="no-call-screen">
+        <div class="no-call-icon"><i class="ti ti-phone-off" aria-hidden="true"></i></div>
+        <h2>No webform found</h2>
+      </div>`;
+  }
+
+  function autoFill(id, value) {
     const el = document.getElementById(id);
-    if (el) { 
-      el.value = ''; 
-      el.classList.remove('auto-filled'); 
+    if (!el || !value) return;
+    el.value = value;
+    if (el.type !== 'hidden') {
+      el.classList.add('auto-filled');
     }
-  });
-  document.getElementById('successToast').style.display = 'none';
-  document.getElementById('errorToast').style.display = 'none';
-}
+  }
 
-function submitForm() {
-  const btn = document.getElementById('submitBtn');
-  const successToast = document.getElementById('successToast');
-  const errorToast = document.getElementById('errorToast');
+  function setStateByValue(value) {
+    if (!value) return;
+    const sel = document.getElementById('state');
+    if (!sel) return;
+    for (let opt of sel.options) {
+      if (opt.value.toLowerCase() === value.toLowerCase() || opt.text.toLowerCase() === value.toLowerCase()) {
+        sel.value = opt.value;
+        sel.classList.add('auto-filled');
+        break;
+      }
+    }
+  }
 
-  successToast.style.display = 'none';
-  errorToast.style.display = 'none';
+  function clearForm() {
+    ['agentName','firstName','lastName','phone','age','state','zip','dob','company','campaign','did','comments'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { 
+        el.value = ''; 
+        el.classList.remove('auto-filled'); 
+      }
+    });
+    document.getElementById('successToast').style.display = 'none';
+    document.getElementById('errorToast').style.display = 'none';
+  }
 
-  btn.innerHTML = '<i class="ti ti-loader" aria-hidden="true"></i> Saving...';
-  btn.disabled = true;
+  function submitForm() {
+    const btn = document.getElementById('submitBtn');
+    const successToast = document.getElementById('successToast');
+    const errorToast = document.getElementById('errorToast');
 
-  const payload = {
-    agentName: document.getElementById('fullname').value,
-    phone:     document.getElementById('phone').value,
-    firstName: document.getElementById('firstName').value,
-    lastName:  document.getElementById('lastName').value,
-    age:       document.getElementById('age').value,
-    state:     document.getElementById('state').value,
-    zip:       document.getElementById('zip').value,
-    dob:       document.getElementById('dob').value,
-    company:   document.getElementById('company').value,
-    campaign:  document.getElementById('campaign').value,
-    did:       document.getElementById('did').value,
-    comments:  document.getElementById('comments').value
-  };
+    successToast.style.display = 'none';
+    errorToast.style.display = 'none';
 
-  fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-  .then(() => {
-    btn.innerHTML = '<i class="ti ti-device-floppy" aria-hidden="true"></i> Submit';
-    btn.disabled = false;
-    successToast.style.display = 'flex';
-    setTimeout(() => successToast.style.display = 'none', 5000);
-  })
-  .catch(() => {
-    btn.innerHTML = '<i class="ti ti-device-floppy" aria-hidden="true"></i> Submit';
-    btn.disabled = false;
-    errorToast.style.display = 'flex';
-  });
-}
+    btn.innerHTML = '<i class="ti ti-loader" aria-hidden="true"></i> Saving...';
+    btn.disabled = true;
 
-function renderForm() {
-  // Abbreviations array mapping matrix updates
-  const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"];
-  const stateOptions = states.map(s => `<option>${s}</option>`).join('');
+    const payload = {
+      agentName: document.getElementById('agentName').value,
+      phone:     document.getElementById('phone').value,
+      firstName: document.getElementById('firstName').value,
+      lastName:  document.getElementById('lastName').value,
+      age:       document.getElementById('age').value,
+      state:     document.getElementById('state').value,
+      zip:       document.getElementById('zip').value,
+      dob:       document.getElementById('dob').value,
+      company:   document.getElementById('company').value,
+      campaign:  document.getElementById('campaign').value,
+      did:       document.getElementById('did').value,
+      comments:  document.getElementById('comments').value
+    };
 
-  // Auto-detect backend system corporate parameters
-  const campaignParam = getParam('campaign');
-  const urlCompanyParam = getParam('company');
-  const detectedCompany = urlCompanyParam || COMPANY_MAP[campaignParam] || COMPANY_MAP['DEFAULT'];
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      btn.innerHTML = '<i class="ti ti-device-floppy" aria-hidden="true"></i> Submit';
+      btn.disabled = false;
+      successToast.style.display = 'flex';
+      setTimeout(() => successToast.style.display = 'none', 5000);
+    })
+    .catch(() => {
+      btn.innerHTML = '<i class="ti ti-device-floppy" aria-hidden="true"></i> Submit';
+      btn.disabled = false;
+      errorToast.style.display = 'flex';
+    });
+  }
 
-  document.getElementById('app').innerHTML = `
-    <div class="vici-card">
-      <div class="vici-header">
-        <div class="vici-logo"><i class="ti ti-headset" aria-hidden="true"></i></div>
-        <div class="vici-header-text">
-          <h1>Sale Form</h1>
-          <p>Vocal-Echo</p>
+  function renderForm() {
+    const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"];
+    const stateOptions = states.map(s => `<option>${s}</option>`).join('');
+
+    const campaignParam = getParam('campaign');
+    const urlCompanyParam = getParam('company');
+    const detectedCompany = urlCompanyParam || COMPANY_MAP[campaignParam] || COMPANY_MAP['DEFAULT'];
+
+    document.getElementById('app').innerHTML = `
+      <div class="vici-card">
+        <div class="vici-header">
+          <div class="vici-logo"><i class="ti ti-headset" aria-hidden="true"></i></div>
+          <div class="vici-header-text">
+            <h1>Sale Form</h1>
+            <p>Vocal-Echo</p>
+          </div>
+          <div class="live-badge"><div class="live-dot"></div>Live call</div>
         </div>
-        <div class="live-badge"><div class="live-dot"></div>Live call</div>
-      </div>
-      <div class="vici-body">
+        <div class="vici-body">
 
-        <input type="hidden" id="campaign" />
-        <input type="hidden" id="company" value="${detectedCompany}" />
-        <input type="hidden" id="zip" />
-        <input type="hidden" id="dob" />
+          <input type="hidden" id="campaign" />
+          <input type="hidden" id="company" value="${detectedCompany}" />
+          <input type="hidden" id="zip" />
+          <input type="hidden" id="dob" />
 
-        <div class="section-label">Agent Information</div>
-        <div class="field-grid full">
-          <div class="field-group">
-            <label for="agentName">Agent Name</label>
-            <div class="input-wrap"><i class="ti ti-id" aria-hidden="true"></i>
-              <input type="text" id="agentName" placeholder="Agent Name/ID" />
+          <div class="section-label">Agent Information</div>
+          <div class="field-grid full">
+            <div class="field-group">
+              <label for="agentName">Agent Name</label>
+              <div class="input-wrap"><i class="ti ti-id" aria-hidden="true"></i>
+                <input type="text" id="agentName" placeholder="Agent Name/ID" />
+              </div>
             </div>
           </div>
-        </div>
-        <div class="field-grid full">
-          <div class="field-group">
-            <label for="did">DID</label>
-            <div class="input-wrap"><i class="ti ti-hash" aria-hidden="true"></i>
-              <input type="text" id="did" placeholder="e.g, D1" />
+          <div class="field-grid full">
+            <div class="field-group">
+              <label for="did">DID</label>
+              <div class="input-wrap"><i class="ti ti-hash" aria-hidden="true"></i>
+                <input type="text" id="did" placeholder="e.g, D1" />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="section-label">Customer information</div>
-        <div class="field-grid">
-          <div class="field-group">
-            <label for="firstName">First name</label>
-            <div class="input-wrap"><i class="ti ti-user" aria-hidden="true"></i>
-              <input type="text" id="firstName" placeholder="First name" />
+          <div class="section-label">Customer information</div>
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="firstName">First name</label>
+              <div class="input-wrap"><i class="ti ti-user" aria-hidden="true"></i>
+                <input type="text" id="firstName" placeholder="First name" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="lastName">Last name</label>
+              <div class="input-wrap"><i class="ti ti-user" aria-hidden="true"></i>
+                <input type="text" id="lastName" placeholder="Last name" />
+              </div>
             </div>
           </div>
-          <div class="field-group">
-            <label for="lastName">Last name</label>
-            <div class="input-wrap"><i class="ti ti-user" aria-hidden="true"></i>
-              <input type="text" id="lastName" placeholder="Last name" />
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="phone">Phone number</label>
+              <div class="input-wrap"><i class="ti ti-phone" aria-hidden="true"></i>
+                <input type="tel" id="phone" placeholder="10-digit number" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="state">State</label>
+              <div class="input-wrap"><i class="ti ti-map-pin" aria-hidden="true"></i>
+                <select id="state"><option value="">Select state</option>${stateOptions}</select>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="field-grid">
-          <div class="field-group">
-            <label for="phone">Phone number</label>
-            <div class="input-wrap"><i class="ti ti-phone" aria-hidden="true"></i>
-              <input type="tel" id="phone" placeholder="10-digit number" />
+          <div class="field-grid full">
+            <div class="field-group">
+              <label for="age">Age</label>
+              <div class="input-wrap"><i class="ti ti-calendar-event" aria-hidden="true"></i>
+                <input type="number" id="age" placeholder="Age" min="0" max="120" />
+              </div>
             </div>
           </div>
-          <div class="field-group">
-            <label for="state">State</label>
-            <div class="input-wrap"><i class="ti ti-map-pin" aria-hidden="true"></i>
-              <select id="state"><option value="">Select state</option>${stateOptions}</select>
-            </div>
-          </div>
-        </div>
-        <div class="field-grid full">
-          <div class="field-group">
-            <label for="age">Age</label>
-            <div class="input-wrap"><i class="ti ti-calendar-event" aria-hidden="true"></i>
-              <input type="number" id="age" placeholder="Age" min="0" max="120" />
-            </div>
-          </div>
-        </div>
 
-        <div class="section-label">Agent notes</div>
-        <div class="field-group" style="margin-bottom:0;">
-          <label for="comments">Comments</label>
-          <div class="textarea-wrap"><i class="ti ti-notes" aria-hidden="true"></i>
-            <textarea id="comments" placeholder="Comments"></textarea>
+          <div class="section-label">Agent notes</div>
+          <div class="field-group" style="margin-bottom:0;">
+            <label for="comments">Comments</label>
+            <div class="textarea-wrap"><i class="ti ti-notes" aria-hidden="true"></i>
+              <textarea id="comments" placeholder="Comments"></textarea>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-secondary" onclick="clearForm()">
+              <i class="ti ti-refresh" aria-hidden="true"></i> Clear
+            </button>
+            <button class="btn-primary" id="submitBtn" onclick="submitForm()">
+              <i class="ti ti-device-floppy" aria-hidden="true"></i> Submit
+            </button>
+          </div>
+          <div class="success-toast" id="successToast">
+            <i class="ti ti-circle-check" aria-hidden="true"></i>
+            Form submitted successfully!
+          </div>
+          <div class="error-toast" id="errorToast">
+            <i class="ti ti-alert-circle" aria-hidden="true"></i>
+            Submission failed. Check your connection and try again.
           </div>
         </div>
+      </div>`;
 
-        <div class="btn-row">
-          <button class="btn-secondary" onclick="clearForm()">
-            <i class="ti ti-refresh" aria-hidden="true"></i> Clear
-          </button>
-          <button class="btn-primary" id="submitBtn" onclick="submitForm()">
-            <i class="ti ti-device-floppy" aria-hidden="true"></i> Submit
-          </button>
-        </div>
-        <div class="success-toast" id="successToast">
-          <i class="ti ti-circle-check" aria-hidden="true"></i>
-          Form submitted successfully!
-        </div>
-        <div class="error-toast" id="errorToast">
-          <i class="ti ti-alert-circle" aria-hidden="true"></i>
-          Submission failed. Check your connection and try again.
-        </div>
-      </div>
-    </div>`;
+    autoFill('agentName', getParam('agentName'));
+    autoFill('phone',     getParam('phone'));
+    autoFill('firstName', getParam('first'));
+    autoFill('lastName',  getParam('last'));
+    autoFill('age',       getParam('age'));
+    autoFill('zip',       getParam('zip'));
+    autoFill('dob',       getParam('dob'));
+    autoFill('campaign',  getParam('campaign'));
+    autoFill('did',       getParam('did'));
+    autoFill('comments',  getParam('comments'));
+    setStateByValue(getParam('state'));
+  }
 
-  // Process data sync routines
-  autoFill('agentName', getParam('agentName'));
-  autoFill('phone',     getParam('phone'));
-  autoFill('firstName', getParam('first'));
-  autoFill('lastName',  getParam('last'));
-  autoFill('age',       getParam('age'));
-  autoFill('zip',       getParam('zip'));
-  autoFill('dob',       getParam('dob'));
-  autoFill('campaign',  getParam('campaign'));
-  autoFill('did',       getParam('did'));
-  autoFill('comments',  getParam('comments'));
-  setStateByValue(getParam('state'));
-}
-
-if (isValidCallSession()) {
-  renderForm();
-} else {
-  renderNoCall();
-}
-</script>
+  if (isValidCallSession()) {
+    renderForm();
+  } else {
+    renderNoCall();
+  }
+  </script>
+</body>
+</html>
