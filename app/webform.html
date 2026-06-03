@@ -300,6 +300,61 @@
       padding: 3px 10px; border-radius: 20px; border: 0.5px solid rgba(26,158,117,.3);
     }
 
+    /* ── SUCCESS MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      align-items: center; justify-content: center;
+      padding: 1rem;
+      animation: fadeInOverlay .25s ease;
+    }
+    .modal-overlay.show { display: flex; }
+    @keyframes fadeInOverlay { from{opacity:0} to{opacity:1} }
+
+    .modal-box {
+      background: var(--card);
+      border: 0.5px solid rgba(34,197,94,0.4);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      max-width: 380px; width: 100%;
+      text-align: center;
+      box-shadow: 0 0 60px rgba(34,197,94,0.15), 0 25px 40px rgba(0,0,0,0.6);
+      animation: popIn .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(.85); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .modal-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(34,197,94,0.15);
+      border: 0.5px solid rgba(34,197,94,0.4);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem;
+    }
+    .modal-icon i { font-size: 38px; color: var(--green); }
+
+    .modal-title {
+      font-size: 20px; font-weight: 700;
+      color: var(--txt); margin-bottom: .5rem;
+    }
+    .modal-sub {
+      font-size: 13px; color: var(--txt2); line-height: 1.6;
+      margin-bottom: 1.75rem;
+    }
+    .modal-close {
+      width: 100%; padding: 11px;
+      background: var(--teal); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background .15s;
+    }
+    .modal-close:hover { background: #147d5c; }
+
     @media (max-width: 480px) {
       .dnc-body, .sale-form-inner { padding: 1.25rem; }
       .vtm-header { padding: 1.25rem; }
@@ -426,7 +481,14 @@ function renderPage() {
           <input type="hidden" id="company"  value="${detectedCompany}" />
           <input type="hidden" id="zip" />
           <input type="hidden" id="dob" />
-
+          <div class="vici-header">
+          <div class="vici-logo"><i class="ti ti-headset" aria-hidden="true"></i></div>
+          <div class="vici-header-text">
+            <h1>Sale Form</h1>
+            <p>VTM</p>
+          </div>
+          <div class="live-badge"><div class="live-dot"></div>Live call</div>
+        </div>
           <!-- Agent Info -->
           <div class="section-label">Agent Information</div>
           <div class="field-grid full">
