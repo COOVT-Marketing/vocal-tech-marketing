@@ -689,14 +689,21 @@ function submitSaleForm() {
     body:    JSON.stringify(payload),
   })
   .then(() => {
-    // 1. Reset URL to clean base path
+    // 1. Reset URL parameters instantly
     window.history.replaceState({}, '', window.location.pathname);
     
-    // 2. Make the page disappear by rendering the No Call screen immediately
-    renderNoCall();
-    
-    // 3. Optional: Show an alert so the agent knows it went through before it vanishes
-    alert('Sale submitted successfully!');
+    // 2. Inject and trigger the themed success modal layout
+    const modalHtml = `
+      <div class="modal-overlay show" id="successModal">
+        <div class="modal-box">
+          <div class="modal-icon"><i class="ti ti-circle-check"></i></div>
+          <h2 class="modal-title">Sale Submitted</h2>
+          <p class="modal-sub">The transaction record has been saved successfully to the portal.</p>
+          <button class="modal-close" onclick="closeSaleAndExit()">Exit Portal</button>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
   })
   .catch(() => {
     btn.innerHTML = '<i class="ti ti-device-floppy"></i> Submit Sale';
@@ -704,7 +711,15 @@ function submitSaleForm() {
     errorToast.style.display = 'flex';
   });
 }
- 
+function closeSaleAndExit() {
+  // Remove the modal layer from the body
+  const modal = document.getElementById('successModal');
+  if (modal) modal.remove();
+  
+  // Wipe out the webform/checker and invoke the fallback view
+  renderNoCall();
+}
+  
 /* ────────────────────────────────────────────────────
    DNC CHECK
 ──────────────────────────────────────────────────── */
