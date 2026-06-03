@@ -664,7 +664,7 @@ function submitSaleForm() {
  
   successToast.style.display = 'none';
   errorToast.style.display   = 'none';
-  btn.innerHTML = '<i class="ti ti-loader"></i> Saving…';
+  btn.innerHTML = '<i class="ti ti-loader"></i> Submitting…';
   btn.disabled  = true;
  
   const payload = {
@@ -689,12 +689,14 @@ function submitSaleForm() {
     body:    JSON.stringify(payload),
   })
   .then(() => {
-    btn.innerHTML = '<i class="ti ti-device-floppy"></i> Submit Sale';
-    btn.disabled  = false;
-    successToast.style.display = 'flex';
-    setTimeout(() => successToast.style.display = 'none', 5000);
-    // ── Reset URL to clean base path after successful submission ──
+    // 1. Reset URL to clean base path
     window.history.replaceState({}, '', window.location.pathname);
+    
+    // 2. Make the page disappear by rendering the No Call screen immediately
+    renderNoCall();
+    
+    // 3. Optional: Show an alert so the agent knows it went through before it vanishes
+    alert('Sale submitted successfully!');
   })
   .catch(() => {
     btn.innerHTML = '<i class="ti ti-device-floppy"></i> Submit Sale';
