@@ -476,15 +476,15 @@ function renderPage() {
       <div class="sale-form-panel" id="saleFormPanel">
         <div class="sale-form-inner">
 
-
           <div class="vtm-header">
-          <div class="vtm-logo teal"><i class="ti ti-headset" aria-hidden="true"></i></div>
-          <div class="vtm-header-txt">
-            <h1>Sale Form</h1>
-            <p>VTM</p>
+            <div class="vtm-logo teal"><i class="ti ti-headset" aria-hidden="true"></i></div>
+            <div class="vtm-header-txt">
+              <h1>Sale Form</h1>
+              <p>VTM</p>
+            </div>
           </div>
-        </div>
-        <!-- Hidden fields -->
+
+          <!-- Hidden fields -->
           <input type="hidden" id="campaign" />
           <input type="hidden" id="company"  value="${detectedCompany}" />
           <input type="hidden" id="zip" />
@@ -617,7 +617,6 @@ function toggleSaleForm() {
     panel.classList.add('open');
     label.textContent = 'Close Sale Form';
     btn.style.background = '#0f6b4e';
-    // Smooth scroll to sale form
     setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   } else {
     panel.classList.remove('open');
@@ -694,6 +693,8 @@ function submitSaleForm() {
     btn.disabled  = false;
     successToast.style.display = 'flex';
     setTimeout(() => successToast.style.display = 'none', 5000);
+    // ── Reset URL to clean base path after successful submission ──
+    window.history.replaceState({}, '', window.location.pathname);
   })
   .catch(() => {
     btn.innerHTML = '<i class="ti ti-device-floppy"></i> Submit Sale';
