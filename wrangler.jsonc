@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "geo-inject",
+  "name": "vocal-tech-marketing",
   "compatibility_date": "2026-05-12",
   "observability": {
     "enabled": true
