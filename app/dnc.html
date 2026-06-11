@@ -80,15 +80,6 @@ body{
 .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .body{padding:2rem}
-.session-bar{
-  display:flex;align-items:center;gap:8px;
-  background:var(--card2);
-  border:0.5px solid var(--border);
-  border-radius:8px;padding:10px 14px;
-  margin-bottom:1.5rem;
-}
-.session-bar i{font-size:16px;color:var(--teal)}
-.session-bar span{font-size:13px;color:var(--txt2)}
 
 /* ── Main status display ─────────────────────────────────── */
 .status-display{
@@ -102,6 +93,7 @@ body{
 .status-display.loading{ border-color:var(--teal-b); }
 .status-display.clean  { border-color:var(--green-b); animation:greenPulse 2s ease forwards; }
 .status-display.bad    { border-color:var(--red-b);   animation:redPulse 2s ease forwards; }
+.status-display.warn   { border-color:var(--orange-b); }
 .status-display.invalid{ border-color:var(--yellow-b); }
 
 @keyframes greenPulse{
@@ -115,11 +107,12 @@ body{
   100%{box-shadow:0 0 20px 4px rgba(239,68,68,0.1)}
 }
 
-/* ── Hero section (icon + verdict) ─────────────────────── */
+/* ── Hero section ─────────────────────────────────────────── */
 .status-hero{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:2.2rem 1.5rem 1.8rem;
+  padding:2.2rem 1.5rem 1.6rem;
   transition:background 0.5s ease;
+  gap:0;
 }
 .idle    .status-hero { background:var(--card2); }
 .loading .status-hero { background:var(--card2); }
@@ -173,6 +166,31 @@ body{
 .warn    .status-verdict { color:var(--red) }
 .invalid .status-verdict { color:var(--yellow);font-size:18px }
 
+/* ── API Message pill (shown below verdict) ──────────────── */
+.api-message-pill{
+  display:none;
+  margin-top:10px;
+  align-items:center;gap:6px;
+  padding:5px 14px;
+  border-radius:20px;
+  font-size:12px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;
+  border:0.5px solid;
+  animation:fadeUp 0.35s ease forwards;
+}
+.api-message-pill.visible { display:inline-flex; }
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Color variants driven by JS */
+.api-message-pill.pill-red    { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.4); color:var(--red); }
+.api-message-pill.pill-green  { background:rgba(34,197,94,0.1);  border-color:rgba(34,197,94,0.4); color:var(--green); }
+.api-message-pill.pill-yellow { background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.4); color:var(--yellow); }
+.api-message-pill.pill-teal   { background:var(--teal-glow);     border-color:var(--teal-b);       color:var(--teal); }
+
 /* ── Flags grid ─────────────────────────────────────────── */
 .flags-section{
   padding:0 1.2rem 1.4rem;
@@ -189,7 +207,7 @@ body{
 }
 
 .flag-row{
-  display:flex;align-items:center;gap:10px;
+  display:flex;align-items:flex-start;gap:10px;
   padding:10px 14px;
   border-radius:8px;
   border:0.5px solid;
@@ -200,9 +218,26 @@ body{
   from{opacity:0;transform:translateY(6px)}
   to{opacity:1;transform:translateY(0)}
 }
-.flag-row i { font-size:17px; flex-shrink:0; }
+.flag-row i { font-size:17px; flex-shrink:0; margin-top:1px; }
 .flag-row .flag-name { font-size:13px;font-weight:600;flex:1 }
-.flag-row .flag-desc { font-size:11px;color:var(--txt2);line-height:1.35 }
+.flag-row .flag-desc { font-size:11px;color:var(--txt2);line-height:1.35;margin-top:2px }
+
+/* ── API Code badge inside flag row ─────────────────────── */
+.flag-code-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin-top:5px;
+  padding:2px 8px;
+  border-radius:4px;
+  font-family:'DM Mono',monospace;
+  font-size:10px;font-weight:500;
+  letter-spacing:.05em;
+  background:rgba(255,255,255,0.07);
+  border:0.5px solid rgba(255,255,255,0.12);
+  color:var(--txt2);
+}
+.flag-code-badge i { font-size:11px; }
 
 /* Severity variants */
 .flag-critical{
@@ -235,16 +270,29 @@ body{
 }
 .flag-clean i,.flag-clean .flag-name { color:var(--green) }
 
+.flag-api-code{
+  background:rgba(168,85,247,0.08);
+  border-color:rgba(168,85,247,0.3);
+}
+.flag-api-code i,.flag-api-code .flag-name { color:var(--purple) }
+
+/* ── API Status row (shown as first info flag) ───────────── */
+.flag-status{
+  background:rgba(26,158,117,0.06);
+  border-color:rgba(26,158,117,0.25);
+}
+.flag-status i,.flag-status .flag-name { color:var(--teal) }
+
 /* ── Raw data accordion ──────────────────────────────────── */
 .raw-toggle{
-  display:flex;align-items:center;gap:6px;
+  display:none;
+  align-items:center;gap:6px;
   background:transparent;
   border:none;border-top:0.5px solid var(--border);
   width:100%;padding:9px 16px;
   color:var(--txt3);font-size:11px;font-family:'DM Sans',sans-serif;
   cursor:pointer;
   transition:color 0.2s;
-  display:none;
 }
 .raw-toggle.visible{display:flex}
 .raw-toggle:hover{color:var(--txt2)}
@@ -315,8 +363,6 @@ function isLiveCall(){
 }
 
 // ── FLAG DEFINITIONS ──────────────────────────────────────────────
-// Maps API field values → display config
-// severity: critical | high | medium | info
 const FLAG_MAP = [
   {
     key: 'litigator',
@@ -400,7 +446,6 @@ const FLAG_MAP = [
   },
 ];
 
-// Also handle alternate key names the API might use
 const KEY_ALIASES = {
   nat_dnc:      'federal_dnc',
   national_dnc: 'federal_dnc',
@@ -411,6 +456,21 @@ const KEY_ALIASES = {
   cell:         'wireless',
   is_cell:      'wireless',
   iscell:       'wireless',
+};
+
+// ── Human-readable labels for API code values ─────────────────────
+const CODE_LABELS = {
+  screamer:   { label: 'Hostile / Screamer',    icon: 'ti-speakerphone'  },
+  litigator:  { label: 'TCPA Litigator',        icon: 'ti-gavel'         },
+  complainer: { label: 'DNC Complainer',        icon: 'ti-message-report'},
+  dnc:        { label: 'Do Not Call',           icon: 'ti-phone-x'       },
+  wireless:   { label: 'Wireless Number',       icon: 'ti-device-mobile' },
+  ported:     { label: 'Ported Number',         icon: 'ti-transfer-in'   },
+  reassigned: { label: 'Reassigned Number',     icon: 'ti-arrows-exchange'},
+  federal:    { label: 'Federal DNC',           icon: 'ti-building-government'},
+  state:      { label: 'State DNC',             icon: 'ti-map-pin-off'   },
+  internal:   { label: 'Internal DNC',          icon: 'ti-database-x'    },
+  clean:      { label: 'Clean',                 icon: 'ti-circle-check'  },
 };
 
 // ── BOOT ─────────────────────────────────────────────────────────
@@ -449,6 +509,11 @@ function renderPortal(){
             <div class="status-icon"><i class="ti ti-shield" id="statusIcon"></i></div>
             <div class="status-number" id="statusNumber">—</div>
             <div class="status-verdict" id="statusVerdict">Checking…</div>
+            <!-- API message pill shown here -->
+            <div class="api-message-pill" id="apiMessagePill">
+              <i class="ti ti-tag"></i>
+              <span id="apiMessageText"></span>
+            </div>
           </div>
 
           <!-- Individual flag rows -->
@@ -507,26 +572,26 @@ async function runCheck(rawPhone){
 
     console.log('BLA API Response:', data);
 
-    // Store raw JSON for display
     document.getElementById('rawJson').textContent = JSON.stringify(data, null, 2);
     document.getElementById('rawToggle').classList.add('visible');
 
-    // Normalise keys using aliases
     const norm = normalise(data);
-
-    // Detect which flags fired
     const fired = detectFlags(norm);
+
+    // Pull message and code from API response
+    const apiMessage = data.message || norm.message || '';
+    const apiCode    = data.code    || norm.code    || '';
+    const apiStatus  = data.status  || norm.status  || '';
 
     numEl.textContent = formatPhone(rawPhone);
 
     if(fired.length === 0){
-      // CLEAN
       display.className   = 'status-display clean';
       icon.className      = 'ti ti-circle-check';
       verdict.textContent = 'CLEAN';
-      showCleanFlag();
+      showApiMessagePill(apiMessage || apiStatus, 'pill-green');
+      showCleanFlag(apiCode, apiMessage);
     } else {
-      // Determine worst severity for overall state
       const hasCritical = fired.some(f => f.severity === 'critical');
       const hasHigh     = fired.some(f => f.severity === 'high');
       display.className = hasCritical ? 'status-display bad'
@@ -536,7 +601,8 @@ async function runCheck(rawPhone){
       verdict.textContent = hasCritical ? 'DO NOT TRANSFER'
                           : hasHigh     ? 'HIGH RISK'
                           :               'USE CAUTION';
-      showFlags(fired);
+      showApiMessagePill(apiMessage || apiStatus, hasCritical ? 'pill-red' : 'pill-yellow');
+      showFlags(fired, apiCode, apiMessage);
     }
 
   } catch(err){
@@ -556,11 +622,9 @@ function formatPhone(raw){
 
 function normalise(data){
   const out = {};
-  // Flatten one level deep (some APIs wrap in 'result' or 'data')
   const src = (data.result && typeof data.result === 'object') ? { ...data, ...data.result }
             : (data.data   && typeof data.data   === 'object') ? { ...data, ...data.data }
             : data;
-
   for(const [k, v] of Object.entries(src)){
     const canon = KEY_ALIASES[k.toLowerCase()] || k.toLowerCase();
     out[canon] = v;
@@ -576,39 +640,68 @@ function detectFlags(norm){
       fired.push({ ...def, value: val });
     }
   }
-  // Sort: critical → high → medium → info
   const order = { critical:0, high:1, medium:2, info:3 };
   fired.sort((a,b) => order[a.severity] - order[b.severity]);
   return fired;
 }
 
-function showFlags(fired){
+// ── Show message pill below verdict ──────────────────────────────
+function showApiMessagePill(message, colorClass){
+  if(!message) return;
+  const pill = document.getElementById('apiMessagePill');
+  const text = document.getElementById('apiMessageText');
+  text.textContent = message;
+  pill.className = `api-message-pill visible ${colorClass}`;
+}
+
+// ── API code badge HTML helper ────────────────────────────────────
+function buildCodeBadge(code){
+  if(!code) return '';
+  const codeStr = String(code).toLowerCase();
+  const meta = CODE_LABELS[codeStr] || { label: code, icon: 'ti-tag' };
+  return `
+    <div class="flag-code-badge">
+      <i class="ti ${meta.icon}"></i>
+      API code: <strong>${meta.label}</strong> <em style="opacity:.6">(${codeStr})</em>
+    </div>`;
+}
+
+function showFlags(fired, apiCode, apiMessage){
   const section = document.getElementById('flagsSection');
   const list    = document.getElementById('flagsList');
   section.classList.add('visible');
-  list.innerHTML = fired.map((f, i) => {
+
+  // Build flag rows
+  let html = fired.map((f, i) => {
     const desc = typeof f.desc === 'function' ? f.desc(f.value) : f.desc;
+    // Attach the API code badge to the FIRST flag row only (most prominent)
+    const codeBadge = i === 0 ? buildCodeBadge(apiCode) : '';
     return `
       <div class="flag-row flag-${f.severity}" style="animation-delay:${i*60}ms">
         <i class="ti ${f.icon}"></i>
-        <div>
+        <div style="flex:1">
           <div class="flag-name">${f.name}</div>
           <div class="flag-desc">${desc}</div>
+          ${codeBadge}
         </div>
       </div>`;
   }).join('');
+
+  list.innerHTML = html;
 }
 
-function showCleanFlag(){
+function showCleanFlag(apiCode, apiMessage){
   const section = document.getElementById('flagsSection');
   const list    = document.getElementById('flagsList');
   section.classList.add('visible');
+  const codeBadge = buildCodeBadge(apiCode);
   list.innerHTML = `
     <div class="flag-row flag-clean">
       <i class="ti ti-shield-check"></i>
-      <div>
+      <div style="flex:1">
         <div class="flag-name">No Records Found</div>
         <div class="flag-desc">Not in any blacklist, DNC, litigator, or complaint registry.</div>
+        ${codeBadge}
       </div>
     </div>`;
 }
