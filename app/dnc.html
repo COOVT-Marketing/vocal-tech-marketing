@@ -25,9 +25,15 @@
   --red:       #ef4444;
   --red-glow:  rgba(239,68,68,0.12);
   --red-b:     rgba(239,68,68,0.4);
+  --orange:    #f97316;
+  --orange-glow:rgba(249,115,22,0.12);
+  --orange-b:  rgba(249,115,22,0.4);
   --yellow:    #f59e0b;
   --yellow-glow:rgba(245,158,11,0.12);
   --yellow-b:  rgba(245,158,11,0.35);
+  --purple:    #a855f7;
+  --purple-glow:rgba(168,85,247,0.12);
+  --purple-b:  rgba(168,85,247,0.35);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -42,7 +48,7 @@ body{
   background:var(--card);
   border:0.5px solid var(--border);
   border-radius:16px;
-  width:100%;max-width:520px;
+  width:100%;max-width:540px;
   overflow:hidden;
   box-shadow:0 25px 30px -8px rgba(0,0,0,0.6);
 }
@@ -57,6 +63,7 @@ body{
   background:var(--teal);
   border-radius:10px;
   display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
 }
 .logo i{font-size:22px;color:#fff}
 .header-txt h1{font-size:16px;font-weight:600;color:#fff}
@@ -68,6 +75,7 @@ body{
   border:0.5px solid var(--teal-b);
   border-radius:20px;padding:4px 12px;
   font-size:12px;color:var(--teal);font-weight:500;
+  flex-shrink:0;
 }
 .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -81,28 +89,22 @@ body{
 }
 .session-bar i{font-size:16px;color:var(--teal)}
 .session-bar span{font-size:13px;color:var(--txt2)}
-.session-bar .time{
-  margin-left:auto;
-  font-family:'DM Mono',monospace;font-size:12px;
-  color:var(--txt2);
-  background:var(--bg);
-  border:0.5px solid var(--border);
-  padding:2px 8px;border-radius:4px;
-}
+
+/* ── Main status display ─────────────────────────────────── */
 .status-display{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:2.5rem 1.5rem;
   border-radius:14px;
   border:0.5px solid var(--border);
   background:var(--card2);
-  min-height:200px;
-  transition:background 0.5s ease, border-color 0.5s ease;
+  overflow:hidden;
+  transition:border-color 0.4s ease;
 }
-.status-display.idle{background:var(--card2);border-color:var(--border);}
-.status-display.loading{background:var(--card2);border-color:var(--teal-b);}
-.status-display.clean{background:var(--green-glow);border-color:var(--green-b);animation:greenPulse 2s ease forwards;}
-.status-display.bad{background:var(--red-glow);border-color:var(--red-b);animation:redPulse 2s ease forwards;}
-.status-display.invalid{background:var(--yellow-glow);border-color:var(--yellow-b);}
+.status-display.idle   { border-color:var(--border); }
+.status-display.loading{ border-color:var(--teal-b); }
+.status-display.clean  { border-color:var(--green-b); animation:greenPulse 2s ease forwards; }
+.status-display.bad    { border-color:var(--red-b);   animation:redPulse 2s ease forwards; }
+.status-display.warn   { border-color:var(--yellow-b); }
+.status-display.invalid{ border-color:var(--yellow-b); }
+
 @keyframes greenPulse{
   0%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)}
   50%{box-shadow:0 0 40px 8px rgba(34,197,94,0.25)}
@@ -113,81 +115,304 @@ body{
   50%{box-shadow:0 0 40px 8px rgba(239,68,68,0.25)}
   100%{box-shadow:0 0 20px 4px rgba(239,68,68,0.1)}
 }
+
+/* ── Hero section (icon + verdict) ─────────────────────── */
+.status-hero{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:2.2rem 1.5rem 1.8rem;
+  transition:background 0.5s ease;
+}
+.idle    .status-hero { background:var(--card2); }
+.loading .status-hero { background:var(--card2); }
+.clean   .status-hero { background:var(--green-glow); }
+.bad     .status-hero { background:var(--red-glow); }
+.warn    .status-hero { background:var(--yellow-glow); }
+.invalid .status-hero { background:var(--yellow-glow); }
+
 .status-icon{
   width:72px;height:72px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   margin-bottom:1rem;
   transition:background 0.4s;
 }
-.idle .status-icon{background:rgba(255,255,255,0.05)}
-.idle .status-icon i{font-size:36px;color:var(--txt3)}
-.loading .status-icon{background:var(--teal-glow)}
-.loading .status-icon i{font-size:36px;color:var(--teal);animation:spin 0.8s linear infinite}
-.clean .status-icon{background:rgba(34,197,94,0.2)}
-.clean .status-icon i{font-size:36px;color:var(--green)}
-.bad .status-icon{background:rgba(239,68,68,0.2)}
-.bad .status-icon i{font-size:36px;color:var(--red)}
-.invalid .status-icon{background:rgba(245,158,11,0.2)}
-.invalid .status-icon i{font-size:36px;color:var(--yellow)}
+.idle    .status-icon { background:rgba(255,255,255,0.05) }
+.idle    .status-icon i { font-size:36px;color:var(--txt3) }
+.loading .status-icon { background:var(--teal-glow) }
+.loading .status-icon i { font-size:36px;color:var(--teal);animation:spin 0.8s linear infinite }
+.clean   .status-icon { background:rgba(34,197,94,0.2) }
+.clean   .status-icon i { font-size:36px;color:var(--green) }
+.bad     .status-icon { background:rgba(239,68,68,0.2) }
+.bad     .status-icon i { font-size:36px;color:var(--red) }
+.warn    .status-icon { background:rgba(245,158,11,0.2) }
+.warn    .status-icon i { font-size:36px;color:var(--yellow) }
+.invalid .status-icon { background:rgba(245,158,11,0.2) }
+.invalid .status-icon i { font-size:36px;color:var(--yellow) }
 @keyframes spin{to{transform:rotate(360deg)}}
+
 .status-number{
   font-family:'DM Mono',monospace;
-  font-size:22px;font-weight:500;
+  font-size:20px;font-weight:500;
   letter-spacing:.06em;
   margin-bottom:.5rem;
   transition:color 0.4s;
 }
-.idle .status-number{color:var(--txt3)}
-.loading .status-number{color:var(--txt2)}
-.clean .status-number{color:var(--green)}
-.bad .status-number{color:var(--red)}
-.invalid .status-number{color:var(--yellow)}
+.idle    .status-number { color:var(--txt3) }
+.loading .status-number { color:var(--txt2) }
+.clean   .status-number { color:var(--green) }
+.bad     .status-number { color:var(--red) }
+.warn    .status-number { color:var(--yellow) }
+.invalid .status-number { color:var(--yellow) }
+
 .status-verdict{
-  font-size:28px;font-weight:700;
-  letter-spacing:.02em;
+  font-size:26px;font-weight:700;letter-spacing:.02em;
   transition:color 0.4s;
 }
-.idle .status-verdict{color:var(--txt3);font-size:16px;font-weight:400}
-.loading .status-verdict{color:var(--txt2);font-size:16px;font-weight:400}
-.clean .status-verdict{color:var(--green)}
-.bad .status-verdict{color:var(--red)}
-.invalid .status-verdict{color:var(--yellow);font-size:18px}
-.status-sub{margin-top:.4rem;font-size:12px;color:var(--txt2);text-align:center;}
-.no-call{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;gap:16px;}
-.no-call-icon{width:72px;height:72px;border-radius:50%;background:var(--card);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;}
+.idle    .status-verdict { color:var(--txt3);font-size:15px;font-weight:400 }
+.loading .status-verdict { color:var(--txt2);font-size:15px;font-weight:400 }
+.clean   .status-verdict { color:var(--green) }
+.bad     .status-verdict { color:var(--red) }
+.warn    .status-verdict { color:var(--yellow) }
+.invalid .status-verdict { color:var(--yellow);font-size:18px }
+
+/* ── Flags grid ─────────────────────────────────────────── */
+.flags-section{
+  padding:0 1.2rem 1.4rem;
+  display:none;
+  flex-direction:column;
+  gap:8px;
+}
+.flags-section.visible { display:flex; }
+
+.flags-label{
+  font-size:10px;font-weight:600;letter-spacing:.1em;
+  color:var(--txt3);text-transform:uppercase;
+  padding:0 2px;margin-bottom:2px;
+}
+
+.flag-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  border-radius:8px;
+  border:0.5px solid;
+  transition:all 0.3s ease;
+  animation:flagIn 0.3s ease forwards;
+}
+@keyframes flagIn{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.flag-row i { font-size:17px; flex-shrink:0; }
+.flag-row .flag-name { font-size:13px;font-weight:600;flex:1 }
+.flag-row .flag-desc { font-size:11px;color:var(--txt2);line-height:1.35 }
+
+/* Severity variants */
+.flag-critical{
+  background:rgba(239,68,68,0.1);
+  border-color:rgba(239,68,68,0.35);
+}
+.flag-critical i,.flag-critical .flag-name { color:var(--red) }
+
+.flag-high{
+  background:rgba(249,115,22,0.1);
+  border-color:rgba(249,115,22,0.35);
+}
+.flag-high i,.flag-high .flag-name { color:var(--orange) }
+
+.flag-medium{
+  background:rgba(245,158,11,0.1);
+  border-color:rgba(245,158,11,0.3);
+}
+.flag-medium i,.flag-medium .flag-name { color:var(--yellow) }
+
+.flag-info{
+  background:rgba(26,158,117,0.08);
+  border-color:rgba(26,158,117,0.3);
+}
+.flag-info i,.flag-info .flag-name { color:var(--teal) }
+
+.flag-clean{
+  background:rgba(34,197,94,0.08);
+  border-color:rgba(34,197,94,0.3);
+}
+.flag-clean i,.flag-clean .flag-name { color:var(--green) }
+
+/* ── Raw data accordion ──────────────────────────────────── */
+.raw-toggle{
+  display:flex;align-items:center;gap:6px;
+  background:transparent;
+  border:none;border-top:0.5px solid var(--border);
+  width:100%;padding:9px 16px;
+  color:var(--txt3);font-size:11px;font-family:'DM Sans',sans-serif;
+  cursor:pointer;
+  transition:color 0.2s;
+  display:none;
+}
+.raw-toggle.visible{display:flex}
+.raw-toggle:hover{color:var(--txt2)}
+.raw-toggle i{font-size:14px}
+.raw-toggle span{margin-left:auto;font-size:10px;letter-spacing:.05em}
+
+.raw-body{
+  display:none;
+  padding:12px 16px;
+  border-top:0.5px solid var(--border);
+  background:var(--bg);
+}
+.raw-body.open{display:block}
+.raw-body pre{
+  font-family:'DM Mono',monospace;
+  font-size:10.5px;
+  color:var(--txt2);
+  white-space:pre-wrap;
+  word-break:break-all;
+  line-height:1.6;
+}
+
+/* ── No call state ──────────────────────────────────────── */
+.no-call{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;min-height:60vh;
+  text-align:center;gap:16px;
+}
+.no-call-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--card);border:0.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+}
 .no-call-icon i{font-size:32px;color:var(--txt2)}
 .no-call h2{font-size:18px;font-weight:500}
-@media(max-width:480px){.body{padding:1.25rem}.header{padding:1.25rem}}
+
+@media(max-width:480px){
+  .body{padding:1.25rem}
+  .header{padding:1.25rem}
+}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
 
-// ── YOUR API KEY — insert it here ────────────────────────────────
-const API_KEY = 'zkU3p9bRrzVDgcKRC2sK';
-
-// ── API ENDPOINT ─────────────────────────────────────────────────
+// ── CONFIG ────────────────────────────────────────────────────────
+const API_KEY  = 'zkU3p9bRrzVDgcKRC2sK';
 const API_BASE = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${API_KEY}/response/json/phone/`;
 
-// ── PARAMS ───────────────────────────────────────────────────────
+// ── PARAM ALIASES ─────────────────────────────────────────────────
 const ALIASES = {
   phone:    ['phone_number','phone','phonenumber'],
   campaign: ['campaign','campaign_id'],
   agent:    ['user','agent','agent_name','fullname'],
 };
 function getParam(name){
-  const params = new URLSearchParams(window.location.search);
+  const p = new URLSearchParams(window.location.search);
   for(const k of (ALIASES[name]||[name])){
-    const v = params.get(k);
+    const v = p.get(k);
     if(v && v.trim()) return v.trim();
   }
   return '';
 }
 function isLiveCall(){
-  const params = new URLSearchParams(window.location.search);
-  return ['phone_number','phone','campaign','list_id','lead_id'].some(p => params.get(p));
+  const p = new URLSearchParams(window.location.search);
+  return ['phone_number','phone','campaign','list_id','lead_id'].some(k => p.get(k));
 }
+
+// ── FLAG DEFINITIONS ──────────────────────────────────────────────
+// Maps API field values → display config
+// severity: critical | high | medium | info
+const FLAG_MAP = [
+  {
+    key: 'litigator',
+    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
+    severity: 'critical',
+    icon: 'ti-gavel',
+    name: 'TCPA Litigator',
+    desc: 'Known serial plaintiff or class-action attorney. CRITICAL risk — do not contact.',
+  },
+  {
+    key: 'federal_dnc',
+    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
+    severity: 'critical',
+    icon: 'ti-building-government',
+    name: 'Federal DNC',
+    desc: 'Registered on the National Do Not Call Registry (FTC).',
+  },
+  {
+    key: 'dnc',
+    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
+    severity: 'critical',
+    icon: 'ti-phone-x',
+    name: 'DNC (General)',
+    desc: 'Listed on Do Not Call registry.',
+  },
+  {
+    key: 'state_dnc',
+    match: v => v && v !== 'N' && v !== 'No' && v !== false && v !== 0 && v !== '',
+    severity: 'high',
+    icon: 'ti-map-pin-off',
+    name: 'State DNC',
+    desc: v => `Listed on a State Do Not Call list${typeof v === 'string' && v.length <= 4 ? ` (${v})` : ''}.`,
+  },
+  {
+    key: 'internal_dnc',
+    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
+    severity: 'high',
+    icon: 'ti-database-x',
+    name: 'Internal DNC',
+    desc: 'Flagged on your company\'s internal Do Not Call list.',
+  },
+  {
+    key: 'screamer',
+    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
+    severity: 'high',
+    icon: 'ti-speakerphone',
+    name: 'Screamer',
+    desc: 'Known hostile caller — prone to aggressive responses or verbal abuse.',
+  },
+  {
+    key: 'complainer',
+    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
+    severity: 'medium',
+    icon: 'ti-message-report',
+    name: 'DNC Complainer',
+    desc: 'Has filed formal complaints with the FTC. Legal risk if contacted.',
+  },
+  {
+    key: 'reassigned',
+    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
+    severity: 'medium',
+    icon: 'ti-arrows-exchange',
+    name: 'Reassigned Number',
+    desc: 'Number has been reassigned to a new subscriber. Verify consent before dialing.',
+  },
+  {
+    key: 'wireless',
+    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
+    severity: 'info',
+    icon: 'ti-device-mobile',
+    name: 'Wireless / Cell',
+    desc: 'This is a cellular number — TCPA rules for auto-dialers apply.',
+  },
+  {
+    key: 'ported',
+    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
+    severity: 'info',
+    icon: 'ti-transfer-in',
+    name: 'Ported Number',
+    desc: 'Number has been ported from its original carrier.',
+  },
+];
+
+// Also handle alternate key names the API might use
+const KEY_ALIASES = {
+  nat_dnc:      'federal_dnc',
+  national_dnc: 'federal_dnc',
+  fed_dnc:      'federal_dnc',
+  fdnc:         'federal_dnc',
+  sdnc:         'state_dnc',
+  int_dnc:      'internal_dnc',
+  cell:         'wireless',
+  is_cell:      'wireless',
+  iscell:       'wireless',
+};
 
 // ── BOOT ─────────────────────────────────────────────────────────
 function boot(){
@@ -212,17 +437,36 @@ function renderPortal(){
         <div class="logo"><i class="ti ti-shield-check"></i></div>
         <div class="header-txt">
           <h1>DNC Checker</h1>
-          <p>Vocal Tech Marketing · DNC Portal</p>
+          <p>Vocal Tech Marketing · Compliance Portal</p>
         </div>
         <div class="live-badge"><div class="dot"></div>Live call</div>
       </div>
 
       <div class="body">
         <div class="status-display idle" id="statusDisplay">
-          <div class="status-icon"><i class="ti ti-shield" id="statusIcon"></i></div>
-          <div class="status-number" id="statusNumber">—</div>
-          <div class="status-verdict" id="statusVerdict">Checking...</div>
-          <div class="status-sub" id="statusSub"></div>
+
+          <!-- Hero verdict section -->
+          <div class="status-hero">
+            <div class="status-icon"><i class="ti ti-shield" id="statusIcon"></i></div>
+            <div class="status-number" id="statusNumber">—</div>
+            <div class="status-verdict" id="statusVerdict">Checking…</div>
+          </div>
+
+          <!-- Individual flag rows -->
+          <div class="flags-section" id="flagsSection">
+            <div class="flags-label">Detected Flags</div>
+            <div id="flagsList"></div>
+          </div>
+
+          <!-- Raw JSON toggle -->
+          <button class="raw-toggle" id="rawToggle" onclick="toggleRaw()">
+            <i class="ti ti-code"></i> Raw API Response
+            <span id="rawArrow">▼ SHOW</span>
+          </button>
+          <div class="raw-body" id="rawBody">
+            <pre id="rawJson"></pre>
+          </div>
+
         </div>
       </div>
     </div>`;
@@ -230,71 +474,163 @@ function renderPortal(){
   if(phone) setTimeout(() => runCheck(phone), 700);
 }
 
-// ── CHECK via Alliance API ────────────────────────────────────────
+let rawOpen = false;
+function toggleRaw(){
+  rawOpen = !rawOpen;
+  document.getElementById('rawBody').classList.toggle('open', rawOpen);
+  document.getElementById('rawArrow').textContent = rawOpen ? '▲ HIDE' : '▼ SHOW';
+}
+
+// ── MAIN CHECK ────────────────────────────────────────────────────
 async function runCheck(rawPhone){
   const display = document.getElementById('statusDisplay');
   const icon    = document.getElementById('statusIcon');
   const numEl   = document.getElementById('statusNumber');
   const verdict = document.getElementById('statusVerdict');
-  const sub     = document.getElementById('statusSub');
 
   const clean = rawPhone.replace(/\D/g,'');
 
-  // Basic format check before hitting API
   if(clean.length < 7 || clean.length > 15){
-    display.className   = 'status-display invalid';
-    icon.className      = 'ti ti-alert-triangle';
-    numEl.textContent   = rawPhone;
-    verdict.textContent = 'INVALID';
-    sub.textContent     = 'Number format is invalid.';
+    setInvalid(rawPhone, 'INVALID NUMBER', 'Number format is invalid.');
     return;
   }
 
-  // Loading state
+  // Loading
   display.className   = 'status-display loading';
   icon.className      = 'ti ti-loader-2';
-  numEl.textContent   = rawPhone;
+  numEl.textContent   = formatPhone(rawPhone);
   verdict.textContent = 'Scanning database…';
-  sub.textContent     = '';
 
   try {
-    const response = await fetch(`${API_BASE}${clean}`);
+    const res = await fetch(`${API_BASE}${clean}`);
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
 
-    if(!response.ok) throw new Error(`HTTP ${response.status}`);
+    console.log('BLA API Response:', data);
 
-    const data = await response.json();
-    
-    console.log("Alliance API Payload Response:", data);
+    // Store raw JSON for display
+    document.getElementById('rawJson').textContent = JSON.stringify(data, null, 2);
+    document.getElementById('rawToggle').classList.add('visible');
 
-    const isDnc = data.dnc === 'Y' || data.dnc === 'Yes' || String(data.message).toLowerCase().includes('dnc');
-    const isLitigator = data.litigator === 'Y' || data.litigator === 'Yes' || String(data.message).toLowerCase().includes('litigator');
-    const explicitlyListed = data.result === 'blacklisted' || data.status === 'blacklisted' || data.code === 400;
+    // Normalise keys using aliases
+    const norm = normalise(data);
 
-    if (isDnc || isLitigator || explicitlyListed) {
-      display.className   = 'status-display bad';
-      icon.className      = 'ti ti-ban';
-      verdict.textContent = 'Do Not Transfer';
-      
-      if (isDnc && isLitigator) sub.textContent = 'CRITICAL: Found in Litigator & DNC Registries!';
-      else if (isLitigator) sub.textContent = 'FOUND: Abusive Litigator Database (TCPA Risk)';
-      else if (isDnc) sub.textContent = 'FOUND: Do Not Call (DNC) Registry';
-      else sub.textContent = data.message || 'Found in Alliance database restrictions.';
-    } else {
+    // Detect which flags fired
+    const fired = detectFlags(norm);
+
+    numEl.textContent = formatPhone(rawPhone);
+
+    if(fired.length === 0){
+      // CLEAN
       display.className   = 'status-display clean';
       icon.className      = 'ti ti-circle-check';
       verdict.textContent = 'CLEAN';
-      sub.textContent     = 'No records found in blacklist or DNC databases.';
+      showCleanFlag();
+    } else {
+      // Determine worst severity for overall state
+      const hasCritical = fired.some(f => f.severity === 'critical');
+      const hasHigh     = fired.some(f => f.severity === 'high');
+      display.className = hasCritical ? 'status-display bad'
+                        : hasHigh     ? 'status-display bad'
+                        :               'status-display warn';
+      icon.className    = hasCritical ? 'ti ti-ban' : 'ti ti-alert-triangle';
+      verdict.textContent = hasCritical ? 'DO NOT TRANSFER'
+                          : hasHigh     ? 'HIGH RISK'
+                          :               'USE CAUTION';
+      showFlags(fired);
     }
 
-    numEl.textContent = rawPhone;
-
-  } catch(err) {
-    display.className   = 'status-display invalid';
-    icon.className      = 'ti ti-wifi-off';
-    numEl.textContent   = rawPhone;
-    verdict.textContent = 'API ERROR';
-    sub.textContent = 'Could not reach Alliance API. Check your key, server CORS policy, or connection.';
+  } catch(err){
+    console.error(err);
+    setInvalid(rawPhone, 'API ERROR', 'Could not reach Alliance API. Check key, CORS policy, or connection.');
   }
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────
+
+function formatPhone(raw){
+  const d = raw.replace(/\D/g,'');
+  if(d.length === 10) return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
+  if(d.length === 11 && d[0]==='1') return `+1 (${d.slice(1,4)}) ${d.slice(4,7)}-${d.slice(7)}`;
+  return raw;
+}
+
+function normalise(data){
+  const out = {};
+  // Flatten one level deep (some APIs wrap in 'result' or 'data')
+  const src = (data.result && typeof data.result === 'object') ? { ...data, ...data.result }
+            : (data.data   && typeof data.data   === 'object') ? { ...data, ...data.data }
+            : data;
+
+  for(const [k, v] of Object.entries(src)){
+    const canon = KEY_ALIASES[k.toLowerCase()] || k.toLowerCase();
+    out[canon] = v;
+  }
+  return out;
+}
+
+function detectFlags(norm){
+  const fired = [];
+  for(const def of FLAG_MAP){
+    const val = norm[def.key];
+    if(val !== undefined && val !== null && def.match(val)){
+      fired.push({ ...def, value: val });
+    }
+  }
+  // Sort: critical → high → medium → info
+  const order = { critical:0, high:1, medium:2, info:3 };
+  fired.sort((a,b) => order[a.severity] - order[b.severity]);
+  return fired;
+}
+
+function showFlags(fired){
+  const section = document.getElementById('flagsSection');
+  const list    = document.getElementById('flagsList');
+  section.classList.add('visible');
+  list.innerHTML = fired.map((f, i) => {
+    const desc = typeof f.desc === 'function' ? f.desc(f.value) : f.desc;
+    return `
+      <div class="flag-row flag-${f.severity}" style="animation-delay:${i*60}ms">
+        <i class="ti ${f.icon}"></i>
+        <div>
+          <div class="flag-name">${f.name}</div>
+          <div class="flag-desc">${desc}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function showCleanFlag(){
+  const section = document.getElementById('flagsSection');
+  const list    = document.getElementById('flagsList');
+  section.classList.add('visible');
+  list.innerHTML = `
+    <div class="flag-row flag-clean">
+      <i class="ti ti-shield-check"></i>
+      <div>
+        <div class="flag-name">No Records Found</div>
+        <div class="flag-desc">Not in any blacklist, DNC, litigator, or complaint registry.</div>
+      </div>
+    </div>`;
+}
+
+function setInvalid(phone, title, msg){
+  const display = document.getElementById('statusDisplay');
+  document.getElementById('statusIcon').className = 'ti ti-alert-triangle';
+  document.getElementById('statusNumber').textContent = phone;
+  document.getElementById('statusVerdict').textContent = title;
+  display.className = 'status-display invalid';
+  const section = document.getElementById('flagsSection');
+  const list    = document.getElementById('flagsList');
+  section.classList.add('visible');
+  list.innerHTML = `
+    <div class="flag-row flag-medium">
+      <i class="ti ti-info-circle"></i>
+      <div>
+        <div class="flag-name">Check Failed</div>
+        <div class="flag-desc">${msg}</div>
+      </div>
+    </div>`;
 }
 
 boot();
