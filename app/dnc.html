@@ -25,15 +25,6 @@
   --red:       #ef4444;
   --red-glow:  rgba(239,68,68,0.12);
   --red-b:     rgba(239,68,68,0.4);
-  --orange:    #f97316;
-  --orange-glow:rgba(249,115,22,0.12);
-  --orange-b:  rgba(249,115,22,0.4);
-  --yellow:    #f59e0b;
-  --yellow-glow:rgba(245,158,11,0.12);
-  --yellow-b:  rgba(245,158,11,0.35);
-  --purple:    #a855f7;
-  --purple-glow:rgba(168,85,247,0.12);
-  --purple-b:  rgba(168,85,247,0.35);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -93,7 +84,6 @@ body{
 .status-display.loading{ border-color:var(--teal-b); }
 .status-display.clean  { border-color:var(--green-b); animation:greenPulse 2s ease forwards; }
 .status-display.bad    { border-color:var(--red-b);   animation:redPulse 2s ease forwards; }
-.status-display.warn   { border-color:var(--red-b);   animation:redPulse 2s ease forwards; }
 .status-display.invalid{ border-color:var(--red-b);   animation:redPulse 2s ease forwards; }
 
 @keyframes greenPulse{
@@ -118,7 +108,6 @@ body{
 .loading .status-hero { background:var(--card2); }
 .clean   .status-hero { background:var(--green-glow); }
 .bad     .status-hero { background:var(--red-glow); }
-.warn    .status-hero { background:var(--red-glow); }
 .invalid .status-hero { background:var(--red-glow); }
 
 .status-icon{
@@ -135,8 +124,6 @@ body{
 .clean   .status-icon i { font-size:36px;color:var(--green) }
 .bad     .status-icon { background:rgba(239,68,68,0.2) }
 .bad     .status-icon i { font-size:36px;color:var(--red) }
-.warn    .status-icon { background:rgba(239,68,68,0.2) }
-.warn    .status-icon i { font-size:36px;color:var(--red) }
 .invalid .status-icon { background:rgba(239,68,68,0.2) }
 .invalid .status-icon i { font-size:36px;color:var(--red) }
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -152,7 +139,6 @@ body{
 .loading .status-number { color:var(--txt2) }
 .clean   .status-number { color:var(--green) }
 .bad     .status-number { color:var(--red) }
-.warn    .status-number { color:var(--red) }
 .invalid .status-number { color:var(--red) }
 
 .status-verdict{
@@ -163,7 +149,6 @@ body{
 .loading .status-verdict { color:var(--txt2);font-size:15px;font-weight:400 }
 .clean   .status-verdict { color:var(--green) }
 .bad     .status-verdict { color:var(--red) }
-.warn    .status-verdict { color:var(--red) }
 .invalid .status-verdict { color:var(--red);font-size:18px }
 
 /* ── API Message pill (shown below verdict) ──────────────── */
@@ -188,8 +173,6 @@ body{
 /* Color variants driven by JS */
 .api-message-pill.pill-red    { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.4); color:var(--red); }
 .api-message-pill.pill-green  { background:rgba(34,197,94,0.1);  border-color:rgba(34,197,94,0.4); color:var(--green); }
-.api-message-pill.pill-yellow { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.4); color:var(--red); }
-.api-message-pill.pill-teal   { background:var(--teal-glow);     border-color:var(--teal-b);       color:var(--teal); }
 
 /* ── Flags grid ─────────────────────────────────────────── */
 .flags-section{
@@ -239,49 +222,18 @@ body{
 }
 .flag-code-badge i { font-size:11px; }
 
-/* Severity variants mapped to red colors for non-clean entries */
+/* Status Styles */
 .flag-critical{
   background:rgba(239,68,68,0.1);
   border-color:rgba(239,68,68,0.35);
 }
 .flag-critical i,.flag-critical .flag-name { color:var(--red) }
 
-.flag-high{
-  background:rgba(239,68,68,0.09);
-  border-color:rgba(239,68,68,0.3);
-}
-.flag-high i,.flag-high .flag-name { color:var(--red) }
-
-.flag-medium{
-  background:rgba(239,68,68,0.07);
-  border-color:rgba(239,68,68,0.25);
-}
-.flag-medium i,.flag-medium .flag-name { color:var(--red) }
-
-.flag-info{
-  background:rgba(239,68,68,0.07);
-  border-color:rgba(239,68,68,0.25);
-}
-.flag-info i,.flag-info .flag-name { color:var(--red) }
-
 .flag-clean{
   background:rgba(34,197,94,0.08);
   border-color:rgba(34,197,94,0.3);
 }
 .flag-clean i,.flag-clean .flag-name { color:var(--green) }
-
-.flag-api-code{
-  background:rgba(239,68,68,0.07);
-  border-color:rgba(239,68,68,0.25);
-}
-.flag-api-code i,.flag-api-code .flag-name { color:var(--red) }
-
-/* ── API Status row (shown as first info flag) ───────────── */
-.flag-status{
-  background:rgba(239,68,68,0.07);
-  border-color:rgba(239,68,68,0.25);
-}
-.flag-status i,.flag-status .flag-name { color:var(--red) }
 
 /* ── Raw data accordion ──────────────────────────────────── */
 .raw-toggle{
@@ -343,7 +295,6 @@ body{
 const API_KEY  = 'zkU3p9bRrzVDgcKRC2sK';
 const API_BASE = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${API_KEY}/response/json/phone/`;
 
-// ── PARAM ALIASES ─────────────────────────────────────────────────
 const ALIASES = {
   phone:    ['phone_number','phone','phonenumber'],
   campaign: ['campaign','campaign_id'],
@@ -362,118 +313,64 @@ function isLiveCall(){
   return ['phone_number','phone','campaign','list_id','lead_id'].some(k => p.get(k));
 }
 
-// ── FLAG DEFINITIONS ──────────────────────────────────────────────
-const FLAG_MAP = [
-  {
-    key: 'litigator',
-    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
-    severity: 'critical',
-    icon: 'ti-gavel',
-    name: 'TCPA Litigator',
-    desc: 'Known serial plaintiff or class-action attorney. CRITICAL risk — do not contact.',
+// ── MAPPED VERDICTS FOR THE API CODE CODES ─────────────────────────
+const VERDICT_MAP = {
+  'none': {
+    isClean: true,
+    name: 'No Records Found',
+    desc: 'Not listed on any blacklist, DNC, litigator, or complaint registry.',
+    icon: 'ti-shield-check'
   },
-  {
-    key: 'federal_dnc',
-    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
-    severity: 'critical',
-    icon: 'ti-building-government',
-    name: 'Federal DNC',
-    desc: 'Registered on the National Do Not Call Registry (FTC).',
+  'federal-dnc': {
+    isClean: false,
+    name: 'Federal DNC Match',
+    desc: 'Registered on the National Do Not Call Registry (FTC). Do not contact.',
+    icon: 'ti-building-government'
   },
-  {
-    key: 'dnc',
-    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
-    severity: 'critical',
-    icon: 'ti-phone-x',
-    name: 'DNC (General)',
-    desc: 'Listed on Do Not Call registry.',
+  'litigator': {
+    isClean: false,
+    name: 'TCPA Litigator Threat',
+    desc: 'Known serial plaintiff or class-action attorney. CRITICAL risk.',
+    icon: 'ti-gavel'
   },
-  {
-    key: 'state_dnc',
-    match: v => v && v !== 'N' && v !== 'No' && v !== false && v !== 0 && v !== '',
-    severity: 'high',
-    icon: 'ti-map-pin-off',
-    name: 'State DNC',
-    desc: v => `Listed on a State Do Not Call list${typeof v === 'string' && v.length <= 4 ? ` (${v})` : ''}.`,
+  'screamer': {
+    isClean: false,
+    name: 'Hostile Screamer',
+    desc: 'Known hostile caller prone to aggressive responses or verbal harassment.',
+    icon: 'ti-speakerphone'
   },
-  {
-    key: 'internal_dnc',
-    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
-    severity: 'high',
-    icon: 'ti-database-x',
-    name: 'Internal DNC',
-    desc: 'Flagged on your company\'s internal Do Not Call list.',
+  'complainer': {
+    isClean: false,
+    name: 'DNC Complainer Registry',
+    desc: 'Has filed formal complaints with regulatory bodies. High legal risk.',
+    icon: 'ti-message-report'
   },
-  {
-    key: 'screamer',
-    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
-    severity: 'high',
-    icon: 'ti-speakerphone',
-    name: 'Screamer',
-    desc: 'Known hostile caller — prone to aggressive responses or verbal abuse.',
+  'dnc': {
+    isClean: false,
+    name: 'DNC Record Found',
+    desc: 'Listed on active Do Not Call registries.',
+    icon: 'ti-phone-x'
   },
-  {
-    key: 'complainer',
-    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
-    severity: 'medium',
-    icon: 'ti-message-report',
-    name: 'DNC Complainer',
-    desc: 'Has filed formal complaints with the FTC. Legal risk if contacted.',
+  'state': {
+    isClean: false,
+    name: 'State DNC Registry',
+    desc: 'Listed on a restricted State Do Not Call list.',
+    icon: 'ti-map-pin-off'
   },
-  {
-    key: 'reassigned',
-    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
-    severity: 'medium',
-    icon: 'ti-arrows-exchange',
-    name: 'Reassigned Number',
-    desc: 'Number has been reassigned to a new subscriber. Verify consent before dialing.',
+  'internal': {
+    isClean: false,
+    name: 'Internal DNC Flag',
+    desc: 'Flagged directly on your internal company suppression files.',
+    icon: 'ti-database-x'
   },
-  {
-    key: 'wireless',
-    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
-    severity: 'info',
-    icon: 'ti-device-mobile',
-    name: 'Wireless / Cell',
-    desc: 'This is a cellular number — TCPA rules for auto-dialers apply.',
-  },
-  {
-    key: 'ported',
-    match: v => v === 'Y' || v === 'Yes' || v === true || v === 1,
-    severity: 'info',
-    icon: 'ti-transfer-in',
-    name: 'Ported Number',
-    desc: 'Number has been ported from its original carrier.',
-  },
-];
-
-const KEY_ALIASES = {
-  nat_dnc:      'federal_dnc',
-  national_dnc: 'federal_dnc',
-  fed_dnc:      'federal_dnc',
-  fdnc:         'federal_dnc',
-  sdnc:         'state_dnc',
-  int_dnc:      'internal_dnc',
-  cell:         'wireless',
-  is_cell:      'wireless',
-  iscell:       'wireless',
+  'reassigned': {
+    isClean: false,
+    name: 'Reassigned Number Warning',
+    desc: 'Number has changed owners. Active consent requires confirmation.',
+    icon: 'ti-arrows-exchange'
+  }
 };
 
-// ── Human-readable labels for API code values ─────────────────────
-const CODE_LABELS = {
-  screamer:   { label: 'Hostile / Screamer',    icon: 'ti-speakerphone'  },
-  litigator:  { label: 'TCPA Litigator',        icon: 'ti-gavel'         },
-  complainer: { label: 'DNC Complainer',        icon: 'ti-message-report'},
-  dnc:        { label: 'Do Not Call',           icon: 'ti-phone-x'       },
-  wireless:   { label: 'Wireless Number',       icon: 'ti-device-mobile' },
-  ported:     { label: 'Ported Number',         icon: 'ti-transfer-in'   },
-  reassigned: { label: 'Reassigned Number',     icon: 'ti-arrows-exchange'},
-  federal:    { label: 'Federal DNC',           icon: 'ti-building-government'},
-  state:      { label: 'State DNC',             icon: 'ti-map-pin-off'   },
-  internal:   { label: 'Internal DNC',          icon: 'ti-database-x'    },
-  clean:      { label: 'Clean',                 icon: 'ti-circle-check'  },
-};
-
-// ── BOOT ─────────────────────────────────────────────────────────
 function boot(){
   if(!isLiveCall()){ renderNoCall(); return; }
   renderPortal();
@@ -515,7 +412,7 @@ function renderPortal(){
           </div>
 
           <div class="flags-section" id="flagsSection">
-            <div class="flags-label">Detected Flags</div>
+            <div class="flags-label">Detected Status</div>
             <div id="flagsList"></div>
           </div>
 
@@ -541,7 +438,7 @@ function toggleRaw(){
   document.getElementById('rawArrow').textContent = rawOpen ? '▲ HIDE' : '▼ SHOW';
 }
 
-// ── MAIN CHECK ────────────────────────────────────────────────────
+// ── MAIN RUN CHECK ────────────────────────────────────────────────
 async function runCheck(rawPhone){
   const display = document.getElementById('statusDisplay');
   const icon    = document.getElementById('statusIcon');
@@ -555,7 +452,6 @@ async function runCheck(rawPhone){
     return;
   }
 
-  // Loading
   display.className   = 'status-display loading';
   icon.className      = 'ti ti-loader-2';
   numEl.textContent   = formatPhone(rawPhone);
@@ -571,28 +467,66 @@ async function runCheck(rawPhone){
     document.getElementById('rawJson').textContent = JSON.stringify(data, null, 2);
     document.getElementById('rawToggle').classList.add('visible');
 
-    const norm = normalise(data);
-    const fired = detectFlags(norm);
-
-    // Pull message and code from API response
-    const apiMessage = data.message || norm.message || '';
-    const apiStatus  = data.status  || norm.status  || '';
-
     numEl.textContent = formatPhone(rawPhone);
 
-    if(fired.length === 0){
+    // Extract dynamic keys directly from API structure
+    const rawCode = (data.code || (data.result && data.result.code) || 'none').toLowerCase();
+    const rawMsg  = data.message || (data.result && data.result.message) || '';
+    const status  = data.status || '';
+
+    // Match code to predefined configurations or construct fallback values
+    const config = VERDICT_MAP[rawCode] || {
+      isClean: false,
+      name: rawMsg || 'Database Match',
+      desc: `Identified dynamic record with internal API label matching code: ${rawCode}.`,
+      icon: 'ti-alert-triangle'
+    };
+
+    const pill = document.getElementById('apiMessagePill');
+    const pillText = document.getElementById('apiMessageText');
+    pillText.textContent = rawMsg || status;
+
+    const section = document.getElementById('flagsSection');
+    const list    = document.getElementById('flagsList');
+    section.classList.add('visible');
+
+    // BINARY DECISION: 'none' or 'Good' equals clean/green. Absolutely everything else is red.
+    if (rawCode === 'none' || rawMsg.toLowerCase() === 'good') {
       display.className   = 'status-display clean';
       icon.className      = 'ti ti-circle-check';
       verdict.textContent = 'CLEAN';
-      showApiMessagePill(apiMessage || apiStatus, 'pill-green');
-      showCleanFlag(data.code || norm.code, apiMessage);
+      
+      pill.className = 'api-message-pill visible pill-green';
+      
+      list.innerHTML = `
+        <div class="flag-row flag-clean">
+          <i class="ti ${config.icon}"></i>
+          <div style="flex:1">
+            <div class="flag-name">${config.name}</div>
+            <div class="flag-desc">${config.desc}</div>
+            <div class="flag-code-badge">
+              <i class="ti ti-tag"></i> API code: <strong>${rawCode}</strong>
+            </div>
+          </div>
+        </div>`;
     } else {
-      // Direct global shift to strict red branding layout whenever elements are blacklisted or flagged
-      display.className = 'status-display bad';
-      icon.className    = 'ti ti-ban';
+      display.className   = 'status-display bad';
+      icon.className      = 'ti ti-ban';
       verdict.textContent = 'DO NOT TRANSFER';
-      showApiMessagePill(apiMessage || apiStatus, 'pill-red');
-      showFlags(fired, data.code || norm.code, apiMessage);
+      
+      pill.className = 'api-message-pill visible pill-red';
+      
+      list.innerHTML = `
+        <div class="flag-row flag-critical">
+          <i class="ti ${config.icon}"></i>
+          <div style="flex:1">
+            <div class="flag-name">${config.name}</div>
+            <div class="flag-desc">${config.desc}</div>
+            <div class="flag-code-badge">
+              <i class="ti ti-tag"></i> API code: <strong>${rawCode}</strong>
+            </div>
+          </div>
+        </div>`;
     }
 
   } catch(err){
@@ -601,98 +535,11 @@ async function runCheck(rawPhone){
   }
 }
 
-// ── HELPERS ────────────────────────────────────────────────────────
-
 function formatPhone(raw){
   const d = raw.replace(/\D/g,'');
   if(d.length === 10) return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
   if(d.length === 11 && d[0]==='1') return `+1 (${d.slice(1,4)}) ${d.slice(4,7)}-${d.slice(7)}`;
   return raw;
-}
-
-function normalise(data){
-  const out = {};
-  const src = (data.result && typeof data.result === 'object') ? { ...data, ...data.result }
-            : (data.data   && typeof data.data   === 'object') ? { ...data, ...data.data }
-            : data;
-  for(const [k, v] of Object.entries(src)){
-    const canon = KEY_ALIASES[k.toLowerCase()] || k.toLowerCase();
-    out[canon] = v;
-  }
-  return out;
-}
-
-function detectFlags(norm){
-  const fired = [];
-  for(const def of FLAG_MAP){
-    const val = norm[def.key];
-    if(val !== undefined && val !== null && def.match(val)){
-      fired.push({ ...def, value: val });
-    }
-  }
-  const order = { critical:0, high:1, medium:2, info:3 };
-  fired.sort((a,b) => order[a.severity] - order[b.severity]);
-  return fired;
-}
-
-// ── Show message pill below verdict ──────────────────────────────
-function showApiMessagePill(message, colorClass){
-  if(!message) return;
-  const pill = document.getElementById('apiMessagePill');
-  const text = document.getElementById('apiMessageText');
-  text.textContent = message;
-  pill.className = `api-message-pill visible ${colorClass}`;
-}
-
-// ── API code badge HTML helper ────────────────────────────────────
-function buildCodeBadge(code){
-  if(!code) return '';
-  const codeStr = String(code).toLowerCase();
-  const meta = CODE_LABELS[codeStr] || { label: code, icon: 'ti-tag' };
-  return `
-    <div class="flag-code-badge">
-      <i class="ti ${meta.icon}"></i>
-      API code: <strong>${meta.label}</strong> <em style="opacity:.6">(${codeStr})</em>
-    </div>`;
-}
-
-function showFlags(fired, apiCode, apiMessage){
-  const section = document.getElementById('flagsSection');
-  const list    = document.getElementById('flagsList');
-  section.classList.add('visible');
-
-  // Build flag rows (all non-clean layouts render under uniform red alert parameters)
-  let html = fired.map((f, i) => {
-    const desc = typeof f.desc === 'function' ? f.desc(f.value) : f.desc;
-    const codeBadge = i === 0 ? buildCodeBadge(apiCode) : '';
-    return `
-      <div class="flag-row flag-${f.severity}" style="animation-delay:${i*60}ms">
-        <i class="ti ${f.icon}"></i>
-        <div style="flex:1">
-          <div class="flag-name">${f.name}</div>
-          <div class="flag-desc">${desc}</div>
-          ${codeBadge}
-        </div>
-      </div>`;
-  }).join('');
-
-  list.innerHTML = html;
-}
-
-function showCleanFlag(apiCode, apiMessage){
-  const section = document.getElementById('flagsSection');
-  const list    = document.getElementById('flagsList');
-  section.classList.add('visible');
-  const codeBadge = buildCodeBadge(apiCode);
-  list.innerHTML = `
-    <div class="flag-row flag-clean">
-      <i class="ti ti-shield-check"></i>
-      <div style="flex:1">
-        <div class="flag-name">No Records Found</div>
-        <div class="flag-desc">Not in any blacklist, DNC, litigator, or complaint registry.</div>
-        ${codeBadge}
-      </div>
-    </div>`;
 }
 
 function setInvalid(phone, title, msg){
@@ -705,7 +552,7 @@ function setInvalid(phone, title, msg){
   const list    = document.getElementById('flagsList');
   section.classList.add('visible');
   list.innerHTML = `
-    <div class="flag-row flag-medium">
+    <div class="flag-row flag-critical">
       <i class="ti ti-info-circle"></i>
       <div>
         <div class="flag-name">Check Failed</div>
