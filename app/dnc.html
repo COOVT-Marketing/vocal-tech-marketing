@@ -601,7 +601,7 @@ async function runCheck(rawPhone){
       verdict.textContent = hasCritical ? 'DO NOT TRANSFER'
                           : hasHigh     ? 'HIGH RISK'
                           :               'USE CAUTION';
-      showApiMessagePill(apiMessage || apiStatus, hasCritical ? 'pill-red' : 'pill-yellow');
+      showApiMessagePill(apiMessage || apiStatus, hasCritical ? 'pill-green' : 'pill-yellow');
       showFlags(fired, apiCode, apiMessage);
     }
 
