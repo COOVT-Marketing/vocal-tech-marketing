@@ -102,7 +102,6 @@ body{
 .status-display.loading{ border-color:var(--teal-b); }
 .status-display.clean  { border-color:var(--green-b); animation:greenPulse 2s ease forwards; }
 .status-display.bad    { border-color:var(--red-b);   animation:redPulse 2s ease forwards; }
-.status-display.warn   { border-color:var(--yellow-b); }
 .status-display.invalid{ border-color:var(--yellow-b); }
 
 @keyframes greenPulse{
@@ -126,7 +125,7 @@ body{
 .loading .status-hero { background:var(--card2); }
 .clean   .status-hero { background:var(--green-glow); }
 .bad     .status-hero { background:var(--red-glow); }
-.warn    .status-hero { background:var(--yellow-glow); }
+.warn    .status-hero { background:var(--red-glow); }
 .invalid .status-hero { background:var(--yellow-glow); }
 
 .status-icon{
@@ -143,8 +142,8 @@ body{
 .clean   .status-icon i { font-size:36px;color:var(--green) }
 .bad     .status-icon { background:rgba(239,68,68,0.2) }
 .bad     .status-icon i { font-size:36px;color:var(--red) }
-.warn    .status-icon { background:rgba(245,158,11,0.2) }
-.warn    .status-icon i { font-size:36px;color:var(--yellow) }
+.warn    .status-icon { background:rgba(239,68,68,0.2) }
+.warn    .status-icon i { font-size:36px;color:var(--red) }
 .invalid .status-icon { background:rgba(245,158,11,0.2) }
 .invalid .status-icon i { font-size:36px;color:var(--yellow) }
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -160,7 +159,7 @@ body{
 .loading .status-number { color:var(--txt2) }
 .clean   .status-number { color:var(--green) }
 .bad     .status-number { color:var(--red) }
-.warn    .status-number { color:var(--yellow) }
+.warn    .status-number { color:var(--red) }
 .invalid .status-number { color:var(--yellow) }
 
 .status-verdict{
@@ -171,7 +170,7 @@ body{
 .loading .status-verdict { color:var(--txt2);font-size:15px;font-weight:400 }
 .clean   .status-verdict { color:var(--green) }
 .bad     .status-verdict { color:var(--red) }
-.warn    .status-verdict { color:var(--yellow) }
+.warn    .status-verdict { color:var(--red) }
 .invalid .status-verdict { color:var(--yellow);font-size:18px }
 
 /* ── Flags grid ─────────────────────────────────────────── */
@@ -213,16 +212,16 @@ body{
 .flag-critical i,.flag-critical .flag-name { color:var(--red) }
 
 .flag-high{
-  background:rgba(249,115,22,0.1);
-  border-color:rgba(249,115,22,0.35);
+  background:rgba(239,68,68,0.09);
+  border-color:rgba(239,68,68,0.3);
 }
-.flag-high i,.flag-high .flag-name { color:var(--orange) }
+.flag-high i,.flag-high .flag-name { color:var(--red) }
 
 .flag-medium{
-  background:rgba(245,158,11,0.1);
-  border-color:rgba(245,158,11,0.3);
+  background:rgba(239,68,68,0.07);
+  border-color:rgba(239,68,68,0.25);
 }
-.flag-medium i,.flag-medium .flag-name { color:var(--yellow) }
+.flag-medium i,.flag-medium .flag-name { color:var(--red) }
 
 .flag-info{
   background:rgba(26,158,117,0.08);
