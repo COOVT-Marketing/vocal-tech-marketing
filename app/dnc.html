@@ -93,8 +93,8 @@ body{
 .status-display.loading{ border-color:var(--teal-b); }
 .status-display.clean  { border-color:var(--green-b); animation:greenPulse 2s ease forwards; }
 .status-display.bad    { border-color:var(--red-b);   animation:redPulse 2s ease forwards; }
-.status-display.warn   { border-color:var(--orange-b); }
-.status-display.invalid{ border-color:var(--yellow-b); }
+.status-display.warn   { border-color:var(--red-b);   animation:redPulse 2s ease forwards; }
+.status-display.invalid{ border-color:var(--red-b);   animation:redPulse 2s ease forwards; }
 
 @keyframes greenPulse{
   0%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)}
@@ -119,7 +119,7 @@ body{
 .clean   .status-hero { background:var(--green-glow); }
 .bad     .status-hero { background:var(--red-glow); }
 .warn    .status-hero { background:var(--red-glow); }
-.invalid .status-hero { background:var(--yellow-glow); }
+.invalid .status-hero { background:var(--red-glow); }
 
 .status-icon{
   width:72px;height:72px;border-radius:50%;
@@ -137,8 +137,8 @@ body{
 .bad     .status-icon i { font-size:36px;color:var(--red) }
 .warn    .status-icon { background:rgba(239,68,68,0.2) }
 .warn    .status-icon i { font-size:36px;color:var(--red) }
-.invalid .status-icon { background:rgba(245,158,11,0.2) }
-.invalid .status-icon i { font-size:36px;color:var(--yellow) }
+.invalid .status-icon { background:rgba(239,68,68,0.2) }
+.invalid .status-icon i { font-size:36px;color:var(--red) }
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .status-number{
@@ -153,7 +153,7 @@ body{
 .clean   .status-number { color:var(--green) }
 .bad     .status-number { color:var(--red) }
 .warn    .status-number { color:var(--red) }
-.invalid .status-number { color:var(--yellow) }
+.invalid .status-number { color:var(--red) }
 
 .status-verdict{
   font-size:26px;font-weight:700;letter-spacing:.02em;
@@ -164,7 +164,7 @@ body{
 .clean   .status-verdict { color:var(--green) }
 .bad     .status-verdict { color:var(--red) }
 .warn    .status-verdict { color:var(--red) }
-.invalid .status-verdict { color:var(--yellow);font-size:18px }
+.invalid .status-verdict { color:var(--red);font-size:18px }
 
 /* ── API Message pill (shown below verdict) ──────────────── */
 .api-message-pill{
@@ -188,7 +188,7 @@ body{
 /* Color variants driven by JS */
 .api-message-pill.pill-red    { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.4); color:var(--red); }
 .api-message-pill.pill-green  { background:rgba(34,197,94,0.1);  border-color:rgba(34,197,94,0.4); color:var(--green); }
-.api-message-pill.pill-yellow { background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.4); color:var(--yellow); }
+.api-message-pill.pill-yellow { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.4); color:var(--red); }
 .api-message-pill.pill-teal   { background:var(--teal-glow);     border-color:var(--teal-b);       color:var(--teal); }
 
 /* ── Flags grid ─────────────────────────────────────────── */
@@ -239,7 +239,7 @@ body{
 }
 .flag-code-badge i { font-size:11px; }
 
-/* Severity variants */
+/* Severity variants mapped to red colors for non-clean entries */
 .flag-critical{
   background:rgba(239,68,68,0.1);
   border-color:rgba(239,68,68,0.35);
@@ -259,10 +259,10 @@ body{
 .flag-medium i,.flag-medium .flag-name { color:var(--red) }
 
 .flag-info{
-  background:rgba(26,158,117,0.08);
-  border-color:rgba(26,158,117,0.3);
+  background:rgba(239,68,68,0.07);
+  border-color:rgba(239,68,68,0.25);
 }
-.flag-info i,.flag-info .flag-name { color:var(--teal) }
+.flag-info i,.flag-info .flag-name { color:var(--red) }
 
 .flag-clean{
   background:rgba(34,197,94,0.08);
@@ -271,17 +271,17 @@ body{
 .flag-clean i,.flag-clean .flag-name { color:var(--green) }
 
 .flag-api-code{
-  background:rgba(168,85,247,0.08);
-  border-color:rgba(168,85,247,0.3);
+  background:rgba(239,68,68,0.07);
+  border-color:rgba(239,68,68,0.25);
 }
-.flag-api-code i,.flag-api-code .flag-name { color:var(--purple) }
+.flag-api-code i,.flag-api-code .flag-name { color:var(--red) }
 
 /* ── API Status row (shown as first info flag) ───────────── */
 .flag-status{
-  background:rgba(26,158,117,0.06);
-  border-color:rgba(26,158,117,0.25);
+  background:rgba(239,68,68,0.07);
+  border-color:rgba(239,68,68,0.25);
 }
-.flag-status i,.flag-status .flag-name { color:var(--teal) }
+.flag-status i,.flag-status .flag-name { color:var(--red) }
 
 /* ── Raw data accordion ──────────────────────────────────── */
 .raw-toggle{
@@ -504,25 +504,21 @@ function renderPortal(){
       <div class="body">
         <div class="status-display idle" id="statusDisplay">
 
-          <!-- Hero verdict section -->
           <div class="status-hero">
             <div class="status-icon"><i class="ti ti-shield" id="statusIcon"></i></div>
             <div class="status-number" id="statusNumber">—</div>
             <div class="status-verdict" id="statusVerdict">Checking…</div>
-            <!-- API message pill shown here -->
             <div class="api-message-pill" id="apiMessagePill">
               <i class="ti ti-tag"></i>
               <span id="apiMessageText"></span>
             </div>
           </div>
 
-          <!-- Individual flag rows -->
           <div class="flags-section" id="flagsSection">
             <div class="flags-label">Detected Flags</div>
             <div id="flagsList"></div>
           </div>
 
-          <!-- Raw JSON toggle -->
           <button class="raw-toggle" id="rawToggle" onclick="toggleRaw()">
             <i class="ti ti-code"></i> Raw API Response
             <span id="rawArrow">▼ SHOW</span>
@@ -580,7 +576,6 @@ async function runCheck(rawPhone){
 
     // Pull message and code from API response
     const apiMessage = data.message || norm.message || '';
-    const apiCode    = data.code    || norm.code    || '';
     const apiStatus  = data.status  || norm.status  || '';
 
     numEl.textContent = formatPhone(rawPhone);
@@ -590,19 +585,14 @@ async function runCheck(rawPhone){
       icon.className      = 'ti ti-circle-check';
       verdict.textContent = 'CLEAN';
       showApiMessagePill(apiMessage || apiStatus, 'pill-green');
-      showCleanFlag(apiCode, apiMessage);
+      showCleanFlag(data.code || norm.code, apiMessage);
     } else {
-      const hasCritical = fired.some(f => f.severity === 'critical');
-      const hasHigh     = fired.some(f => f.severity === 'high');
-      display.className = hasCritical ? 'status-display bad'
-                        : hasHigh     ? 'status-display bad'
-                        :               'status-display warn';
-      icon.className    = hasCritical ? 'ti ti-ban' : 'ti ti-alert-triangle';
-      verdict.textContent = hasCritical ? 'DO NOT TRANSFER'
-                          : hasHigh     ? 'HIGH RISK'
-                          :               'USE CAUTION';
-      showApiMessagePill(apiMessage || apiStatus, hasCritical ? 'pill-green' : 'pill-yellow');
-      showFlags(fired, apiCode, apiMessage);
+      // Direct global shift to strict red branding layout whenever elements are blacklisted or flagged
+      display.className = 'status-display bad';
+      icon.className    = 'ti ti-ban';
+      verdict.textContent = 'DO NOT TRANSFER';
+      showApiMessagePill(apiMessage || apiStatus, 'pill-red');
+      showFlags(fired, data.code || norm.code, apiMessage);
     }
 
   } catch(err){
@@ -671,10 +661,9 @@ function showFlags(fired, apiCode, apiMessage){
   const list    = document.getElementById('flagsList');
   section.classList.add('visible');
 
-  // Build flag rows
+  // Build flag rows (all non-clean layouts render under uniform red alert parameters)
   let html = fired.map((f, i) => {
     const desc = typeof f.desc === 'function' ? f.desc(f.value) : f.desc;
-    // Attach the API code badge to the FIRST flag row only (most prominent)
     const codeBadge = i === 0 ? buildCodeBadge(apiCode) : '';
     return `
       <div class="flag-row flag-${f.severity}" style="animation-delay:${i*60}ms">
