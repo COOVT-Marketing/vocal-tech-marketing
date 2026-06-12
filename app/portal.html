@@ -81,7 +81,6 @@
     
     .body{padding:2rem}
 
-    /* ── Input Group ───────────────────────────────────────── */
     .input-container {
       display: flex;
       gap: 10px;
@@ -122,7 +121,6 @@
     button.run-btn:hover { opacity: 0.9; }
     button.run-btn:disabled { background-color: var(--card2); color: var(--txt3); cursor: not-allowed; }
 
-    /* ── Main status display ─────────────────────────────────── */
     .status-display {
       border-radius: 14px;
       border: 0.5px solid var(--border);
@@ -140,7 +138,6 @@
     @keyframes greenPulse{  0%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)}  50%{box-shadow:0 0 40px 8px rgba(34,197,94,0.25)}  100%{box-shadow:0 0 20px 4px rgba(34,197,94,0.1)}}
     @keyframes redPulse{  0%{box-shadow:0 0 0 0 rgba(239,68,68,0.5)}  50%{box-shadow:0 0 40px 8px rgba(239,68,68,0.25)}  100%{box-shadow:0 0 20px 4px rgba(239,68,68,0.1)}}
 
-    /* ── Hero section ─────────────────────────────────────────── */
     .status-hero {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 2.2rem 1.5rem 1.6rem;
@@ -189,7 +186,6 @@
     .bad     .status-verdict { color:var(--red) }
     .invalid .status-verdict { color:var(--red); font-size:18px }
 
-    /* ── API Message pill ─────────────────────────────────── */
     .api-message-pill {
       display: none;
       margin-top: 10px;
@@ -207,7 +203,6 @@
     .api-message-pill.pill-red   { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.4); color:var(--red); }
     .api-message-pill.pill-green { background:rgba(34,197,94,0.1);  border-color:rgba(34,197,94,0.4); color:var(--green); }
 
-    /* ── Flags grid ─────────────────────────────────────────── */
     .flags-section {
       padding: 0 1.2rem 1.4rem;
       display: none;
@@ -249,6 +244,21 @@
     .flag-clean { background:rgba(34,197,94,0.08); border-color:rgba(34,197,94,0.3); }
     .flag-clean i, .flag-clean .flag-name { color:var(--green) }
 
+    /* Company badge in header */
+    .company-badge {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 6px;
+      background: var(--teal-glow);
+      border: 0.5px solid var(--teal-b);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; color: var(--teal); font-weight: 500;
+      flex-shrink: 0;
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     @media(max-width:480px){ .body{padding:1.25rem} .header{padding:1.25rem} }
   </style>
 </head>
@@ -260,6 +270,10 @@
     <div class="header-txt">
       <h1>DNC Checker</h1>
       <p>Vocal Tech Marketing · Compliance Portal</p>
+    </div>
+    <div class="company-badge" id="companyBadge" style="display:none">
+      <i class="ti ti-building"></i>
+      <span id="companyBadgeText"></span>
     </div>
   </div>
 
@@ -291,23 +305,31 @@
 </div>
 
 <script>
-  // Configurations
   const API_KEY  = 'zkU3p9bRrzVDgcKRC2sK';
   const API_BASE = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${API_KEY}/response/json/phone/`;
-  
-  // PASTE YOUR EXACT APPS SCRIPT URL HERE
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8j6erDfX9E6j8Y03uv4JdLzLykAYY4dzvYJRj94QEl4LBBSR0uc2THu_sTXg97n5wIw/exec';
 
+  // ── Read company name from URL param ──────────────────────────
+  const urlParams = new URLSearchParams(window.location.search);
+  const COMPANY_NAME = urlParams.get('company') || 'Unknown Company';
+
+  // Show company badge in header if param exists
+  if (urlParams.get('company')) {
+    const badge = document.getElementById('companyBadge');
+    document.getElementById('companyBadgeText').textContent = COMPANY_NAME;
+    badge.style.display = 'flex';
+  }
+
   const VERDICT_MAP = {
-    'none': { isClean: true, name: 'No Records Found', desc: 'Not listed on any blacklist, DNC, litigator, or complaint registry.', icon: 'ti-shield-check' },
-    'federal-dnc': { isClean: false, name: 'Federal DNC Match', desc: 'Registered on the National Do Not Call Registry (FTC). Do not contact.', icon: 'ti-building-government' },
-    'litigator': { isClean: false, name: 'TCPA Litigator Threat', desc: 'Known serial plaintiff or class-action attorney. CRITICAL risk.', icon: 'ti-gavel' },
-    'screamer': { isClean: false, name: 'Hostile Screamer', desc: 'Known hostile caller prone to aggressive responses or verbal harassment.', icon: 'ti-speakerphone' },
-    'complainer': { isClean: false, name: 'DNC Complainer Registry', desc: 'Has filed formal complaints with regulatory bodies. High legal risk.', icon: 'ti-message-report' },
-    'dnc': { isClean: false, name: 'DNC Record Found', desc: 'Listed on active Do Not Call registries.', icon: 'ti-phone-x' },
-    'state': { isClean: false, name: 'State DNC Registry', desc: 'Listed on a restricted State Do Not Call list.', icon: 'ti-map-pin-off' },
-    'internal': { isClean: false, name: 'Internal DNC Flag', desc: 'Flagged directly on your internal company suppression files.', icon: 'ti-database-x' },
-    'reassigned': { isClean: false, name: 'Reassigned Number Warning', desc: 'Number has changed owners. Active consent requires confirmation.', icon: 'ti-arrows-exchange' }
+    'none':       { isClean: true,  name: 'No Records Found',          desc: 'Not listed on any blacklist, DNC, litigator, or complaint registry.',                        icon: 'ti-shield-check' },
+    'federal-dnc':{ isClean: false, name: 'Federal DNC Match',         desc: 'Registered on the National Do Not Call Registry (FTC). Do not contact.',                    icon: 'ti-building-government' },
+    'litigator':  { isClean: false, name: 'TCPA Litigator Threat',     desc: 'Known serial plaintiff or class-action attorney. CRITICAL risk.',                           icon: 'ti-gavel' },
+    'screamer':   { isClean: false, name: 'Hostile Screamer',          desc: 'Known hostile caller prone to aggressive responses or verbal harassment.',                   icon: 'ti-speakerphone' },
+    'complainer': { isClean: false, name: 'DNC Complainer Registry',   desc: 'Has filed formal complaints with regulatory bodies. High legal risk.',                      icon: 'ti-message-report' },
+    'dnc':        { isClean: false, name: 'DNC Record Found',          desc: 'Listed on active Do Not Call registries.',                                                   icon: 'ti-phone-x' },
+    'state':      { isClean: false, name: 'State DNC Registry',        desc: 'Listed on a restricted State Do Not Call list.',                                             icon: 'ti-map-pin-off' },
+    'internal':   { isClean: false, name: 'Internal DNC Flag',         desc: 'Flagged directly on your internal company suppression files.',                               icon: 'ti-database-x' },
+    'reassigned': { isClean: false, name: 'Reassigned Number Warning', desc: 'Number has changed owners. Active consent requires confirmation.',                           icon: 'ti-arrows-exchange' }
   };
 
   function formatPhone(d) {
@@ -318,17 +340,16 @@
   }
 
   async function executeLookup() {
-    const input = document.getElementById('phoneNumber');
-    const btn = document.getElementById('runBtn');
-    
+    const input   = document.getElementById('phoneNumber');
+    const btn     = document.getElementById('runBtn');
     const display = document.getElementById('statusDisplay');
-    const icon = document.getElementById('statusIcon');
-    const numEl = document.getElementById('statusNumber');
+    const icon    = document.getElementById('statusIcon');
+    const numEl   = document.getElementById('statusNumber');
     const verdict = document.getElementById('statusVerdict');
-    const pill = document.getElementById('apiMessagePill');
-    const pillText = document.getElementById('apiMessageText');
+    const pill    = document.getElementById('apiMessagePill');
+    const pillText= document.getElementById('apiMessageText');
     const section = document.getElementById('flagsSection');
-    const list = document.getElementById('flagsList');
+    const list    = document.getElementById('flagsList');
 
     const phoneVal = input.value.trim();
     if(!phoneVal) return alert('Please enter a phone number.');
@@ -339,7 +360,6 @@
       return;
     }
 
-    // Set UI to Loading
     btn.disabled = true;
     display.className = 'status-display loading';
     icon.className = 'ti ti-loader-2';
@@ -349,14 +369,12 @@
     section.classList.remove('visible');
 
     try {
-      // 1. Fetch live data directly from the Blacklist Alliance API
       const response = await fetch(`${API_BASE}${cleanNum}`);
       if (!response.ok) throw new Error(`API Connection Failed (HTTP ${response.status})`);
       
       const data = await response.json();
-
       const rawCode = (data.code || 'none').toLowerCase();
-      const rawMsg = data.message || '';
+      const rawMsg  = data.message || '';
 
       const config = VERDICT_MAP[rawCode] || {
         isClean: false,
@@ -368,7 +386,6 @@
       pillText.textContent = rawMsg;
       section.classList.add('visible');
 
-      // Binary Decision Tree UI
       if (rawCode === 'none' || rawMsg.toLowerCase() === 'good') {
         display.className = 'status-display clean';
         icon.className = 'ti ti-circle-check';
@@ -380,9 +397,7 @@
             <div style="flex:1">
               <div class="flag-name">${config.name}</div>
               <div class="flag-desc">${config.desc}</div>
-              <div class="flag-code-badge">
-                <i class="ti ti-tag"></i> API code: <strong>${rawCode}</strong>
-              </div>
+              <div class="flag-code-badge"><i class="ti ti-tag"></i> API code: <strong>${rawCode}</strong></div>
             </div>
           </div>`;
       } else {
@@ -396,18 +411,16 @@
             <div style="flex:1">
               <div class="flag-name">${config.name}</div>
               <div class="flag-desc">${config.desc}</div>
-              <div class="flag-code-badge">
-                <i class="ti ti-tag"></i> API code: <strong>${rawCode}</strong>
-              </div>
+              <div class="flag-code-badge"><i class="ti ti-tag"></i> API code: <strong>${rawCode}</strong></div>
             </div>
           </div>`;
       }
 
-      // 2. Fire and Forget logging operation to Google Sheets in background
-      fetch(`${GOOGLE_SCRIPT_URL}?phone=${cleanNum}&code=${encodeURIComponent(rawCode)}&msg=${encodeURIComponent(rawMsg)}&raw=${encodeURIComponent(JSON.stringify(data))}`, {
+      // Fire-and-forget log to Google Sheets — includes company name
+      fetch(`${GOOGLE_SCRIPT_URL}?phone=${cleanNum}&company=${encodeURIComponent(COMPANY_NAME)}&code=${encodeURIComponent(rawCode)}&msg=${encodeURIComponent(rawMsg)}&raw=${encodeURIComponent(JSON.stringify(data))}`, {
         method: 'GET',
         mode: 'no-cors'
-      }).catch(e => console.log('Background row append omitted:', e));
+      }).catch(e => console.log('Background log omitted:', e));
 
     } catch (err) {
       console.error(err);
