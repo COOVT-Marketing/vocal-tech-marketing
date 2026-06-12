@@ -249,26 +249,6 @@
     .flag-clean { background:rgba(34,197,94,0.08); border-color:rgba(34,197,94,0.3); }
     .flag-clean i, .flag-clean .flag-name { color:var(--green) }
 
-    /* ── Raw data accordion ──────────────────────────────────── */
-    .raw-toggle {
-      display: none; align-items: center; gap: 6px;
-      background: transparent; border: none; border-top: 0.5px solid var(--border);
-      width: 100%; padding: 9px 16px;
-      color: var(--txt3); font-size: 11px; font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-    }
-    .raw-toggle.visible { display: flex; }
-    .raw-toggle:hover { color: var(--txt2); }
-    .raw-toggle i { font-size: 14px; }
-    .raw-toggle span { margin-left: auto; font-size: 10px; letter-spacing: .05em; }
-
-    .raw-body { display: none; padding: 12px 16px; border-top: 0.5px solid var(--border); background: var(--bg); }
-    .raw-body.open { display: block; }
-    .raw-body pre {
-      font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--txt2);
-      white-space: pre-wrap; word-break: break-all; line-height: 1.6;
-    }
-
     @media(max-width:480px){ .body{padding:1.25rem} .header{padding:1.25rem} }
   </style>
 </head>
@@ -295,7 +275,7 @@
       <div class="status-hero">
         <div class="status-icon"><i class="ti ti-loader-2" id="statusIcon"></i></div>
         <div class="status-number" id="statusNumber">—</div>
-        <div class="status-verdict" id="statusVerdict">Scanning...</div>
+        <div class="status-verdict" id="statusVerdict">Searching...</div>
         <div class="api-message-pill" id="apiMessagePill">
           <i class="ti ti-tag"></i>
           <span id="apiMessageText"></span>
@@ -306,14 +286,6 @@
         <div class="flags-label">Detected Status</div>
         <div id="flagsList"></div>
       </div>
-
-      <!-- <!-- <button class="raw-toggle" id="rawToggle" onclick="toggleRaw()">
-        <i class="ti ti-code"></i> Raw API Response
-        <span id="rawArrow">▼ SHOW</span>
-      </button>
-      <div class="raw-body" id="rawBody">
-        <pre id="rawJson"></pre>
-      </div> -->
     </div>
   </div>
 </div>
@@ -338,13 +310,6 @@
     'reassigned': { isClean: false, name: 'Reassigned Number Warning', desc: 'Number has changed owners. Active consent requires confirmation.', icon: 'ti-arrows-exchange' }
   };
 
-  let rawOpen = false;
-  function toggleRaw(){
-    rawOpen = !rawOpen;
-    document.getElementById('rawBody').classList.toggle('open', rawOpen);
-    document.getElementById('rawArrow').textContent = rawOpen ? '▲ HIDE' : '▼ SHOW';
-  }
-
   function formatPhone(d) {
     d = d.replace(/\D/g,'');
     if(d.length === 10) return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
@@ -364,8 +329,6 @@
     const pillText = document.getElementById('apiMessageText');
     const section = document.getElementById('flagsSection');
     const list = document.getElementById('flagsList');
-    const rawToggle = document.getElementById('rawToggle');
-    const rawJson = document.getElementById('rawJson');
 
     const phoneVal = input.value.trim();
     if(!phoneVal) return alert('Please enter a phone number.');
@@ -381,10 +344,9 @@
     display.className = 'status-display loading';
     icon.className = 'ti ti-loader-2';
     numEl.textContent = formatPhone(cleanNum);
-    verdict.textContent = 'Scanning database...';
+    verdict.textContent = 'Searching...';
     pill.classList.remove('visible');
     section.classList.remove('visible');
-    rawToggle.classList.remove('visible');
 
     try {
       // 1. Fetch live data directly from the Blacklist Alliance API
@@ -392,10 +354,6 @@
       if (!response.ok) throw new Error(`API Connection Failed (HTTP ${response.status})`);
       
       const data = await response.json();
-      
-      // Update local UI accordion layout with raw JSON data
-      rawJson.textContent = JSON.stringify(data, null, 2);
-      rawToggle.classList.add('visible');
 
       const rawCode = (data.code || 'none').toLowerCase();
       const rawMsg = data.message || '';
@@ -448,7 +406,7 @@
       // 2. Fire and Forget logging operation to Google Sheets in background
       fetch(`${GOOGLE_SCRIPT_URL}?phone=${cleanNum}&code=${encodeURIComponent(rawCode)}&msg=${encodeURIComponent(rawMsg)}&raw=${encodeURIComponent(JSON.stringify(data))}`, {
         method: 'GET',
-        mode: 'no-cors' // Allows background thread execution across domains completely silent
+        mode: 'no-cors'
       }).catch(e => console.log('Background row append omitted:', e));
 
     } catch (err) {
