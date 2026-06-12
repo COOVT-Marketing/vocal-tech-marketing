@@ -28,7 +28,7 @@
     }
 
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    
+
     body {
       font-family:'DM Sans',sans-serif;
       background:var(--bg);
@@ -66,83 +66,73 @@
     .header-txt h1{font-size:16px;font-weight:600;color:#fff}
     .header-txt p{font-size:12px;color:var(--txt2);margin-top:2px}
 
-    .live-badge {
-      margin-left:auto;
-      display:flex;align-items:center;gap:6px;
-      background:var(--teal-glow);
-      border:0.5px solid var(--teal-b);
-      border-radius:20px;padding:4px 12px;
-      font-size:12px;color:var(--teal);font-weight:500;
-      flex-shrink:0;
-    }
-
     .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 1.4s ease-in-out infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-    
+
     .body{padding:2rem}
 
     .input-container {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 2rem;
+      display:flex;
+      gap:10px;
+      margin-bottom:2rem;
     }
 
     input[type="tel"] {
-      flex: 1;
-      padding: 0.8rem 1.2rem;
-      background-color: #090d16;
-      border: 0.5px solid var(--border);
-      border-radius: 10px;
-      color: #fff;
-      font-size: 15px;
-      transition: border-color 0.2s;
+      flex:1;
+      padding:0.8rem 1.2rem;
+      background-color:#090d16;
+      border:0.5px solid var(--border);
+      border-radius:10px;
+      color:#fff;
+      font-size:15px;
+      transition:border-color 0.2s;
     }
 
     input[type="tel"]:focus {
-      outline: none;
-      border-color: var(--teal);
+      outline:none;
+      border-color:var(--teal);
     }
 
     button.run-btn {
-      padding: 0.8rem 1.6rem;
-      background-color: var(--teal);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: opacity 0.2s;
+      padding:0.8rem 1.6rem;
+      background-color:var(--teal);
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      font-weight:500;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      transition:opacity 0.2s;
     }
 
-    button.run-btn:hover { opacity: 0.9; }
-    button.run-btn:disabled { background-color: var(--card2); color: var(--txt3); cursor: not-allowed; }
+    button.run-btn:hover { opacity:0.9; }
+    button.run-btn:disabled { background-color:var(--card2); color:var(--txt3); cursor:not-allowed; }
 
     .status-display {
-      border-radius: 14px;
-      border: 0.5px solid var(--border);
-      background: var(--card2);
-      overflow: hidden;
-      display: none;
-      transition: border-color 0.4s ease;
+      border-radius:14px;
+      border:0.5px solid var(--border);
+      background:var(--card2);
+      overflow:hidden;
+      display:none;
+      transition:border-color 0.4s ease;
     }
 
-    .status-display.loading{ border-color:var(--teal-b); display: block; }
-    .status-display.clean  { border-color:var(--green-b); display: block; animation:greenPulse 2s ease forwards; }
-    .status-display.bad    { border-color:var(--red-b);   display: block; animation:redPulse 2s ease forwards; }
-    .status-display.invalid{ border-color:var(--red-b);   display: block; animation:redPulse 2s ease forwards; }
+    .status-display.loading{ border-color:var(--teal-b); display:block; }
+    .status-display.clean  { border-color:var(--green-b); display:block; animation:greenPulse 2s ease forwards; }
+    .status-display.bad    { border-color:var(--red-b);   display:block; animation:redPulse 2s ease forwards; }
+    .status-display.invalid{ border-color:var(--red-b);   display:block; animation:redPulse 2s ease forwards; }
 
-    @keyframes greenPulse{  0%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)}  50%{box-shadow:0 0 40px 8px rgba(34,197,94,0.25)}  100%{box-shadow:0 0 20px 4px rgba(34,197,94,0.1)}}
-    @keyframes redPulse{  0%{box-shadow:0 0 0 0 rgba(239,68,68,0.5)}  50%{box-shadow:0 0 40px 8px rgba(239,68,68,0.25)}  100%{box-shadow:0 0 20px 4px rgba(239,68,68,0.1)}}
+    @keyframes greenPulse{ 0%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)} 50%{box-shadow:0 0 40px 8px rgba(34,197,94,0.25)} 100%{box-shadow:0 0 20px 4px rgba(34,197,94,0.1)} }
+    @keyframes redPulse{   0%{box-shadow:0 0 0 0 rgba(239,68,68,0.5)} 50%{box-shadow:0 0 40px 8px rgba(239,68,68,0.25)} 100%{box-shadow:0 0 20px 4px rgba(239,68,68,0.1)} }
 
     .status-hero {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 2.2rem 1.5rem 1.6rem;
-      transition: background 0.5s ease;
-      gap: 0;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:2.2rem 1.5rem 1.6rem;
+      transition:background 0.5s ease;
+      gap:0;
     }
     .loading .status-hero { background:var(--card2); }
     .clean   .status-hero { background:var(--green-glow); }
@@ -150,27 +140,27 @@
     .invalid .status-hero { background:var(--red-glow); }
 
     .status-icon {
-      width: 72px; height: 72px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1rem;
-      transition: background 0.4s;
+      width:72px; height:72px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:1rem;
+      transition:background 0.4s;
     }
     .loading .status-icon { background:var(--teal-glow) }
     .loading .status-icon i { font-size:36px; color:var(--teal); animation:spin 0.8s linear infinite }
     .clean   .status-icon { background:rgba(34,197,94,0.2) }
     .clean   .status-icon i { font-size:36px; color:var(--green) }
-    .bad     .status-icon { background:rgba(34,197,94,0.2) }
+    .bad     .status-icon { background:rgba(239,68,68,0.2) }
     .bad     .status-icon i { font-size:36px; color:var(--red) }
     .invalid .status-icon { background:rgba(239,68,68,0.2) }
     .invalid .status-icon i { font-size:36px; color:var(--red) }
     @keyframes spin{to{transform:rotate(360deg)}}
 
     .status-number {
-      font-family: 'DM Mono', monospace;
-      font-size: 20px; font-weight: 500;
-      letter-spacing: .06em;
-      margin-bottom: .5rem;
-      transition: color 0.4s;
+      font-family:'DM Mono',monospace;
+      font-size:20px; font-weight:500;
+      letter-spacing:.06em;
+      margin-bottom:.5rem;
+      transition:color 0.4s;
     }
     .loading .status-number { color:var(--txt2) }
     .clean   .status-number { color:var(--green) }
@@ -178,8 +168,8 @@
     .invalid .status-number { color:var(--red) }
 
     .status-verdict {
-      font-size: 26px; font-weight: 700; letter-spacing: .02em;
-      transition: color 0.4s;
+      font-size:26px; font-weight:700; letter-spacing:.02em;
+      transition:color 0.4s;
     }
     .loading .status-verdict { color:var(--txt2); font-size:15px; font-weight:400 }
     .clean   .status-verdict { color:var(--green) }
@@ -187,76 +177,75 @@
     .invalid .status-verdict { color:var(--red); font-size:18px }
 
     .api-message-pill {
-      display: none;
-      margin-top: 10px;
-      align-items: center; gap: 6px;
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-size: 12px; font-weight: 600; letter-spacing: .06em;
-      text-transform: uppercase;
-      border: 0.5px solid;
-      animation: fadeUp 0.35s ease forwards;
+      display:none;
+      margin-top:10px;
+      align-items:center; gap:6px;
+      padding:5px 14px;
+      border-radius:20px;
+      font-size:12px; font-weight:600; letter-spacing:.06em;
+      text-transform:uppercase;
+      border:0.5px solid;
+      animation:fadeUp 0.35s ease forwards;
     }
-    .api-message-pill.visible { display: inline-flex; }
+    .api-message-pill.visible { display:inline-flex; }
     @keyframes fadeUp{ from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
 
     .api-message-pill.pill-red   { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.4); color:var(--red); }
     .api-message-pill.pill-green { background:rgba(34,197,94,0.1);  border-color:rgba(34,197,94,0.4); color:var(--green); }
 
     .flags-section {
-      padding: 0 1.2rem 1.4rem;
-      display: none;
-      flex-direction: column;
-      gap: 8px;
+      padding:0 1.2rem 1.4rem;
+      display:none;
+      flex-direction:column;
+      gap:8px;
     }
-    .flags-section.visible { display: flex; }
+    .flags-section.visible { display:flex; }
 
     .flags-label {
-      font-size: 10px; font-weight: 600; letter-spacing: .1em;
-      color: var(--txt3); text-transform: uppercase;
-      padding: 0 2px; margin-bottom: 2px;
+      font-size:10px; font-weight:600; letter-spacing:.1em;
+      color:var(--txt3); text-transform:uppercase;
+      padding:0 2px; margin-bottom:2px;
     }
 
     .flag-row {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 0.5px solid;
-      animation: flagIn 0.3s ease forwards;
+      display:flex; align-items:flex-start; gap:10px;
+      padding:10px 14px;
+      border-radius:8px;
+      border:0.5px solid;
+      animation:flagIn 0.3s ease forwards;
     }
     @keyframes flagIn{ from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-    
+
     .flag-row i { font-size:17px; flex-shrink:0; margin-top:1px; }
     .flag-row .flag-name { font-size:13px; font-weight:600; }
     .flag-row .flag-desc { font-size:11px; color:var(--txt2); line-height:1.35; margin-top:2px }
 
     .flag-code-badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      margin-top: 5px; padding: 2px 8px; border-radius: 4px;
-      font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
-      background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.12);
-      color: var(--txt2);
+      display:inline-flex; align-items:center; gap:4px;
+      margin-top:5px; padding:2px 8px; border-radius:4px;
+      font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
+      background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.12);
+      color:var(--txt2);
     }
-    .flag-code-badge i { font-size: 11px; }
+    .flag-code-badge i { font-size:11px; }
 
     .flag-critical { background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.35); }
     .flag-critical i, .flag-critical .flag-name { color:var(--red) }
     .flag-clean { background:rgba(34,197,94,0.08); border-color:rgba(34,197,94,0.3); }
     .flag-clean i, .flag-clean .flag-name { color:var(--green) }
 
-    /* Company badge in header */
     .company-badge {
-      margin-left: auto;
-      display: flex; align-items: center; gap: 6px;
-      background: var(--teal-glow);
-      border: 0.5px solid var(--teal-b);
-      border-radius: 20px; padding: 4px 12px;
-      font-size: 12px; color: var(--teal); font-weight: 500;
-      flex-shrink: 0;
-      max-width: 180px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      margin-left:auto;
+      display:flex; align-items:center; gap:6px;
+      background:var(--teal-glow);
+      border:0.5px solid var(--teal-b);
+      border-radius:20px; padding:4px 12px;
+      font-size:12px; color:var(--teal); font-weight:500;
+      flex-shrink:0;
+      max-width:180px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
     }
 
     @media(max-width:480px){ .body{padding:1.25rem} .header{padding:1.25rem} }
@@ -305,104 +294,97 @@
 </div>
 
 <script>
-  // ── Guard: block access if no company param ────────────────────
-const urlParams = new URLSearchParams(window.location.search);
-const companyParam = urlParams.get('company');
-
-if (!companyParam || companyParam.trim() === '') {
-  document.body.innerHTML = `
-    <div style="
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      min-height:100vh; background:#0b0f19; font-family:'DM Sans',sans-serif;
-      text-align:center; padding:2rem;
-    ">
-      <div style="
-        width:64px; height:64px; background:rgba(239,68,68,0.15);
-        border-radius:50%; display:flex; align-items:center; justify-content:center;
-        margin-bottom:1.5rem;
-      ">
-        <i class="ti ti-lock" style="font-size:30px; color:#ef4444;"></i>
-      </div>
-      <h2 style="color:#f9fafb; font-size:20px; font-weight:600; margin-bottom:8px;">Access Restricted</h2>
-      <p style="color:#6b7280; font-size:14px; max-width:320px; line-height:1.6;">
-        This portal requires an authorized company link.<br>Please contact Vocal Tech Marketing to get your access link.
-      </p>
-    </div>
-  `;
-  throw new Error('Access blocked: no company param.');
-}
-
-const COMPANY_NAME = companyParam.trim();
-
-// Show company badge in header
-const badge = document.getElementById('companyBadge');
-document.getElementById('companyBadgeText').textContent = COMPANY_NAME;
-badge.style.display = 'flex';
-  const API_KEY  = 'zkU3p9bRrzVDgcKRC2sK';
-  const API_BASE = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${API_KEY}/response/json/phone/`;
+  // ── Constants ─────────────────────────────────────────────────
+  const API_KEY         = 'zkU3p9bRrzVDgcKRC2sK';
+  const API_BASE        = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${API_KEY}/response/json/phone/`;
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8j6erDfX9E6j8Y03uv4JdLzLykAYY4dzvYJRj94QEl4LBBSR0uc2THu_sTXg97n5wIw/exec';
 
-  // ── Read company name from URL param ──────────────────────────
-  const urlParams = new URLSearchParams(window.location.search);
-  const COMPANY_NAME = urlParams.get('company') || 'Unknown Company';
+  // ── Guard: block access if no company param ───────────────────
+  const urlParams    = new URLSearchParams(window.location.search);
+  const companyParam = urlParams.get('company');
 
-  // Show company badge in header if param exists
-  if (urlParams.get('company')) {
-    const badge = document.getElementById('companyBadge');
-    document.getElementById('companyBadgeText').textContent = COMPANY_NAME;
-    badge.style.display = 'flex';
+  if (!companyParam || companyParam.trim() === '') {
+    document.body.innerHTML = `
+      <div style="
+        display:flex; flex-direction:column; align-items:center; justify-content:center;
+        min-height:100vh; background:#0b0f19; font-family:'DM Sans',sans-serif;
+        text-align:center; padding:2rem;
+      ">
+        <div style="
+          width:64px; height:64px; background:rgba(239,68,68,0.15);
+          border-radius:50%; display:flex; align-items:center; justify-content:center;
+          margin-bottom:1.5rem;
+        ">
+          <i class="ti ti-lock" style="font-size:30px; color:#ef4444;"></i>
+        </div>
+        <h2 style="color:#f9fafb; font-size:20px; font-weight:600; margin-bottom:8px;">Access Restricted</h2>
+        <p style="color:#6b7280; font-size:14px; max-width:320px; line-height:1.6;">
+          This portal requires an authorized company link.<br>Please contact Vocal Tech Marketing to get your access link.
+        </p>
+      </div>
+    `;
+    throw new Error('Access blocked: no company param.');
   }
 
+  // ── Company name (safe to use from here on) ───────────────────
+  const COMPANY_NAME = companyParam.trim();
+  document.getElementById('companyBadgeText').textContent = COMPANY_NAME;
+  document.getElementById('companyBadge').style.display = 'flex';
+
+  // ── Verdict map ───────────────────────────────────────────────
   const VERDICT_MAP = {
-    'none':       { isClean: true,  name: 'No Records Found',          desc: 'Not listed on any blacklist, DNC, litigator, or complaint registry.',                        icon: 'ti-shield-check' },
-    'federal-dnc':{ isClean: false, name: 'Federal DNC Match',         desc: 'Registered on the National Do Not Call Registry (FTC). Do not contact.',                    icon: 'ti-building-government' },
-    'litigator':  { isClean: false, name: 'TCPA Litigator Threat',     desc: 'Known serial plaintiff or class-action attorney. CRITICAL risk.',                           icon: 'ti-gavel' },
-    'screamer':   { isClean: false, name: 'Hostile Screamer',          desc: 'Known hostile caller prone to aggressive responses or verbal harassment.',                   icon: 'ti-speakerphone' },
-    'complainer': { isClean: false, name: 'DNC Complainer Registry',   desc: 'Has filed formal complaints with regulatory bodies. High legal risk.',                      icon: 'ti-message-report' },
-    'dnc':        { isClean: false, name: 'DNC Record Found',          desc: 'Listed on active Do Not Call registries.',                                                   icon: 'ti-phone-x' },
-    'state':      { isClean: false, name: 'State DNC Registry',        desc: 'Listed on a restricted State Do Not Call list.',                                             icon: 'ti-map-pin-off' },
-    'internal':   { isClean: false, name: 'Internal DNC Flag',         desc: 'Flagged directly on your internal company suppression files.',                               icon: 'ti-database-x' },
-    'reassigned': { isClean: false, name: 'Reassigned Number Warning', desc: 'Number has changed owners. Active consent requires confirmation.',                           icon: 'ti-arrows-exchange' }
+    'none':       { isClean: true,  name: 'No Records Found',          desc: 'Not listed on any blacklist, DNC, litigator, or complaint registry.',         icon: 'ti-shield-check' },
+    'federal-dnc':{ isClean: false, name: 'Federal DNC Match',         desc: 'Registered on the National Do Not Call Registry (FTC). Do not contact.',     icon: 'ti-building-government' },
+    'litigator':  { isClean: false, name: 'TCPA Litigator Threat',     desc: 'Known serial plaintiff or class-action attorney. CRITICAL risk.',             icon: 'ti-gavel' },
+    'screamer':   { isClean: false, name: 'Hostile Screamer',          desc: 'Known hostile caller prone to aggressive responses or verbal harassment.',     icon: 'ti-speakerphone' },
+    'complainer': { isClean: false, name: 'DNC Complainer Registry',   desc: 'Has filed formal complaints with regulatory bodies. High legal risk.',        icon: 'ti-message-report' },
+    'dnc':        { isClean: false, name: 'DNC Record Found',          desc: 'Listed on active Do Not Call registries.',                                    icon: 'ti-phone-x' },
+    'state':      { isClean: false, name: 'State DNC Registry',        desc: 'Listed on a restricted State Do Not Call list.',                              icon: 'ti-map-pin-off' },
+    'internal':   { isClean: false, name: 'Internal DNC Flag',         desc: 'Flagged directly on your internal company suppression files.',                icon: 'ti-database-x' },
+    'reassigned': { isClean: false, name: 'Reassigned Number Warning', desc: 'Number has changed owners. Active consent requires confirmation.',            icon: 'ti-arrows-exchange' }
   };
 
   function formatPhone(d) {
     d = d.replace(/\D/g,'');
-    if(d.length === 10) return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
-    if(d.length === 11 && d[0]==='1') return `+1 (${d.slice(1,4)}) ${d.slice(4,7)}-${d.slice(7)}`;
+    if (d.length === 10) return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
+    if (d.length === 11 && d[0]==='1') return `+1 (${d.slice(1,4)}) ${d.slice(4,7)}-${d.slice(7)}`;
     return d;
   }
 
   async function executeLookup() {
-    const input   = document.getElementById('phoneNumber');
-    const btn     = document.getElementById('runBtn');
-    const display = document.getElementById('statusDisplay');
-    const icon    = document.getElementById('statusIcon');
-    const numEl   = document.getElementById('statusNumber');
-    const verdict = document.getElementById('statusVerdict');
-    const pill    = document.getElementById('apiMessagePill');
-    const pillText= document.getElementById('apiMessageText');
-    const section = document.getElementById('flagsSection');
-    const list    = document.getElementById('flagsList');
+    const input    = document.getElementById('phoneNumber');
+    const btn      = document.getElementById('runBtn');
+    const display  = document.getElementById('statusDisplay');
+    const icon     = document.getElementById('statusIcon');
+    const numEl    = document.getElementById('statusNumber');
+    const verdict  = document.getElementById('statusVerdict');
+    const pill     = document.getElementById('apiMessagePill');
+    const pillText = document.getElementById('apiMessageText');
+    const section  = document.getElementById('flagsSection');
+    const list     = document.getElementById('flagsList');
 
     const phoneVal = input.value.trim();
-    if(!phoneVal) return alert('Please enter a phone number.');
+    if (!phoneVal) return alert('Please enter a phone number.');
 
     const cleanNum = phoneVal.replace(/\D/g,'');
-    if(cleanNum.length < 7 || cleanNum.length > 15) {
+    if (cleanNum.length < 7 || cleanNum.length > 15) {
       alert('Invalid phone format.');
       return;
     }
 
     btn.disabled = true;
+
+    // Fetch IP
     let userIP = 'Unknown';
-      try {
-      const ipRes = await fetch('https://api.ipify.org?format=json');
+    try {
+      const ipRes  = await fetch('https://api.ipify.org?format=json');
       const ipData = await ipRes.json();
       userIP = ipData.ip || 'Unknown';
-      } catch(e) { userIP = 'Unknown'; }
+    } catch(e) { userIP = 'Unknown'; }
 
+    // Set loading state
     display.className = 'status-display loading';
-    icon.className = 'ti ti-loader-2';
+    icon.className    = 'ti ti-loader-2';
     numEl.textContent = formatPhone(cleanNum);
     verdict.textContent = 'Searching...';
     pill.classList.remove('visible');
@@ -411,8 +393,8 @@ badge.style.display = 'flex';
     try {
       const response = await fetch(`${API_BASE}${cleanNum}`);
       if (!response.ok) throw new Error(`API Connection Failed (HTTP ${response.status})`);
-      
-      const data = await response.json();
+
+      const data    = await response.json();
       const rawCode = (data.code || 'none').toLowerCase();
       const rawMsg  = data.message || '';
 
@@ -428,7 +410,7 @@ badge.style.display = 'flex';
 
       if (rawCode === 'none' || rawMsg.toLowerCase() === 'good') {
         display.className = 'status-display clean';
-        icon.className = 'ti ti-circle-check';
+        icon.className    = 'ti ti-circle-check';
         verdict.textContent = 'CLEAN';
         pill.className = 'api-message-pill visible pill-green';
         list.innerHTML = `
@@ -442,7 +424,7 @@ badge.style.display = 'flex';
           </div>`;
       } else {
         display.className = 'status-display bad';
-        icon.className = 'ti ti-ban';
+        icon.className    = 'ti ti-ban';
         verdict.textContent = 'DO NOT TRANSFER';
         pill.className = 'api-message-pill visible pill-red';
         list.innerHTML = `
@@ -456,16 +438,16 @@ badge.style.display = 'flex';
           </div>`;
       }
 
-      // Fire-and-forget log to Google Sheets — includes company name
+      // Fire-and-forget log to Google Sheets
       fetch(`${GOOGLE_SCRIPT_URL}?phone=${cleanNum}&company=${encodeURIComponent(COMPANY_NAME)}&ip=${encodeURIComponent(userIP)}&code=${encodeURIComponent(rawCode)}&msg=${encodeURIComponent(rawMsg)}&raw=${encodeURIComponent(JSON.stringify(data))}`, {
         method: 'GET',
         mode: 'no-cors'
-        }).catch(e => console.log('Background log omitted:', e));
+      }).catch(e => console.log('Background log omitted:', e));
 
     } catch (err) {
       console.error(err);
       display.className = 'status-display invalid';
-      icon.className = 'ti ti-alert-triangle';
+      icon.className    = 'ti ti-alert-triangle';
       verdict.textContent = 'CHECK FAILED';
       section.classList.add('visible');
       list.innerHTML = `
