@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Verification Portal</title>
+    <style>
+        :root {
+            --bg-dark: #0a0b0d;
+            --panel-bg: #12141c;
+            --accent-primary: #2563eb;
+            --border-ui: #222636;
+            --text-heading: #ffffff;
+            --text-body: #9fa6b5;
+            --color-success: #10b981;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-body);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .portal-card {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-ui);
+            border-radius: 10px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+        }
+
+        h2 {
+            margin: 0 0 0.25rem 0;
+            color: var(--text-heading);
+            font-size: 1.35rem;
+            font-weight: 600;
+        }
+
+        p.desc {
+            font-size: 0.85rem;
+            margin: 0 0 1.5rem 0;
+            color: #62697a;
+        }
+
+        .input-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            color: #848ca1;
+        }
+
+        input[type="tel"] {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-ui);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--accent-primary);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+
+        button:hover { opacity: 0.9; }
+        button:disabled { background-color: var(--border-ui); cursor: not-allowed; }
+
+        .display-box {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: rgba(255,255,255,0.01);
+            border: 1px dashed var(--border-ui);
+            border-radius: 5px;
+            display: none;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .data-row:last-child { margin-bottom: 0; }
+        .key { color: #848ca1; }
+        .val { font-weight: 600; color: var(--text-heading); }
+        
+        /* Dynamic emphasis colors */
+        .highlight-val {
+            color: var(--color-success);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="portal-card">
+    <h2>Data Verification Portal</h2>
+    <p class="desc">Direct Blacklist Alliance lookup engine</p>
+    
+    <div class="input-group">
+        <label for="phoneNumber">Target Phone Number</label>
+        <input type="tel" id="phoneNumber" placeholder="e.g. 5557771234" autocomplete="off">
+    </div>
+    
+    <button id="runBtn" onclick="executeLookup()">Execute Query</button>
+
+    <div id="resultDisplay" class="display-box">
+        <div class="data-row">
+            <span class="key">Response Code:</span>
+            <span id="codeOut" class="highlight-val">--</span>
+        </div>
+        <div class="data-row">
+            <span class="key">Status / Disposition:</span>
+            <span id="msgOut" class="val">--</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Paste your newly deployed Google Apps Script Web App URL here
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby8j6erDfX9E6j8Y03uv4JdLzLykAYY4dzvYJRj94QEl4LBBSR0uc2THu_sTXg97n5wIw/exec';
+
+async function executeLookup() {
+    const input = document.getElementById('phoneNumber');
+    const btn = document.getElementById('runBtn');
+    const display = document.getElementById('resultDisplay');
+    const codeOut = document.getElementById('codeOut');
+    const msgOut = document.getElementById('msgOut');
+
+    const phoneVal = input.value.trim();
+    if(!phoneVal) return alert('Please enter a phone number.');
+
+    btn.disabled = true;
+    btn.innerText = 'Querying Database...';
+    display.style.display = 'none';
+
+    try {
+        // Pass phone parameter cleanly through a GET query string
+        const targetUrl = `${WEB_APP_URL}?phone=${encodeURIComponent(phoneVal)}`;
+        
+        const response = await fetch(targetUrl, {
+            method: 'GET'
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'error') {
+            alert('Backend Error: ' + data.message);
+            return;
+        }
+
+        // Render response data live to panels
+        codeOut.innerText = data.code;
+        msgOut.innerText = data.message;
+        
+        // Color matching conditionally based on response strings
+        const lowerMsg = data.message.toLowerCase();
+        if(lowerMsg.includes('dnc') || lowerMsg.includes('blacklist') || lowerMsg.includes('screamer') || data.code !== '200') {
+            codeOut.style.color = '#ef4444';
+            codeOut.style.background = 'rgba(239, 68, 68, 0.1)';
+        } else {
+            codeOut.style.color = 'var(--color-success)';
+            codeOut.style.background = 'rgba(16, 185, 129, 0.1)';
+        }
+
+        display.style.display = 'block';
+
+    } catch (err) {
+        console.error('Portal connection issue:', err);
+        alert('Verification execution failed or timed out.');
+    } finally {
+        btn.disabled = false;
+        btn.innerText = 'Execute Query';
+    }
+}
+</script>
+
+</body>
+</html>
