@@ -361,6 +361,13 @@
     }
 
     btn.disabled = true;
+    let userIP = 'Unknown';
+      try {
+      const ipRes = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipRes.json();
+      userIP = ipData.ip || 'Unknown';
+      } catch(e) { userIP = 'Unknown'; }
+
     display.className = 'status-display loading';
     icon.className = 'ti ti-loader-2';
     numEl.textContent = formatPhone(cleanNum);
@@ -417,10 +424,10 @@
       }
 
       // Fire-and-forget log to Google Sheets — includes company name
-      fetch(`${GOOGLE_SCRIPT_URL}?phone=${cleanNum}&company=${encodeURIComponent(COMPANY_NAME)}&code=${encodeURIComponent(rawCode)}&msg=${encodeURIComponent(rawMsg)}&raw=${encodeURIComponent(JSON.stringify(data))}`, {
+      fetch(`${GOOGLE_SCRIPT_URL}?phone=${cleanNum}&company=${encodeURIComponent(COMPANY_NAME)}&ip=${encodeURIComponent(userIP)}&code=${encodeURIComponent(rawCode)}&msg=${encodeURIComponent(rawMsg)}&raw=${encodeURIComponent(JSON.stringify(data))}`, {
         method: 'GET',
         mode: 'no-cors'
-      }).catch(e => console.log('Background log omitted:', e));
+        }).catch(e => console.log('Background log omitted:', e));
 
     } catch (err) {
       console.error(err);
