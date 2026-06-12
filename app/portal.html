@@ -305,6 +305,39 @@
 </div>
 
 <script>
+  // ── Guard: block access if no company param ────────────────────
+const urlParams = new URLSearchParams(window.location.search);
+const companyParam = urlParams.get('company');
+
+if (!companyParam || companyParam.trim() === '') {
+  document.body.innerHTML = `
+    <div style="
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      min-height:100vh; background:#0b0f19; font-family:'DM Sans',sans-serif;
+      text-align:center; padding:2rem;
+    ">
+      <div style="
+        width:64px; height:64px; background:rgba(239,68,68,0.15);
+        border-radius:50%; display:flex; align-items:center; justify-content:center;
+        margin-bottom:1.5rem;
+      ">
+        <i class="ti ti-lock" style="font-size:30px; color:#ef4444;"></i>
+      </div>
+      <h2 style="color:#f9fafb; font-size:20px; font-weight:600; margin-bottom:8px;">Access Restricted</h2>
+      <p style="color:#6b7280; font-size:14px; max-width:320px; line-height:1.6;">
+        This portal requires an authorized company link.<br>Please contact Vocal Tech Marketing to get your access link.
+      </p>
+    </div>
+  `;
+  throw new Error('Access blocked: no company param.');
+}
+
+const COMPANY_NAME = companyParam.trim();
+
+// Show company badge in header
+const badge = document.getElementById('companyBadge');
+document.getElementById('companyBadgeText').textContent = COMPANY_NAME;
+badge.style.display = 'flex';
   const API_KEY  = 'zkU3p9bRrzVDgcKRC2sK';
   const API_BASE = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${API_KEY}/response/json/phone/`;
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8j6erDfX9E6j8Y03uv4JdLzLykAYY4dzvYJRj94QEl4LBBSR0uc2THu_sTXg97n5wIw/exec';
