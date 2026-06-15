@@ -30,9 +30,9 @@
       --yellow-glow: rgba(245,158,11,0.12);
       --yellow-b:    rgba(245,158,11,0.35);
     }
- 
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--bg);
@@ -40,7 +40,7 @@
       min-height: 100vh;
       padding: 2rem 1rem 3rem;
     }
- 
+
     /* ── NO CALL SCREEN ── */
     .no-call-screen {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -53,7 +53,7 @@
     }
     .no-call-icon i { font-size: 32px; color: var(--txt2); }
     .no-call-screen h2 { font-size: 18px; font-weight: 500; }
- 
+
     /* ── SHARED CARD ── */
     .vtm-card {
       background: var(--card);
@@ -64,7 +64,7 @@
       overflow: hidden;
       box-shadow: 0 25px 30px -8px rgba(0,0,0,0.6);
     }
- 
+
     /* ── HEADER ── */
     .vtm-header {
       background: #090d16;
@@ -91,21 +91,23 @@
       animation: pulse 1.4s ease-in-out infinite;
     }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
- 
+
     /* ── DNC BODY ── */
     .dnc-body { padding: 2rem; }
- 
+
+    /* ── STATUS DISPLAY (top verdict) ── */
     .status-display {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 2.5rem 1.5rem; border-radius: 14px;
+      padding: 2rem 1.5rem 1.5rem;
+      border-radius: 14px;
       border: 0.5px solid var(--border); background: var(--card2);
-      min-height: 200px; transition: background .5s ease, border-color .5s ease;
+      transition: background .5s ease, border-color .5s ease;
     }
     .status-display.loading { border-color: var(--teal-b); }
     .status-display.clean   { background: var(--green-glow); border-color: var(--green-b); animation: greenPulse 2s ease forwards; }
     .status-display.bad     { background: var(--red-glow);   border-color: var(--red-b);   animation: redPulse 2s ease forwards; }
     .status-display.invalid { background: var(--yellow-glow);border-color: var(--yellow-b); }
- 
+
     @keyframes greenPulse {
       0%  { box-shadow:0 0 0 0 rgba(34,197,94,.5) }
       50% { box-shadow:0 0 40px 8px rgba(34,197,94,.25) }
@@ -116,25 +118,25 @@
       50% { box-shadow:0 0 40px 8px rgba(239,68,68,.25) }
       100%{ box-shadow:0 0 20px 4px rgba(239,68,68,.1) }
     }
- 
+
     .status-icon {
       width: 72px; height: 72px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 1rem; transition: background .4s;
     }
-    .status-display .status-icon     { background: rgba(255,255,255,.05); }
-    .status-display.loading .status-icon { background: var(--teal-glow); }
-    .status-display.clean   .status-icon { background: rgba(34,197,94,.2); }
-    .status-display.bad     .status-icon { background: rgba(239,68,68,.2); }
-    .status-display.invalid .status-icon { background: rgba(245,158,11,.2); }
- 
+    .status-display .status-icon          { background: rgba(255,255,255,.05); }
+    .status-display.loading .status-icon  { background: var(--teal-glow); }
+    .status-display.clean   .status-icon  { background: rgba(34,197,94,.2); }
+    .status-display.bad     .status-icon  { background: rgba(239,68,68,.2); }
+    .status-display.invalid .status-icon  { background: rgba(245,158,11,.2); }
+
     .status-icon i { font-size: 36px; color: var(--txt3); }
     .status-display.loading .status-icon i { color: var(--teal); animation: spin .8s linear infinite; }
     .status-display.clean   .status-icon i { color: var(--green); }
     .status-display.bad     .status-icon i { color: var(--red); }
     .status-display.invalid .status-icon i { color: var(--yellow); }
     @keyframes spin { to { transform: rotate(360deg); } }
- 
+
     .status-number {
       font-family: 'DM Mono', monospace;
       font-size: 22px; font-weight: 500; letter-spacing: .06em;
@@ -144,7 +146,7 @@
     .status-display.clean   .status-number { color: var(--green); }
     .status-display.bad     .status-number { color: var(--red); }
     .status-display.invalid .status-number { color: var(--yellow); }
- 
+
     .status-verdict {
       font-size: 28px; font-weight: 700; letter-spacing: .02em;
       color: var(--txt3); transition: color .4s;
@@ -153,9 +155,76 @@
     .status-display.clean   .status-verdict { color: var(--green); }
     .status-display.bad     .status-verdict { color: var(--red); }
     .status-display.invalid .status-verdict { color: var(--yellow); font-size:18px; }
- 
+
     .status-sub { margin-top: .4rem; font-size: 12px; color: var(--txt2); text-align: center; }
- 
+
+    /* ── REGISTRY BREAKDOWN TABLE ── */
+    .registry-table {
+      display: none;
+      width: 100%;
+      margin-top: 1.25rem;
+      border-top: 0.5px solid rgba(255,255,255,0.06);
+      padding-top: 1rem;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .registry-table.visible { display: flex; }
+
+    .registry-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      border: 0.5px solid rgba(255,255,255,0.06);
+    }
+    .registry-row-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .registry-row-icon i { font-size: 14px; }
+
+    .registry-row-icon.flag  { background: rgba(239,68,68,.15);  }
+    .registry-row-icon.flag i { color: var(--red); }
+    .registry-row-icon.ok    { background: rgba(34,197,94,.12); }
+    .registry-row-icon.ok i  { color: var(--green); }
+    .registry-row-icon.info  { background: rgba(26,158,117,.12); }
+    .registry-row-icon.info i { color: var(--teal); }
+    .registry-row-icon.warn  { background: rgba(245,158,11,.12); }
+    .registry-row-icon.warn i { color: var(--yellow); }
+
+    .registry-row-label {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--txt2);
+      line-height: 1.3;
+    }
+    .registry-row-label span {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--txt3);
+      margin-top: 1px;
+    }
+
+    .registry-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .06em;
+      padding: 3px 8px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .registry-badge.flagged { background: rgba(239,68,68,.15); color: #f87171; border: 0.5px solid rgba(239,68,68,.3); }
+    .registry-badge.clear   { background: rgba(34,197,94,.1);  color: #4ade80; border: 0.5px solid rgba(34,197,94,.25); }
+    .registry-badge.info    { background: rgba(26,158,117,.12); color: var(--teal); border: 0.5px solid var(--teal-b); }
+    .registry-badge.warn    { background: rgba(245,158,11,.12); color: #fbbf24; border: 0.5px solid rgba(245,158,11,.3); }
+    .registry-badge.n-a     { background: rgba(107,114,128,.1); color: var(--txt3); border: 0.5px solid rgba(107,114,128,.2); }
+
     /* ── SALE FORM TOGGLE BUTTON ── */
     .sale-form-trigger {
       margin-top: 1.5rem;
@@ -168,7 +237,7 @@
     }
     .sale-form-trigger:hover  { background: #147d5c; }
     .sale-form-trigger:active { transform: scale(.98); }
- 
+
     /* ── SALE FORM PANEL ── */
     .sale-form-panel {
       max-height: 0;
@@ -180,12 +249,12 @@
       max-height: 1800px;
       opacity: 1;
     }
- 
+
     .sale-form-inner {
       border-top: 0.5px solid var(--border);
       padding: 2rem;
     }
- 
+
     /* ── SALE FORM FIELDS ── */
     .section-label {
       font-size: 11px; font-weight: 600; letter-spacing: .08em;
@@ -195,13 +264,13 @@
     }
     .section-label:first-of-type { margin-top: 0; }
     .section-label::after { content:''; flex:1; height:.5px; background: var(--border); }
- 
+
     .field-grid     { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
     .field-grid.full{ grid-template-columns: 1fr; }
     .field-group    { display: flex; flex-direction: column; gap: 5px; }
- 
+
     label { font-size: 12px; font-weight: 500; color: var(--txt2); }
- 
+
     .input-wrap { position: relative; }
     .input-wrap i {
       position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
@@ -230,7 +299,7 @@
       border-color: rgba(26,158,117,.6);
       background: rgba(26,158,117,.06);
     }
- 
+
     .textarea-wrap { position: relative; }
     .textarea-wrap i {
       position: absolute; left: 11px; top: 12px;
@@ -248,7 +317,7 @@
       outline: none; border-color: var(--teal);
       box-shadow: 0 0 0 3px var(--teal-glow);
     }
- 
+
     /* ── BUTTONS ── */
     .btn-row { display: flex; gap: 10px; margin-top: 1.5rem; }
     .btn-primary {
@@ -261,7 +330,7 @@
     .btn-primary:hover  { background: #147d5c; }
     .btn-primary:active { transform: scale(.98); }
     .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
- 
+
     .btn-secondary {
       padding: 11px 16px; background: transparent; color: var(--txt2);
       border: 0.5px solid var(--border2); border-radius: 8px;
@@ -270,7 +339,7 @@
       transition: background .15s, color .15s;
     }
     .btn-secondary:hover { background: var(--card2); color: var(--txt); }
- 
+
     /* ── TOASTS ── */
     .success-toast {
       display: none; align-items: center; gap: 10px;
@@ -286,7 +355,7 @@
       font-size: 13px; color: #f87171;
     }
     .error-toast i { font-size: 18px; }
- 
+
     /* ── FOOTER ── */
     .vtm-footer {
       border-top: 0.5px solid var(--border);
@@ -299,7 +368,7 @@
       font-family: 'DM Mono', monospace; background: rgba(26,158,117,.12);
       padding: 3px 10px; border-radius: 20px; border: 0.5px solid rgba(26,158,117,.3);
     }
- 
+
     /* ── SUCCESS MODAL ── */
     .modal-overlay {
       display: none;
@@ -313,7 +382,7 @@
     }
     .modal-overlay.show { display: flex; }
     @keyframes fadeInOverlay { from{opacity:0} to{opacity:1} }
- 
+
     .modal-box {
       background: var(--card);
       border: 0.5px solid rgba(34,197,94,0.4);
@@ -328,7 +397,7 @@
       from { transform: scale(.85); opacity: 0; }
       to   { transform: scale(1);   opacity: 1; }
     }
- 
+
     .modal-icon {
       width: 72px; height: 72px; border-radius: 50%;
       background: rgba(34,197,94,0.15);
@@ -337,7 +406,7 @@
       margin: 0 auto 1.25rem;
     }
     .modal-icon i { font-size: 38px; color: var(--green); }
- 
+
     .modal-title {
       font-size: 20px; font-weight: 700;
       color: var(--txt); margin-bottom: .5rem;
@@ -354,7 +423,7 @@
       cursor: pointer; transition: background .15s;
     }
     .modal-close:hover { background: #147d5c; }
- 
+
     @media (max-width: 480px) {
       .dnc-body, .sale-form-inner { padding: 1.25rem; }
       .vtm-header { padding: 1.25rem; }
@@ -363,9 +432,9 @@
   </style>
 </head>
 <body>
- 
+
 <div id="app"></div>
- 
+
 <script>
 /* ────────────────────────────────────────────────────
    CONFIGURATION
@@ -373,15 +442,15 @@
 const DNC_API_KEY      = 'zkU3p9bRrzVDgcKRC2sK';
 const DNC_API_BASE     = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${DNC_API_KEY}/response/json/phone/`;
 const APPS_SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbwZo2WecH8AbJ2rx6-YM7nVzO6D7l7Qn8tMmYQdVMopnIyuCy3SkfZibVS5ibHFtces-w/exec';
- 
+
 const COMPANY_MAP = {
   'CAMPAIGN_A': 'SecureDrive Insurance',
   'CAMPAIGN_B': 'Vocal Tech Marketing',
   'DEFAULT': ''
 };
- 
+
 const US_STATES = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
- 
+
 /* ────────────────────────────────────────────────────
    URL PARAM HELPERS
 ──────────────────────────────────────────────────── */
@@ -399,7 +468,7 @@ const ALIASES = {
   did:       ['did','did_id','inbound_number'],
   comments:  ['comments','notes','comment'],
 };
- 
+
 function getParam(name) {
   const params = new URLSearchParams(window.location.search);
   for (const k of (ALIASES[name] || [name])) {
@@ -408,12 +477,12 @@ function getParam(name) {
   }
   return '';
 }
- 
+
 function isLiveCall() {
   const params = new URLSearchParams(window.location.search);
   return ['phone','phone_number','phonenumber','first','first_name','last','last_name','campaign'].some(p => params.get(p));
 }
- 
+
 /* ────────────────────────────────────────────────────
    BOOT
 ──────────────────────────────────────────────────── */
@@ -421,7 +490,7 @@ function boot() {
   if (!isLiveCall()) { renderNoCall(); return; }
   renderPage();
 }
- 
+
 /* ────────────────────────────────────────────────────
    NO CALL
 ──────────────────────────────────────────────────── */
@@ -432,7 +501,7 @@ function renderNoCall() {
       <h2>No webform found</h2>
     </div>`;
 }
- 
+
 /* ────────────────────────────────────────────────────
    RENDER FULL PAGE
 ──────────────────────────────────────────────────── */
@@ -442,11 +511,10 @@ function renderPage() {
   const urlCompany     = getParam('company');
   const detectedCompany= urlCompany || COMPANY_MAP[campaignParam] || COMPANY_MAP['DEFAULT'];
   const stateOptions   = US_STATES.map(s => `<option>${s}</option>`).join('');
- 
+
   document.getElementById('app').innerHTML = `
     <div class="vtm-card">
- 
-      <!-- ── DNC HEADER ── -->
+
       <div class="vtm-header">
         <div class="vtm-logo teal"><i class="ti ti-shield-check"></i></div>
         <div class="vtm-header-txt">
@@ -455,24 +523,24 @@ function renderPage() {
         </div>
         <div class="live-badge"><div class="live-dot"></div>Live call</div>
       </div>
- 
-      <!-- ── DNC BODY ── -->
+
       <div class="dnc-body">
         <div class="status-display" id="statusDisplay">
           <div class="status-icon"><i class="ti ti-shield" id="statusIcon"></i></div>
           <div class="status-number" id="statusNumber">—</div>
           <div class="status-verdict" id="statusVerdict">Checking…</div>
           <div class="status-sub"    id="statusSub"></div>
+
+          <div class="registry-table" id="registryTable">
+            </div>
         </div>
- 
-        <!-- SALE FORM TOGGLE -->
+
         <button class="sale-form-trigger" id="saleFormBtn" onclick="toggleSaleForm()">
           <i class="ti ti-clipboard-text"></i>
           <span id="saleFormBtnLabel">Fill Sale Form</span>
         </button>
       </div>
- 
-      <!-- ── SALE FORM PANEL ── -->
+
       <div class="sale-form-panel" id="saleFormPanel">
         <div class="sale-form-inner">
 
@@ -484,13 +552,11 @@ function renderPage() {
             </div>
           </div>
 
-          <!-- Hidden fields -->
           <input type="hidden" id="campaign" />
           <input type="hidden" id="company"  value="${detectedCompany}" />
           <input type="hidden" id="zip" />
           <input type="hidden" id="dob" />
- 
-          <!-- Agent Info -->
+
           <div class="section-label">Agent Information</div>
           <div class="field-grid full">
             <div class="field-group">
@@ -508,8 +574,7 @@ function renderPage() {
               </div>
             </div>
           </div>
- 
-          <!-- Customer Info -->
+
           <div class="section-label">Customer Information</div>
           <div class="field-grid">
             <div class="field-group">
@@ -547,8 +612,7 @@ function renderPage() {
               </div>
             </div>
           </div>
- 
-          <!-- Notes -->
+
           <div class="section-label">Agent Notes</div>
           <div class="field-group" style="margin-bottom:0">
             <label for="comments">Comments</label>
@@ -556,8 +620,7 @@ function renderPage() {
               <textarea id="comments" placeholder="Comments…"></textarea>
             </div>
           </div>
- 
-          <!-- Action buttons -->
+
           <div class="btn-row">
             <button class="btn-secondary" onclick="clearSaleForm()">
               <i class="ti ti-refresh"></i> Clear
@@ -566,26 +629,24 @@ function renderPage() {
               <i class="ti ti-device-floppy"></i> Submit Sale
             </button>
           </div>
- 
+
           <div class="success-toast" id="successToast">
             <i class="ti ti-circle-check"></i> Sale submitted successfully!
           </div>
           <div class="error-toast" id="errorToast">
             <i class="ti ti-alert-circle"></i> Submission failed. Check your connection and try again.
           </div>
- 
-        </div><!-- /sale-form-inner -->
-      </div><!-- /sale-form-panel -->
- 
-      <!-- ── FOOTER ── -->
+
+        </div>
+      </div>
+
       <div class="vtm-footer">
         <span>vocaltechmarketing.com</span>
         <span class="url-pill">app/webform</span>
       </div>
- 
-    </div><!-- /vtm-card -->`;
- 
-  /* Auto-fill sale form fields */
+
+    </div>`;
+
   autoFill('agentName', getParam('agentName'));
   autoFill('phone',     phone);
   autoFill('firstName', getParam('first'));
@@ -597,22 +658,21 @@ function renderPage() {
   autoFill('did',       getParam('did'));
   autoFill('comments',  getParam('comments'));
   setStateByValue(getParam('state'));
- 
-  /* Run DNC check */
+
   if (phone) setTimeout(() => runDncCheck(phone), 700);
 }
- 
+
 /* ────────────────────────────────────────────────────
    SALE FORM TOGGLE
 ──────────────────────────────────────────────────── */
 let saleFormOpen = false;
- 
+
 function toggleSaleForm() {
   saleFormOpen = !saleFormOpen;
   const panel = document.getElementById('saleFormPanel');
   const label = document.getElementById('saleFormBtnLabel');
   const btn   = document.getElementById('saleFormBtn');
- 
+
   if (saleFormOpen) {
     panel.classList.add('open');
     label.textContent = 'Close Sale Form';
@@ -624,7 +684,7 @@ function toggleSaleForm() {
     btn.style.background = '';
   }
 }
- 
+
 /* ────────────────────────────────────────────────────
    SALE FORM HELPERS
 ──────────────────────────────────────────────────── */
@@ -634,7 +694,7 @@ function autoFill(id, value) {
   el.value = value;
   if (el.type !== 'hidden') el.classList.add('auto-filled');
 }
- 
+
 function setStateByValue(value) {
   if (!value) return;
   const sel = document.getElementById('state');
@@ -647,7 +707,7 @@ function setStateByValue(value) {
     }
   }
 }
- 
+
 function clearSaleForm() {
   ['agentName','firstName','lastName','phone','age','state','zip','dob','company','campaign','did','comments'].forEach(id => {
     const el = document.getElementById(id);
@@ -656,18 +716,19 @@ function clearSaleForm() {
   document.getElementById('successToast').style.display = 'none';
   document.getElementById('errorToast').style.display   = 'none';
 }
- 
+
 function submitSaleForm() {
   const btn          = document.getElementById('submitBtn');
   const successToast = document.getElementById('successToast');
   const errorToast   = document.getElementById('errorToast');
- 
+
   successToast.style.display = 'none';
   errorToast.style.display   = 'none';
   btn.innerHTML = '<i class="ti ti-loader"></i> Submitting…';
   btn.disabled  = true;
- 
+
   const payload = {
+    submissionType: 'SALE_FORM',
     agentName: document.getElementById('agentName').value,
     phone:     document.getElementById('phone').value,
     firstName: document.getElementById('firstName').value,
@@ -681,7 +742,7 @@ function submitSaleForm() {
     did:       document.getElementById('did').value,
     comments:  document.getElementById('comments').value,
   };
- 
+
   fetch(APPS_SCRIPT_URL, {
     method:  'POST',
     mode:    'no-cors',
@@ -689,16 +750,13 @@ function submitSaleForm() {
     body:    JSON.stringify(payload),
   })
   .then(() => {
-    // 1. Reset URL parameters instantly
     window.history.replaceState({}, '', window.location.pathname);
-    
-    // 2. Inject and trigger the themed success modal layout
     const modalHtml = `
       <div class="modal-overlay show" id="successModal">
         <div class="modal-box">
           <div class="modal-icon"><i class="ti ti-circle-check"></i></div>
           <h2 class="modal-title">Sale Submitted</h2>
-          <p class="modal-sub">Successfull</p>
+          <p class="modal-sub">Successfully recorded.</p>
           <button class="modal-close" onclick="closeSaleAndExit()">Okay</button>
         </div>
       </div>
@@ -711,27 +769,44 @@ function submitSaleForm() {
     errorToast.style.display = 'flex';
   });
 }
+
 function closeSaleAndExit() {
-  // Remove the modal layer from the body
   const modal = document.getElementById('successModal');
   if (modal) modal.remove();
-  
-  // Wipe out the webform/checker and invoke the fallback view
   renderNoCall();
 }
-  
+
 /* ────────────────────────────────────────────────────
-   DNC CHECK
+   REGISTRY ROW BUILDER
+──────────────────────────────────────────────────── */
+function makeRow(iconClass, iconName, label, sublabel, badgeClass, badgeText) {
+  return `
+    <div class="registry-row">
+      <div class="registry-row-icon ${iconClass}"><i class="ti ti-${iconName}"></i></div>
+      <div class="registry-row-label">${label}<span>${sublabel}</span></div>
+      <div class="registry-badge ${badgeClass}">${badgeText}</div>
+    </div>`;
+}
+
+function yesNo(val) {
+  if (val === undefined || val === null || val === '') return null;
+  const s = String(val).toLowerCase();
+  return s === 'y' || s === 'yes' || s === '1' || s === 'true';
+}
+
+/* ────────────────────────────────────────────────────
+   DNC CHECK & INSTANT GOOGLE SHEET LOGGING
 ──────────────────────────────────────────────────── */
 async function runDncCheck(rawPhone) {
-  const display = document.getElementById('statusDisplay');
-  const icon    = document.getElementById('statusIcon');
-  const numEl   = document.getElementById('statusNumber');
-  const verdict = document.getElementById('statusVerdict');
-  const sub     = document.getElementById('statusSub');
- 
+  const display  = document.getElementById('statusDisplay');
+  const icon     = document.getElementById('statusIcon');
+  const numEl    = document.getElementById('statusNumber');
+  const verdict  = document.getElementById('statusVerdict');
+  const sub      = document.getElementById('statusSub');
+  const regTable = document.getElementById('registryTable');
+
   const clean = rawPhone.replace(/\D/g, '');
- 
+
   if (clean.length < 7 || clean.length > 15) {
     display.className   = 'status-display invalid';
     icon.className      = 'ti ti-alert-triangle';
@@ -740,49 +815,145 @@ async function runDncCheck(rawPhone) {
     sub.textContent     = 'Number format is invalid.';
     return;
   }
- 
+
   display.className   = 'status-display loading';
   icon.className      = 'ti ti-loader-2';
   numEl.textContent   = rawPhone;
-  verdict.textContent = 'Scanning database…';
+  verdict.textContent = 'Scanning all registries…';
   sub.textContent     = '';
- 
+  regTable.innerHTML  = '';
+  regTable.classList.remove('visible');
+
   try {
     const response = await fetch(`${DNC_API_BASE}${clean}`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     console.log('Alliance API response:', data);
- 
-    const isDnc        = data.dnc === 'Y' || data.dnc === 'Yes' || String(data.message).toLowerCase().includes('dnc');
-    const isLitigator  = data.litigator === 'Y' || data.litigator === 'Yes' || String(data.message).toLowerCase().includes('litigator');
-    const isBlacklisted= data.result === 'blacklisted' || data.status === 'blacklisted' || data.code === 400;
- 
-    if (isDnc || isLitigator || isBlacklisted) {
+
+    /* Clean all code strings from API metadata to prevent false clears */
+    const rawCode   = String(data.code || '').toLowerCase();
+    const rawStatus = String(data.status || '').toLowerCase();
+    const rawResult = String(data.result || '').toLowerCase();
+    const msg       = String(data.message || '').toLowerCase();
+
+    /* Check explicitly for Plaintiff Attorneys and Litigators within string codes */
+    const isLitigator   = yesNo(data.litigator) || msg.includes('litigator') || rawCode.includes('litigator') || rawResult.includes('litigator');
+    const isPlaintiff   = yesNo(data.plaintiff) || rawCode.includes('plaintiff') || rawResult.includes('plaintiff') || msg.includes('plaintiff');
+    const isBlacklisted = rawResult === 'blacklisted' || rawStatus === 'blacklisted' || data.code === 400 || rawCode.includes('secondary') || rawCode.includes('blacklist');
+    
+    /* Standard Registries */
+    const isFedDnc    = yesNo(data.dnc) || msg.includes('dnc');
+    const isStateDnc  = yesNo(data.state_dnc) || false;
+    
+    /* Telephony Metadata */
+    const isWireless  = yesNo(data.wireless);
+    const lineType    = data.linetype || data.line_type    || null;
+
+    /* Master Trigger Evaluation */
+    const isDangerous = isLitigator || isPlaintiff || isFedDnc || isStateDnc || isBlacklisted;
+
+    /* ── Build Registry UI Breakdowns ── */
+    let rows = '';
+
+    /* 1. Serial Litigator List */
+    rows += makeRow(isLitigator ? 'flag' : 'ok', 'gavel', 'Serial Litigator List', 'Known serial plaintiffs and TCPA litigators', isLitigator ? 'flagged' : 'clear', isLitigator ? 'FLAGGED' : 'CLEAR');
+
+    /* 2. Plaintiff Attorney Registry */
+    rows += makeRow(isPlaintiff ? 'flag' : 'ok', 'briefcase', 'Plaintiff Attorney Registry', 'Active legal professionals & class-action attorneys', isPlaintiff ? 'flagged' : 'clear', isPlaintiff ? 'FLAGGED' : 'CLEAR');
+
+    /* 3. National Do Not Call Registry */
+    rows += makeRow(isFedDnc ? 'flag' : 'ok', 'building-bank', 'National Do Not Call Registry', 'FTC National DNC Registry exclusions', isFedDnc ? 'flagged' : 'clear', isFedDnc ? 'FLAGGED' : 'CLEAR');
+
+    /* 4. State DNC Registries */
+    rows += makeRow(isStateDnc ? 'flag' : 'ok', 'map-pin', 'State DNC Registries', 'State-level attorney general DNC registers', isStateDnc ? 'flagged' : 'clear', isStateDnc ? 'FLAGGED' : 'CLEAR');
+
+    /* 5. Internal Do Not Call List / Alliance Blacklist */
+    rows += makeRow(isBlacklisted ? 'flag' : 'ok', 'ban', 'Internal Do Not Call List', 'Blacklist Alliance proprietary database & descriptive triggers', isBlacklisted ? 'flagged' : 'clear', isBlacklisted ? 'FLAGGED' : 'CLEAR');
+
+    /* 6. Wireless / Cell Breakdown */
+    if (isWireless !== null) {
+      rows += makeRow('info', 'device-mobile', 'Wireless / Cell Classification', lineType ? `Line type verified: ${lineType}` : 'Wireless network routing identifier', isWireless ? 'warn' : 'info', isWireless ? 'WIRELESS' : 'LANDLINE');
+    }
+
+    let sheetsVerdict = 'CLEAN';
+    let sheetsMessage = 'No risk indices found across all audited registries.';
+
+    /* ── Apply Verdict Rendering ── */
+    if (isDangerous) {
       display.className   = 'status-display bad';
       icon.className      = 'ti ti-ban';
-      verdict.textContent = 'Do Not Transfer';
-      if (isDnc && isLitigator)  sub.textContent = 'CRITICAL: Found in Litigator & DNC Registries!';
-      else if (isLitigator)      sub.textContent = 'FOUND: Abusive Litigator Database (TCPA Risk)';
-      else if (isDnc)            sub.textContent = 'FOUND: Do Not Call (DNC) Registry';
-      else                       sub.textContent = data.message || 'Found in Alliance database restrictions.';
+      verdict.textContent = 'DO NOT TRANSFER';
+      sheetsVerdict       = 'DO NOT TRANSFER';
+
+      const flags = [];
+      if (isLitigator)   flags.push('Litigator');
+      if (isPlaintiff)   flags.push('Plaintiff/Attorney');
+      if (isFedDnc)      flags.push('Federal DNC');
+      if (isStateDnc)    flags.push('State DNC');
+      if (isBlacklisted) flags.push('Blacklisted Trigger');
+      
+      sheetsMessage = `CRITICAL REGISTRY MATCH: ${flags.join(' · ')}`;
+      sub.textContent = sheetsMessage;
+      if (data.code) {
+        sub.innerHTML += `<br><span style="font-family:'DM Mono'; font-size:11px; background:rgba(239,68,68,0.2); padding:2px 6px; border-radius:4px; margin-top:4px; display:inline-block;">API Code: ${data.code}</span>`;
+      }
     } else {
       display.className   = 'status-display clean';
       icon.className      = 'ti ti-circle-check';
       verdict.textContent = 'CLEAN';
-      sub.textContent     = 'No records found in blacklist or DNC databases.';
+      sub.textContent     = sheetsMessage;
     }
- 
-    numEl.textContent = rawPhone;
- 
+
+    numEl.textContent   = rawPhone;
+    regTable.innerHTML  = rows;
+    regTable.classList.add('visible');
+
+    /* ── DIRECT LOG TO GOOGLE SHEET ON INSTANT WEBFORM INITIALIZATION ── */
+    const openLogPayload = {
+      submissionType: 'INITIAL_LOAD_LOG',
+      phone:          clean,
+      agentName:      getParam('agentName') || 'Unknown Agent',
+      campaign:       getParam('campaign') || 'N/A',
+      company:        document.getElementById('company').value || 'VTM',
+      apiStatus:      sheetsVerdict,
+      apiCode:        data.code || rawCode || 'N/A',
+      apiMessage:     sheetsMessage,
+      rawResponse:    JSON.stringify(data)
+    };
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode:   'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:   JSON.stringify(openLogPayload)
+    }).then(() => console.log('Successfully logged API open data to sheet.'));
+
   } catch(err) {
     display.className   = 'status-display invalid';
     icon.className      = 'ti ti-wifi-off';
     numEl.textContent   = rawPhone;
     verdict.textContent = 'API ERROR';
-    sub.textContent     = 'Could not reach Alliance API. Check your key, server CORS policy, or connection.';
+    sub.textContent     = 'Could not reach Alliance API.';
+
+    /* Log error parameters to sheet if connection fails */
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode:   'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:   JSON.stringify({
+        submissionType: 'INITIAL_LOAD_LOG',
+        phone:          clean,
+        agentName:      getParam('agentName') || 'Unknown Agent',
+        campaign:       getParam('campaign') || 'N/A',
+        company:        'VTM',
+        apiStatus:      'API ERROR',
+        apiCode:        'ERROR',
+        apiMessage:     err.message
+      })
+    });
   }
 }
- 
+
 /* ── GO ── */
 boot();
 </script>
