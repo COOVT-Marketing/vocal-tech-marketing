@@ -6,7 +6,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <link rel="icon" type="image/png" href="logo.png">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css"/>
+  
   <style>
     :root {
       --bg:        #0b0f19;
@@ -26,228 +28,35 @@
       --red-glow:  rgba(239,68,68,0.12);
       --red-b:     rgba(239,68,68,0.4);
     }
-
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-    body {
-      font-family:'DM Sans',sans-serif;
-      background:var(--bg);
-      color:var(--txt);
-      min-height:100vh;
-      display:flex;align-items:center;justify-content:center;
-      padding:2rem 1rem;
-    }
-
-    .card {
-      background:var(--card);
-      border:0.5px solid var(--border);
-      border-radius:16px;
-      width:100%;max-width:540px;
-      overflow:hidden;
-      box-shadow:0 25px 30px -8px rgba(0,0,0,0.6);
-    }
-
-    .header {
-      background:#090d16;
-      padding:1.4rem 2rem;
-      display:flex;align-items:center;gap:14px;
-      border-bottom:0.5px solid var(--border);
-    }
-
-    .logo {
-      width:40px;height:40px;
-      background:var(--teal);
-      border-radius:10px;
-      display:flex;align-items:center;justify-content:center;
-      flex-shrink:0;
-    }
-
-    .logo i{font-size:22px;color:#fff}
-    .header-txt h1{font-size:16px;font-weight:600;color:#fff}
-    .header-txt p{font-size:12px;color:var(--txt2);margin-top:2px}
-
-    .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 1.4s ease-in-out infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-
+    body {      font-family:'DM Sans',sans-serif;      background:var(--bg);      color:var(--txt);      min-height:100vh;      display:flex;align-items:center;justify-content:center;      padding:2rem 1rem;    }
+    .card {      background:var(--card);      border:0.5px solid var(--border);      border-radius:16px;      width:100%;max-width:540px;      overflow:hidden;      box-shadow:0 25px 30px -8px rgba(0,0,0,0.6);    }
+    .header {      background:#090d16;      padding:1.4rem 2rem;      display:flex;align-items:center;gap:14px;      border-bottom:0.5px solid var(--border);    }
+    .logo {      width:40px;height:40px;      background:var(--teal);      border-radius:10px;      display:flex;align-items:center;justify-content:center;      flex-shrink:0;    }
+    .logo i{font-size:22px;color:#fff}    .header-txt h1{font-size:16px;font-weight:600;color:#fff}    .header-txt p{font-size:12px;color:var(--txt2);margin-top:2px}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 1.4s ease-in-out infinite}    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
     .body{padding:2rem}
-
-    .input-container {
-      display:flex;
-      gap:10px;
-      margin-bottom:2rem;
-    }
-
-    input[type="tel"] {
-      flex:1;
-      padding:0.8rem 1.2rem;
-      background-color:#090d16;
-      border:0.5px solid var(--border);
-      border-radius:10px;
-      color:#fff;
-      font-size:15px;
-      transition:border-color 0.2s;
-    }
-
-    input[type="tel"]:focus {
-      outline:none;
-      border-color:var(--teal);
-    }
-
-    button.run-btn {
-      padding:0.8rem 1.6rem;
-      background-color:var(--teal);
-      color:#fff;
-      border:none;
-      border-radius:10px;
-      font-size:14px;
-      font-weight:500;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      transition:opacity 0.2s;
-    }
-
-    button.run-btn:hover { opacity:0.9; }
-    button.run-btn:disabled { background-color:var(--card2); color:var(--txt3); cursor:not-allowed; }
-
-    .status-display {
-      border-radius:14px;
-      border:0.5px solid var(--border);
-      background:var(--card2);
-      overflow:hidden;
-      display:none;
-      transition:border-color 0.4s ease;
-    }
-
-    .status-display.loading{ border-color:var(--teal-b); display:block; }
-    .status-display.clean  { border-color:var(--green-b); display:block; animation:greenPulse 2s ease forwards; }
-    .status-display.bad    { border-color:var(--red-b);   display:block; animation:redPulse 2s ease forwards; }
-    .status-display.invalid{ border-color:var(--red-b);   display:block; animation:redPulse 2s ease forwards; }
-
-    @keyframes greenPulse{ 0%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)} 50%{box-shadow:0 0 40px 8px rgba(34,197,94,0.25)} 100%{box-shadow:0 0 20px 4px rgba(34,197,94,0.1)} }
-    @keyframes redPulse{   0%{box-shadow:0 0 0 0 rgba(239,68,68,0.5)} 50%{box-shadow:0 0 40px 8px rgba(239,68,68,0.25)} 100%{box-shadow:0 0 20px 4px rgba(239,68,68,0.1)} }
-
-    .status-hero {
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      padding:2.2rem 1.5rem 1.6rem;
-      transition:background 0.5s ease;
-      gap:0;
-    }
-    .loading .status-hero { background:var(--card2); }
-    .clean   .status-hero { background:var(--green-glow); }
-    .bad     .status-hero { background:var(--red-glow); }
-    .invalid .status-hero { background:var(--red-glow); }
-
-    .status-icon {
-      width:72px; height:72px; border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
-      margin-bottom:1rem;
-      transition:background 0.4s;
-    }
-    .loading .status-icon { background:var(--teal-glow) }
-    .loading .status-icon i { font-size:36px; color:var(--teal); animation:spin 0.8s linear infinite }
-    .clean   .status-icon { background:rgba(34,197,94,0.2) }
-    .clean   .status-icon i { font-size:36px; color:var(--green) }
-    .bad     .status-icon { background:rgba(239,68,68,0.2) }
-    .bad     .status-icon i { font-size:36px; color:var(--red) }
-    .invalid .status-icon { background:rgba(239,68,68,0.2) }
-    .invalid .status-icon i { font-size:36px; color:var(--red) }
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    .status-number {
-      font-family:'DM Mono',monospace;
-      font-size:20px; font-weight:500;
-      letter-spacing:.06em;
-      margin-bottom:.5rem;
-      transition:color 0.4s;
-    }
-    .loading .status-number { color:var(--txt2) }
-    .clean   .status-number { color:var(--green) }
-    .bad     .status-number { color:var(--red) }
-    .invalid .status-number { color:var(--red) }
-
-    .status-verdict {
-      font-size:26px; font-weight:700; letter-spacing:.02em;
-      transition:color 0.4s;
-    }
-    .loading .status-verdict { color:var(--txt2); font-size:15px; font-weight:400 }
-    .clean   .status-verdict { color:var(--green) }
-    .bad     .status-verdict { color:var(--red) }
-    .invalid .status-verdict { color:var(--red); font-size:18px }
-
-    .api-message-pill {
-      display:none;
-      margin-top:10px;
-      align-items:center; gap:6px;
-      padding:5px 14px;
-      border-radius:20px;
-      font-size:12px; font-weight:600; letter-spacing:.06em;
-      text-transform:uppercase;
-      border:0.5px solid;
-      animation:fadeUp 0.35s ease forwards;
-    }
-    .api-message-pill.visible { display:inline-flex; }
-    @keyframes fadeUp{ from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
-
-    .api-message-pill.pill-red   { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.4); color:var(--red); }
-    .api-message-pill.pill-green { background:rgba(34,197,94,0.1);  border-color:rgba(34,197,94,0.4); color:var(--green); }
-
-    .flags-section {
-      padding:0 1.2rem 1.4rem;
-      display:none;
-      flex-direction:column;
-      gap:8px;
-    }
-    .flags-section.visible { display:flex; }
-
-    .flags-label {
-      font-size:10px; font-weight:600; letter-spacing:.1em;
-      color:var(--txt3); text-transform:uppercase;
-      padding:0 2px; margin-bottom:2px;
-    }
-
-    .flag-row {
-      display:flex; align-items:flex-start; gap:10px;
-      padding:10px 14px;
-      border-radius:8px;
-      border:0.5px solid;
-      animation:flagIn 0.3s ease forwards;
-    }
-    @keyframes flagIn{ from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-
-    .flag-row i { font-size:17px; flex-shrink:0; margin-top:1px; }
-    .flag-row .flag-name { font-size:13px; font-weight:600; }
-    .flag-row .flag-desc { font-size:11px; color:var(--txt2); line-height:1.35; margin-top:2px }
-
-    .flag-code-badge {
-      display:inline-flex; align-items:center; gap:4px;
-      margin-top:5px; padding:2px 8px; border-radius:4px;
-      font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
-      background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.12);
-      color:var(--txt2);
-    }
-    .flag-code-badge i { font-size:11px; }
-
-    .flag-critical { background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.35); }
-    .flag-critical i, .flag-critical .flag-name { color:var(--red) }
-    .flag-clean { background:rgba(34,197,94,0.08); border-color:rgba(34,197,94,0.3); }
-    .flag-clean i, .flag-clean .flag-name { color:var(--green) }
-
-    .company-badge {
-      margin-left:auto;
-      display:flex; align-items:center; gap:6px;
-      background:var(--teal-glow);
-      border:0.5px solid var(--teal-b);
-      border-radius:20px; padding:4px 12px;
-      font-size:12px; color:var(--teal); font-weight:500;
-      flex-shrink:0;
-      max-width:180px;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-
+    .input-container {      display:flex;      gap:10px;      margin-bottom:2rem;    }
+    input[type="tel"] {      flex:1;      padding:0.8rem 1.2rem;      background-color:#090d16;      border:0.5px solid var(--border);      border-radius:10px;      color:#fff;      font-size:15px;      transition:border-color 0.2s;    }
+    input[type="tel"]:focus {      outline:none;      border-color:var(--teal);    }
+    button.run-btn {      padding:0.8rem 1.6rem;      background-color:var(--teal);      color:#fff;      border:none;      border-radius:10px;      font-size:14px;      font-weight:500;      cursor:pointer;      display:flex;      align-items:center;      gap:8px;      transition:opacity 0.2s;    }
+    button.run-btn:hover { opacity:0.9; }    button.run-btn:disabled { background-color:var(--card2); color:var(--txt3); cursor:not-allowed; }
+    .status-display {      border-radius:14px;      border:0.5px solid var(--border);      background:var(--card2);      overflow:hidden;      display:none;      transition:border-color 0.4s ease;    }
+    .status-display.loading{ border-color:var(--teal-b); display:block; }    .status-display.clean  { border-color:var(--green-b); display:block; animation:greenPulse 2s ease forwards; }    .status-display.bad    { border-color:var(--red-b);   display:block; animation:redPulse 2s ease forwards; }    .status-display.invalid{ border-color:var(--red-b);   display:block; animation:redPulse 2s ease forwards; }
+    @keyframes greenPulse{ 0%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)} 50%{box-shadow:0 0 40px 8px rgba(34,197,94,0.25)} 100%{box-shadow:0 0 20px 4px rgba(34,197,94,0.1)} }    @keyframes redPulse{   0%{box-shadow:0 0 0 0 rgba(239,68,68,0.5)} 50%{box-shadow:0 0 40px 8px rgba(239,68,68,0.25)} 100%{box-shadow:0 0 20px 4px rgba(239,68,68,0.1)} }
+    .status-hero {      display:flex; flex-direction:column; align-items:center; justify-content:center;      padding:2.2rem 1.5rem 1.6rem;      transition:background 0.5s ease;      gap:0;    }    .loading .status-hero { background:var(--card2); }    .clean   .status-hero { background:var(--green-glow); }    .bad     .status-hero { background:var(--red-glow); }    .invalid .status-hero { background:var(--red-glow); }
+    .status-icon {      width:72px; height:72px; border-radius:50%;      display:flex; align-items:center; justify-content:center;      margin-bottom:1rem;      transition:background 0.4s;    }    .loading .status-icon { background:var(--teal-glow) }    .loading .status-icon i { font-size:36px; color:var(--teal); animation:spin 0.8s linear infinite }    .clean   .status-icon { background:rgba(34,197,94,0.2) }    .clean   .status-icon i { font-size:36px; color:var(--green) }    .bad     .status-icon { background:rgba(239,68,68,0.2) }    .bad     .status-icon i { font-size:36px; color:var(--red) }    .invalid .status-icon { background:rgba(239,68,68,0.2) }    .invalid .status-icon i { font-size:36px; color:var(--red) }    @keyframes spin{to{transform:rotate(360deg)}}
+    .status-number {      font-family:'DM Mono',monospace;      font-size:20px; font-weight:500;      letter-spacing:.06em;      margin-bottom:.5rem;      transition:color 0.4s;    }    .loading .status-number { color:var(--txt2) }    .clean   .status-number { color:var(--green) }    .bad     .status-number { color:var(--red) }    .invalid .status-number { color:var(--red) }
+    .status-verdict {      font-size:26px; font-weight:700; letter-spacing:.02em;      transition:color 0.4s;    }    .loading .status-verdict { color:var(--txt2); font-size:15px; font-weight:400 }    .clean   .status-verdict { color:var(--green) }    .bad     .status-verdict { color:var(--red) }    .invalid .status-verdict { color:var(--red); font-size:18px }
+    .api-message-pill {      display:none;      margin-top:10px;      align-items:center; gap:6px;      padding:5px 14px;      border-radius:20px;      font-size:12px; font-weight:600; letter-spacing:.06em;      text-transform:uppercase;      border:0.5px solid;      animation:fadeUp 0.35s ease forwards;    }    .api-message-pill.visible { display:inline-flex; }    @keyframes fadeUp{ from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+    .api-message-pill.pill-red   { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.4); color:var(--red); }    .api-message-pill.pill-green { background:rgba(34,197,94,0.1);  border-color:rgba(34,197,94,0.4); color:var(--green); }
+    .flags-section {      padding:0 1.2rem 1.4rem;      display:none;      flex-direction:column;      gap:8px;    }    .flags-section.visible { display:flex; }
+    .flags-label {      font-size:10px; font-weight:600; letter-spacing:.1em;      color:var(--txt3); text-transform:uppercase;      padding:0 2px; margin-bottom:2px;    }
+    .flag-row {      display:flex; align-items:flex-start; gap:10px;      padding:10px 14px;      border-radius:8px;      border:0.5px solid;      animation:flagIn 0.3s ease forwards;    }    @keyframes flagIn{ from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .flag-row i { font-size:17px; flex-shrink:0; margin-top:1px; }    .flag-row .flag-name { font-size:13px; font-weight:600; }    .flag-row .flag-desc { font-size:11px; color:var(--txt2); line-height:1.35; margin-top:2px }
+    .flag-code-badge {      display:inline-flex; align-items:center; gap:4px;      margin-top:5px; padding:2px 8px; border-radius:4px;      font-family:'DM Mono',monospace; font-size:10px; font-weight:500;      background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.12);      color:var(--txt2);    }    .flag-code-badge i { font-size:11px; }
+    .flag-critical { background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.35); }    .flag-critical i, .flag-critical .flag-name { color:var(--red) }    .flag-clean { background:rgba(34,197,94,0.08); border-color:rgba(34,197,94,0.3); }    .flag-clean i, .flag-clean .flag-name { color:var(--green) }
+    .company-badge {      margin-left:auto;      display:flex; align-items:center; gap:6px;      background:var(--teal-glow);      border:0.5px solid var(--teal-b);      border-radius:20px; padding:4px 12px;      font-size:12px; color:var(--teal); font-weight:500;      flex-shrink:0;      max-width:180px;      overflow:hidden;      text-overflow:ellipsis;      white-space:nowrap;    }
     @media(max-width:480px){ .body{padding:1.25rem} .header{padding:1.25rem} }
   </style>
 </head>
@@ -294,14 +103,12 @@
 </div>
 
 <script>
-// ── Constants ─────────────────────────────────────────────────
+  // ── Constants ─────────────────────────────────────────────────
   const API_KEY         = 'zkU3p9bRrzVDgcKRC2sK';
   const API_BASE        = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${API_KEY}/response/json/phone/`;
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8j6erDfX9E6j8Y03uv4JdLzLykAYY4dzvYJRj94QEl4LBBSR0uc2THu_sTXg97n5wIw/exec';
 
   // ── Authorized Companies Array ────────────────────────────────
-  // RULE: Always type new companies in ALL LOWERCASE here.
-  // The system handles the URL check case-insensitively automatically.
   const ALLOWED_COMPANIES = [
     'echolink', 
     'vtm',
@@ -311,22 +118,12 @@
   // ── Guard: block access if no company or unauthorized company ─
   const urlParams    = new URLSearchParams(window.location.search);
   const companyParam = urlParams.get('company');
-  
-  // Clean parameter and force to lowercase for reliable array matching
   const sanitizedCompany = companyParam ? companyParam.trim().toLowerCase() : '';
 
   if (!sanitizedCompany || !ALLOWED_COMPANIES.includes(sanitizedCompany)) {
     document.body.innerHTML = `
-      <div style="
-        display:flex; flex-direction:column; align-items:center; justify-content:center;
-        min-height:100vh; background:#0b0f19; font-family:'DM Sans',sans-serif;
-        text-align:center; padding:2rem;
-      ">
-        <div style="
-          width:64px; height:64px; background:rgba(239,68,68,0.15);
-          border-radius:50%; display:flex; align-items:center; justify-content:center;
-          margin-bottom:1.5rem;
-        ">
+      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; background:#0b0f19; font-family:'DM Sans',sans-serif; text-align:center; padding:2rem;">
+        <div style="width:64px; height:64px; background:rgba(239,68,68,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem;">
           <i class="ti ti-lock" style="font-size:30px; color:#ef4444;"></i>
         </div>
         <h2 style="color:#f9fafb; font-size:20px; font-weight:600; margin-bottom:8px;">Access Restricted</h2>
@@ -338,8 +135,6 @@
     throw new Error('Access blocked: Missing or unauthorized company parameter.');
   }
 
-  // ── Company name (safe to use from here on) ───────────────────
-  // We grab the precise original string case text to show nicely in the UI badge
   const COMPANY_NAME = companyParam.trim();
   document.getElementById('companyBadgeText').textContent = COMPANY_NAME;
   document.getElementById('companyBadge').style.display = 'flex';
@@ -387,7 +182,6 @@
 
     btn.disabled = true;
 
-    // Fetch IP
     let userIP = 'Unknown';
     try {
       const ipRes  = await fetch('https://api.ipify.org?format=json');
@@ -395,7 +189,6 @@
       userIP = ipData.ip || 'Unknown';
     } catch(e) { userIP = 'Unknown'; }
 
-    // Set loading state
     display.className = 'status-display loading';
     icon.className    = 'ti ti-loader-2';
     numEl.textContent = formatPhone(cleanNum);
@@ -451,7 +244,6 @@
           </div>`;
       }
 
-      // Fire-and-forget log to Google Sheets
       fetch(`${GOOGLE_SCRIPT_URL}?phone=${cleanNum}&company=${encodeURIComponent(COMPANY_NAME)}&ip=${encodeURIComponent(userIP)}&code=${encodeURIComponent(rawCode)}&msg=${encodeURIComponent(rawMsg)}&raw=${encodeURIComponent(JSON.stringify(data))}`, {
         method: 'GET',
         mode: 'no-cors'
@@ -474,7 +266,8 @@
     } finally {
       btn.disabled = false;
     }
-  }s
+  }
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"7408ea457d84458b9454b61108bcd8b5","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
