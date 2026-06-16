@@ -294,16 +294,27 @@
 </div>
 
 <script>
-  // ── Constants ─────────────────────────────────────────────────
+// ── Constants ─────────────────────────────────────────────────
   const API_KEY         = 'zkU3p9bRrzVDgcKRC2sK';
   const API_BASE        = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${API_KEY}/response/json/phone/`;
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8j6erDfX9E6j8Y03uv4JdLzLykAYY4dzvYJRj94QEl4LBBSR0uc2THu_sTXg97n5wIw/exec';
 
-  // ── Guard: block access if no company param ───────────────────
+  // ── Authorized Companies Array ────────────────────────────────
+  // RULE: Always type new companies in ALL LOWERCASE here.
+  // The system handles the URL check case-insensitively automatically.
+  const ALLOWED_COMPANIES = [
+    'echolink', 
+    'vtm'
+  ];
+
+  // ── Guard: block access if no company or unauthorized company ─
   const urlParams    = new URLSearchParams(window.location.search);
   const companyParam = urlParams.get('company');
+  
+  // Clean parameter and force to lowercase for reliable array matching
+  const sanitizedCompany = companyParam ? companyParam.trim().toLowerCase() : '';
 
-  if (!companyParam || companyParam.trim() === '') {
+  if (!sanitizedCompany || !ALLOWED_COMPANIES.includes(sanitizedCompany)) {
     document.body.innerHTML = `
       <div style="
         display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -323,10 +334,11 @@
         </p>
       </div>
     `;
-    throw new Error('Access blocked: no company param.');
+    throw new Error('Access blocked: Missing or unauthorized company parameter.');
   }
 
   // ── Company name (safe to use from here on) ───────────────────
+  // We grab the precise original string case text to show nicely in the UI badge
   const COMPANY_NAME = companyParam.trim();
   document.getElementById('companyBadgeText').textContent = COMPANY_NAME;
   document.getElementById('companyBadge').style.display = 'flex';
@@ -334,13 +346,13 @@
   // ── Verdict map ───────────────────────────────────────────────
   const VERDICT_MAP = {
     'none':       { isClean: true,  name: 'No Records Found',          desc: 'Not listed on any blacklist, DNC, litigator, or complaint registry.',         icon: 'ti-shield-check' },
-    'federal-dnc':{ isClean: false, name: 'Federal DNC Match',         desc: 'Registered on the National Do Not Call Registry (FTC). Do not contact.',     icon: 'ti-building-government' },
-    'litigator':  { isClean: false, name: 'TCPA Litigator Threat',     desc: 'Known serial plaintiff or class-action attorney. CRITICAL risk.',             icon: 'ti-gavel' },
-    'screamer':   { isClean: false, name: 'Hostile Screamer',          desc: 'Known hostile caller prone to aggressive responses or verbal harassment.',     icon: 'ti-speakerphone' },
+    'federal-dnc':{ isClean: false, name: 'Federal DNC Match',          desc: 'Registered on the National Do Not Call Registry (FTC). Do not contact.',     icon: 'ti-building-government' },
+    'litigator':  { isClean: false, name: 'TCPA Litigator Threat',      desc: 'Known serial plaintiff or class-action attorney. CRITICAL risk.',             icon: 'ti-gavel' },
+    'screamer':   { isClean: false, name: 'Hostile Screamer',           desc: 'Known hostile caller prone to aggressive responses or verbal harassment.',     icon: 'ti-speakerphone' },
     'complainer': { isClean: false, name: 'DNC Complainer Registry',   desc: 'Has filed formal complaints with regulatory bodies. High legal risk.',        icon: 'ti-message-report' },
     'dnc':        { isClean: false, name: 'DNC Record Found',          desc: 'Listed on active Do Not Call registries.',                                    icon: 'ti-phone-x' },
     'state':      { isClean: false, name: 'State DNC Registry',        desc: 'Listed on a restricted State Do Not Call list.',                              icon: 'ti-map-pin-off' },
-    'internal':   { isClean: false, name: 'Internal DNC Flag',         desc: 'Flagged directly on your internal company suppression files.',                icon: 'ti-database-x' },
+    'internal':   { isClean: false, name: 'Internal DNC Flag',          desc: 'Flagged directly on your internal company suppression files.',                icon: 'ti-database-x' },
     'reassigned': { isClean: false, name: 'Reassigned Number Warning', desc: 'Number has changed owners. Active consent requires confirmation.',            icon: 'ti-arrows-exchange' }
   };
 
@@ -461,7 +473,7 @@
     } finally {
       btn.disabled = false;
     }
-  }
+  }s
 </script>
 </body>
 </html>
