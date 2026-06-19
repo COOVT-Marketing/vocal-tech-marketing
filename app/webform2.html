@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VTM Portal – Final Expense</title>
+  <link rel="icon" type="image/png" href="logo.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <style>
+    :root {
+      --bg:          #0b0f19;
+      --card:        #111827;
+      --card2:       #1f2937;
+      --border:      #374151;
+      --border2:     #4b5563;
+      --txt:         #f9fafb;
+      --txt2:        #9ca3af;
+      --txt3:        #6b7280;
+      --teal:        #1a9e75;
+      --teal-glow:   rgba(26,158,117,0.15);
+      --teal-b:      rgba(26,158,117,0.35);
+      --green:       #22c55e;
+      --green-glow:  rgba(34,197,94,0.12);
+      --green-b:     rgba(34,197,94,0.4);
+      --red:         #ef4444;
+      --red-glow:    rgba(239,68,68,0.12);
+      --red-b:       rgba(239,68,68,0.4);
+      --yellow:      #f59e0b;
+      --yellow-glow: rgba(245,158,11,0.12);
+      --yellow-b:    rgba(245,158,11,0.35);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--txt);
+      min-height: 100vh;
+      padding: 2rem 1rem 3rem;
+    }
+
+    /* ── NO CALL SCREEN ── */
+    .no-call-screen {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 70vh; text-align: center; gap: 16px;
+    }
+    .no-call-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--card); border: 0.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .no-call-icon i { font-size: 32px; color: var(--txt2); }
+    .no-call-screen h2 { font-size: 18px; font-weight: 500; }
+
+    /* ── SHARED CARD ── */
+    .vtm-card {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      width: 100%; max-width: 580px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 25px 30px -8px rgba(0,0,0,0.6);
+    }
+
+    /* ── HEADER ── */
+    .vtm-header {
+      background: #090d16;
+      padding: 1.4rem 2rem;
+      display: flex; align-items: center; gap: 14px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .vtm-logo {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .vtm-logo.teal { background: var(--teal); }
+    .vtm-logo i { font-size: 22px; color: #fff; }
+    .vtm-header-txt h1 { font-size: 16px; font-weight: 600; color: #fff; }
+    .vtm-header-txt p  { font-size: 12px; color: var(--txt2); margin-top: 2px; }
+    .live-badge {
+      margin-left: auto; display: flex; align-items: center; gap: 6px;
+      background: var(--teal-glow); border: 0.5px solid var(--teal-b);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; color: var(--teal); font-weight: 500;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--teal);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── DNC BODY ── */
+    .dnc-body { padding: 2rem; }
+
+    /* ── STATUS DISPLAY ── */
+    .status-display {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 2rem 1.5rem 1.5rem;
+      border-radius: 14px;
+      border: 0.5px solid var(--border); background: var(--card2);
+      transition: background .5s ease, border-color .5s ease;
+    }
+    .status-display.loading { border-color: var(--teal-b); }
+    .status-display.clean   { background: var(--green-glow); border-color: var(--green-b); animation: greenPulse 2s ease forwards; }
+    .status-display.bad     { background: var(--red-glow);   border-color: var(--red-b);   animation: redPulse 2s ease forwards; }
+    .status-display.invalid { background: var(--yellow-glow);border-color: var(--yellow-b); }
+
+    @keyframes greenPulse {
+      0%  { box-shadow:0 0 0 0 rgba(34,197,94,.5) }
+      50% { box-shadow:0 0 40px 8px rgba(34,197,94,.25) }
+      100%{ box-shadow:0 0 20px 4px rgba(34,197,94,.1) }
+    }
+    @keyframes redPulse {
+      0%  { box-shadow:0 0 0 0 rgba(239,68,68,.5) }
+      50% { box-shadow:0 0 40px 8px rgba(239,68,68,.25) }
+      100%{ box-shadow:0 0 20px 4px rgba(239,68,68,.1) }
+    }
+
+    .status-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem; transition: background .4s;
+    }
+    .status-display .status-icon          { background: rgba(255,255,255,.05); }
+    .status-display.loading .status-icon  { background: var(--teal-glow); }
+    .status-display.clean   .status-icon  { background: rgba(34,197,94,.2); }
+    .status-display.bad     .status-icon  { background: rgba(239,68,68,.2); }
+    .status-display.invalid .status-icon  { background: rgba(245,158,11,.2); }
+
+    .status-icon i { font-size: 36px; color: var(--txt3); }
+    .status-display.loading .status-icon i { color: var(--teal); animation: spin .8s linear infinite; }
+    .status-display.clean   .status-icon i { color: var(--green); }
+    .status-display.bad     .status-icon i { color: var(--red); }
+    .status-display.invalid .status-icon i { color: var(--yellow); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .status-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 22px; font-weight: 500; letter-spacing: .06em;
+      margin-bottom: .5rem; color: var(--txt3); transition: color .4s;
+    }
+    .status-display.loading .status-number { color: var(--txt2); }
+    .status-display.clean   .status-number { color: var(--green); }
+    .status-display.bad     .status-number { color: var(--red); }
+    .status-display.invalid .status-number { color: var(--yellow); }
+
+    .status-verdict {
+      font-size: 28px; font-weight: 700; letter-spacing: .02em;
+      color: var(--txt3); transition: color .4s;
+    }
+    .status-display.loading .status-verdict { color: var(--txt2); font-size:16px; font-weight:400; }
+    .status-display.clean   .status-verdict { color: var(--green); }
+    .status-display.bad     .status-verdict { color: var(--red); }
+    .status-display.invalid .status-verdict { color: var(--yellow); font-size:18px; }
+
+    .status-sub { margin-top: .4rem; font-size: 12px; color: var(--txt2); text-align: center; }
+
+    /* ── REGISTRY TABLE ── */
+    .registry-table {
+      display: none;
+      width: 100%;
+      margin-top: 1.25rem;
+      border-top: 0.5px solid rgba(255,255,255,0.06);
+      padding-top: 1rem;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .registry-table.visible { display: flex; }
+
+    .registry-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      border: 0.5px solid rgba(255,255,255,0.06);
+    }
+    .registry-row-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .registry-row-icon i { font-size: 14px; }
+
+    .registry-row-icon.flag  { background: rgba(239,68,68,.15);  }
+    .registry-row-icon.flag i { color: var(--red); }
+    .registry-row-icon.ok    { background: rgba(34,197,94,.12); }
+    .registry-row-icon.ok i  { color: var(--green); }
+    .registry-row-icon.info  { background: rgba(26,158,117,.12); }
+    .registry-row-icon.info i { color: var(--teal); }
+    .registry-row-icon.warn  { background: rgba(245,158,11,.12); }
+    .registry-row-icon.warn i { color: var(--yellow); }
+
+    .registry-row-label {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--txt2);
+      line-height: 1.3;
+    }
+    .registry-row-label span {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--txt3);
+      margin-top: 1px;
+    }
+
+    .registry-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .06em;
+      padding: 3px 8px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .registry-badge.flagged { background: rgba(239,68,68,.15); color: #f87171; border: 0.5px solid rgba(239,68,68,.3); }
+    .registry-badge.clear   { background: rgba(34,197,94,.1);  color: #4ade80; border: 0.5px solid rgba(34,197,94,.25); }
+    .registry-badge.info    { background: rgba(26,158,117,.12); color: var(--teal); border: 0.5px solid var(--teal-b); }
+    .registry-badge.warn    { background: rgba(245,158,11,.12); color: #fbbf24; border: 0.5px solid rgba(245,158,11,.3); }
+    .registry-badge.n-a     { background: rgba(107,114,128,.1); color: var(--txt3); border: 0.5px solid rgba(107,114,128,.2); }
+
+    /* ── SALE FORM TRIGGER ── */
+    .sale-form-trigger {
+      margin-top: 1.5rem;
+      width: 100%; padding: 11px 20px;
+      background: var(--teal); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background .15s, transform .1s;
+    }
+    .sale-form-trigger:hover  { background: #147d5c; }
+    .sale-form-trigger:active { transform: scale(.98); }
+
+    /* ── SALE FORM PANEL ── */
+    .sale-form-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .45s cubic-bezier(.4,0,.2,1), opacity .35s ease;
+      opacity: 0;
+    }
+    .sale-form-panel.open { max-height: 1800px; opacity: 1; }
+
+    .sale-form-inner {
+      border-top: 0.5px solid var(--border);
+      padding: 2rem;
+    }
+
+    /* ── FORM FIELDS ── */
+    .section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .08em;
+      color: var(--teal); text-transform: uppercase;
+      margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;
+      margin-top: 1.5rem;
+    }
+    .section-label:first-of-type { margin-top: 0; }
+    .section-label::after { content:''; flex:1; height:.5px; background: var(--border); }
+
+    .field-grid     { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .field-grid.full{ grid-template-columns: 1fr; }
+    .field-group    { display: flex; flex-direction: column; gap: 5px; }
+
+    label { font-size: 12px; font-weight: 500; color: var(--txt2); }
+
+    .input-wrap { position: relative; }
+    .input-wrap i {
+      position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+      font-size: 16px; color: var(--txt2); pointer-events: none;
+    }
+    .input-wrap input,
+    .input-wrap select {
+      width: 100%; padding: 9px 12px 9px 34px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      background: var(--card2); border: 0.5px solid var(--border);
+      border-radius: 8px; color: var(--txt);
+      transition: border-color .15s, box-shadow .15s; appearance: none;
+    }
+    .input-wrap select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
+      padding-right: 32px;
+    }
+    .input-wrap input:focus,
+    .input-wrap select:focus {
+      outline: none; border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-glow);
+    }
+    .input-wrap input.auto-filled,
+    .input-wrap select.auto-filled {
+      border-color: rgba(26,158,117,.6);
+      background: rgba(26,158,117,.06);
+    }
+
+    .textarea-wrap { position: relative; }
+    .textarea-wrap i {
+      position: absolute; left: 11px; top: 12px;
+      font-size: 16px; color: var(--txt2); pointer-events: none;
+    }
+    textarea {
+      width: 100%; padding: 10px 12px 10px 34px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      background: var(--card2); border: 0.5px solid var(--border);
+      border-radius: 8px; color: var(--txt);
+      resize: vertical; min-height: 90px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    textarea:focus {
+      outline: none; border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-glow);
+    }
+
+    /* ── BUTTONS ── */
+    .btn-row { display: flex; gap: 10px; margin-top: 1.5rem; }
+    .btn-primary {
+      flex: 1; padding: 11px 20px; background: var(--teal); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background .15s, transform .1s;
+    }
+    .btn-primary:hover  { background: #147d5c; }
+    .btn-primary:active { transform: scale(.98); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+
+    .btn-secondary {
+      padding: 11px 16px; background: transparent; color: var(--txt2);
+      border: 0.5px solid var(--border2); border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      transition: background .15s, color .15s;
+    }
+    .btn-secondary:hover { background: var(--card2); color: var(--txt); }
+
+    /* ── TOASTS ── */
+    .success-toast {
+      display: none; align-items: center; gap: 10px;
+      background: rgba(26,158,117,.12); border: 0.5px solid rgba(26,158,117,.4);
+      border-radius: 8px; padding: 12px 16px; margin-top: 1rem;
+      font-size: 13px; color: #34d399;
+    }
+    .success-toast i { font-size: 18px; }
+    .error-toast {
+      display: none; align-items: center; gap: 10px;
+      background: rgba(239,68,68,.1); border: 0.5px solid rgba(239,68,68,.3);
+      border-radius: 8px; padding: 12px 16px; margin-top: 1rem;
+      font-size: 13px; color: #f87171;
+    }
+    .error-toast i { font-size: 18px; }
+
+    /* ── FOOTER ── */
+    .vtm-footer {
+      border-top: 0.5px solid var(--border);
+      background: #090d16; padding: 12px 2rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .vtm-footer span { font-size: 11px; color: var(--txt2); font-family: 'DM Mono', monospace; }
+    .url-pill {
+      margin-left: auto; font-size: 11px; color: var(--teal);
+      font-family: 'DM Mono', monospace; background: rgba(26,158,117,.12);
+      padding: 3px 10px; border-radius: 20px; border: 0.5px solid rgba(26,158,117,.3);
+    }
+
+    /* ── SUCCESS MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      align-items: center; justify-content: center;
+      padding: 1rem;
+      animation: fadeInOverlay .25s ease;
+    }
+    .modal-overlay.show { display: flex; }
+    @keyframes fadeInOverlay { from{opacity:0} to{opacity:1} }
+
+    .modal-box {
+      background: var(--card);
+      border: 0.5px solid rgba(34,197,94,0.4);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      max-width: 380px; width: 100%;
+      text-align: center;
+      box-shadow: 0 0 60px rgba(34,197,94,0.15), 0 25px 40px rgba(0,0,0,0.6);
+      animation: popIn .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(.85); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .modal-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(34,197,94,0.15);
+      border: 0.5px solid rgba(34,197,94,0.4);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem;
+    }
+    .modal-icon i { font-size: 38px; color: var(--green); }
+
+    .modal-title { font-size: 20px; font-weight: 700; color: var(--txt); margin-bottom: .5rem; }
+    .modal-sub   { font-size: 13px; color: var(--txt2); line-height: 1.6; margin-bottom: 1.75rem; }
+    .modal-close {
+      width: 100%; padding: 11px;
+      background: var(--teal); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background .15s;
+    }
+    .modal-close:hover { background: #147d5c; }
+
+    @media (max-width: 480px) {
+      .dnc-body, .sale-form-inner { padding: 1.25rem; }
+      .vtm-header { padding: 1.25rem; }
+      .field-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+/* ────────────────────────────────────────────────────
+   CONFIGURATION
+──────────────────────────────────────────────────── */
+const DNC_API_KEY     = 'zkU3p9bRrzVDgcKRC2sK';
+const DNC_API_BASE    = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${DNC_API_KEY}/response/json/phone/`;
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZo2WecH8AbJ2rx6-YM7nVzO6D7l7Qn8tMmYQdVMopnIyuCy3SkfZibVS5ibHFtces-w/exec';
+
+const COMPANY_MAP = {
+  'CAMPAIGN_A': 'SecureDrive Insurance',
+  'CAMPAIGN_B': 'Vocal Tech Marketing',
+  'DEFAULT': ''
+};
+
+const US_STATES = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
+
+/* ────────────────────────────────────────────────────
+   URL PARAM HELPERS
+──────────────────────────────────────────────────── */
+const ALIASES = {
+  agentName: ['fullname','agentName','agent_name','agent','user'],
+  phone:     ['phone','phone_number','phonenumber','phone_code'],
+  first:     ['first','first_name','fname'],
+  last:      ['last','last_name','lname'],
+  age:       ['age'],
+  state:     ['state'],
+  zip:       ['zip','postal','postal_code','zipcode'],
+  dob:       ['dob','birthdate','d_o_b'],
+  company:   ['company','vendor'],
+  campaign:  ['campaign','campaign_id'],
+  did:       ['did','did_id','inbound_number'],
+  comments:  ['comments','notes','comment'],
+};
+
+function getParam(name) {
+  const params = new URLSearchParams(window.location.search);
+  for (const k of (ALIASES[name] || [name])) {
+    const v = params.get(k);
+    if (v && v.trim()) return v.trim();
+  }
+  return '';
+}
+
+function isLiveCall() {
+  const params = new URLSearchParams(window.location.search);
+  return ['phone','phone_number','phonenumber','first','first_name','last','last_name','campaign'].some(p => params.get(p));
+}
+
+/* ────────────────────────────────────────────────────
+   BOOT
+──────────────────────────────────────────────────── */
+function boot() {
+  if (!isLiveCall()) { renderNoCall(); return; }
+  renderPage();
+}
+
+/* ────────────────────────────────────────────────────
+   NO CALL
+──────────────────────────────────────────────────── */
+function renderNoCall() {
+  document.getElementById('app').innerHTML = `
+    <div class="no-call-screen">
+      <div class="no-call-icon"><i class="ti ti-phone-off"></i></div>
+      <h2>No webform found</h2>
+    </div>`;
+}
+
+/* ────────────────────────────────────────────────────
+   RENDER FULL PAGE
+──────────────────────────────────────────────────── */
+function renderPage() {
+  const phone          = getParam('phone');
+  const campaignParam  = getParam('campaign');
+  const urlCompany     = getParam('company');
+  const detectedCompany= urlCompany || COMPANY_MAP[campaignParam] || COMPANY_MAP['DEFAULT'];
+  const stateOptions   = US_STATES.map(s => `<option>${s}</option>`).join('');
+
+  document.getElementById('app').innerHTML = `
+    <div class="vtm-card">
+
+      <div class="vtm-header">
+        <div class="vtm-logo teal"><i class="ti ti-heart-rate-monitor"></i></div>
+        <div class="vtm-header-txt">
+          <h1>DNC Checker</h1>
+          <p>Vocal Tech Marketing · Final Expense</p>
+        </div>
+        <div class="live-badge"><div class="live-dot"></div>Live call</div>
+      </div>
+
+      <div class="dnc-body">
+        <div class="status-display" id="statusDisplay">
+          <div class="status-icon"><i class="ti ti-shield" id="statusIcon"></i></div>
+          <div class="status-number" id="statusNumber">—</div>
+          <div class="status-verdict" id="statusVerdict">Checking…</div>
+          <div class="status-sub"    id="statusSub"></div>
+          <div class="registry-table" id="registryTable"></div>
+        </div>
+
+        <button class="sale-form-trigger" id="saleFormBtn" onclick="toggleSaleForm()">
+          <i class="ti ti-clipboard-text"></i>
+          <span id="saleFormBtnLabel">Fill Sale Form</span>
+        </button>
+      </div>
+
+      <div class="sale-form-panel" id="saleFormPanel">
+        <div class="sale-form-inner">
+
+          <div class="vtm-header">
+            <div class="vtm-logo teal"><i class="ti ti-headset" aria-hidden="true"></i></div>
+            <div class="vtm-header-txt">
+              <h1>Sale Form</h1>
+              <p>Final Expense</p>
+            </div>
+          </div>
+
+          <input type="hidden" id="campaign" />
+          <input type="hidden" id="company"  value="${detectedCompany}" />
+          <input type="hidden" id="zip" />
+          <input type="hidden" id="dob" />
+
+          <div class="section-label">Agent Information</div>
+          <div class="field-grid full">
+            <div class="field-group">
+              <label for="agentName">Agent Name</label>
+              <div class="input-wrap"><i class="ti ti-id"></i>
+                <input type="text" id="agentName" placeholder="Agent Name / ID" />
+              </div>
+            </div>
+          </div>
+          <div class="field-grid full">
+            <div class="field-group">
+              <label for="did">DID</label>
+              <div class="input-wrap"><i class="ti ti-hash"></i>
+                <input type="text" id="did" placeholder="e.g. D1" />
+              </div>
+            </div>
+          </div>
+
+          <div class="section-label">Customer Information</div>
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="firstName">First name</label>
+              <div class="input-wrap"><i class="ti ti-user"></i>
+                <input type="text" id="firstName" placeholder="First name" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="lastName">Last name</label>
+              <div class="input-wrap"><i class="ti ti-user"></i>
+                <input type="text" id="lastName" placeholder="Last name" />
+              </div>
+            </div>
+          </div>
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="phone">Phone number</label>
+              <div class="input-wrap"><i class="ti ti-phone"></i>
+                <input type="tel" id="phone" placeholder="10-digit number" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="state">State</label>
+              <div class="input-wrap"><i class="ti ti-map-pin"></i>
+                <select id="state"><option value="">Select state</option>${stateOptions}</select>
+              </div>
+            </div>
+          </div>
+          <div class="field-grid full">
+            <div class="field-group">
+              <label for="age">Age</label>
+              <div class="input-wrap"><i class="ti ti-calendar-event"></i>
+                <input type="number" id="age" placeholder="Age" min="0" max="120" />
+              </div>
+            </div>
+          </div>
+
+          <div class="section-label">Agent Notes</div>
+          <div class="field-group" style="margin-bottom:0">
+            <label for="comments">Comments</label>
+            <div class="textarea-wrap"><i class="ti ti-notes"></i>
+              <textarea id="comments" placeholder="Comments…"></textarea>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-secondary" onclick="clearSaleForm()">
+              <i class="ti ti-refresh"></i> Clear
+            </button>
+            <button class="btn-primary" id="submitBtn" onclick="submitSaleForm()">
+              <i class="ti ti-device-floppy"></i> Submit Sale
+            </button>
+          </div>
+
+          <div class="success-toast" id="successToast">
+            <i class="ti ti-circle-check"></i> Sale submitted successfully!
+          </div>
+          <div class="error-toast" id="errorToast">
+            <i class="ti ti-alert-circle"></i> Submission failed. Check your connection and try again.
+          </div>
+
+        </div>
+      </div>
+
+      <div class="vtm-footer">
+        <span>vocaltechmarketing.com</span>
+        <span class="url-pill">app/fe-form</span>
+      </div>
+
+    </div>`;
+
+  autoFill('agentName', getParam('agentName'));
+  autoFill('phone',     phone);
+  autoFill('firstName', getParam('first'));
+  autoFill('lastName',  getParam('last'));
+  autoFill('age',       getParam('age'));
+  autoFill('zip',       getParam('zip'));
+  autoFill('dob',       getParam('dob'));
+  autoFill('campaign',  campaignParam);
+  autoFill('did',       getParam('did'));
+  autoFill('comments',  getParam('comments'));
+  setStateByValue(getParam('state'));
+
+  if (phone) setTimeout(() => runDncCheck(phone), 700);
+}
+
+/* ────────────────────────────────────────────────────
+   SALE FORM TOGGLE
+──────────────────────────────────────────────────── */
+let saleFormOpen = false;
+
+function toggleSaleForm() {
+  saleFormOpen = !saleFormOpen;
+  const panel = document.getElementById('saleFormPanel');
+  const label = document.getElementById('saleFormBtnLabel');
+  const btn   = document.getElementById('saleFormBtn');
+
+  if (saleFormOpen) {
+    panel.classList.add('open');
+    label.textContent = 'Close Sale Form';
+    btn.style.background = '#0f6b4e';
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  } else {
+    panel.classList.remove('open');
+    label.textContent = 'Fill Sale Form';
+    btn.style.background = '';
+  }
+}
+
+/* ────────────────────────────────────────────────────
+   SALE FORM HELPERS
+──────────────────────────────────────────────────── */
+function autoFill(id, value) {
+  const el = document.getElementById(id);
+  if (!el || !value) return;
+  el.value = value;
+  if (el.type !== 'hidden') el.classList.add('auto-filled');
+}
+
+function setStateByValue(value) {
+  if (!value) return;
+  const sel = document.getElementById('state');
+  if (!sel) return;
+  for (const opt of sel.options) {
+    if (opt.value.toLowerCase() === value.toLowerCase() || opt.text.toLowerCase() === value.toLowerCase()) {
+      sel.value = opt.value;
+      sel.classList.add('auto-filled');
+      break;
+    }
+  }
+}
+
+function clearSaleForm() {
+  ['agentName','firstName','lastName','phone','age','state','zip','dob','company','campaign','did','comments'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ''; el.classList.remove('auto-filled'); }
+  });
+  document.getElementById('successToast').style.display = 'none';
+  document.getElementById('errorToast').style.display   = 'none';
+}
+
+function submitSaleForm() {
+  const btn          = document.getElementById('submitBtn');
+  const successToast = document.getElementById('successToast');
+  const errorToast   = document.getElementById('errorToast');
+
+  successToast.style.display = 'none';
+  errorToast.style.display   = 'none';
+  btn.innerHTML = '<i class="ti ti-loader"></i> Submitting…';
+  btn.disabled  = true;
+
+  const payload = {
+    submissionType: 'FE_SALE_FORM',        // ← routes to "Final Expense" tab
+    agentName: document.getElementById('agentName').value,
+    phone:     document.getElementById('phone').value,
+    firstName: document.getElementById('firstName').value,
+    lastName:  document.getElementById('lastName').value,
+    age:       document.getElementById('age').value,
+    state:     document.getElementById('state').value,
+    zip:       document.getElementById('zip').value,
+    dob:       document.getElementById('dob').value,
+    company:   document.getElementById('company').value,
+    campaign:  document.getElementById('campaign').value,
+    did:       document.getElementById('did').value,
+    comments:  document.getElementById('comments').value,
+  };
+
+  fetch(APPS_SCRIPT_URL, {
+    method:  'POST',
+    mode:    'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  })
+  .then(() => {
+    window.history.replaceState({}, '', window.location.pathname);
+    const modalHtml = `
+      <div class="modal-overlay show" id="successModal">
+        <div class="modal-box">
+          <div class="modal-icon"><i class="ti ti-circle-check"></i></div>
+          <h2 class="modal-title">Sale Submitted</h2>
+          <p class="modal-sub">Successfully recorded to Final Expense.</p>
+          <button class="modal-close" onclick="closeSaleAndExit()">Okay</button>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+  })
+  .catch(() => {
+    btn.innerHTML = '<i class="ti ti-device-floppy"></i> Submit Sale';
+    btn.disabled  = false;
+    errorToast.style.display = 'flex';
+  });
+}
+
+function closeSaleAndExit() {
+  const modal = document.getElementById('successModal');
+  if (modal) modal.remove();
+  renderNoCall();
+}
+
+/* ────────────────────────────────────────────────────
+   REGISTRY ROW BUILDER
+──────────────────────────────────────────────────── */
+function makeRow(iconClass, iconName, label, sublabel, badgeClass, badgeText) {
+  return `
+    <div class="registry-row">
+      <div class="registry-row-icon ${iconClass}"><i class="ti ti-${iconName}"></i></div>
+      <div class="registry-row-label">${label}<span>${sublabel}</span></div>
+      <div class="registry-badge ${badgeClass}">${badgeText}</div>
+    </div>`;
+}
+
+function yesNo(val) {
+  if (val === undefined || val === null || val === '') return null;
+  const s = String(val).toLowerCase();
+  return s === 'y' || s === 'yes' || s === '1' || s === 'true';
+}
+
+/* ────────────────────────────────────────────────────
+   DNC CHECK
+   NOTE: Federal DNC and State DNC are DISPLAYED but
+   do NOT trigger DO NOT TRANSFER for Final Expense.
+   Only Litigator, Plaintiff, and Blacklist do.
+──────────────────────────────────────────────────── */
+async function runDncCheck(rawPhone) {
+  const display  = document.getElementById('statusDisplay');
+  const icon     = document.getElementById('statusIcon');
+  const numEl    = document.getElementById('statusNumber');
+  const verdict  = document.getElementById('statusVerdict');
+  const sub      = document.getElementById('statusSub');
+  const regTable = document.getElementById('registryTable');
+
+  const clean = rawPhone.replace(/\D/g, '');
+
+  if (clean.length < 7 || clean.length > 15) {
+    display.className   = 'status-display invalid';
+    icon.className      = 'ti ti-alert-triangle';
+    numEl.textContent   = rawPhone;
+    verdict.textContent = 'INVALID';
+    sub.textContent     = 'Number format is invalid.';
+    return;
+  }
+
+  display.className   = 'status-display loading';
+  icon.className      = 'ti ti-loader-2';
+  numEl.textContent   = rawPhone;
+  verdict.textContent = 'Scanning all registries…';
+  sub.textContent     = '';
+  regTable.innerHTML  = '';
+  regTable.classList.remove('visible');
+
+  try {
+    const response = await fetch(`${DNC_API_BASE}${clean}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    console.log('Alliance API response:', data);
+
+    const rawCode   = String(data.code || '').toLowerCase();
+    const rawStatus = String(data.status || '').toLowerCase();
+    const rawResult = String(data.result || '').toLowerCase();
+    const msg       = String(data.message || '').toLowerCase();
+
+    /* ── CRITICAL flags (cause DO NOT TRANSFER on ALL forms) ── */
+    const isLitigator   = yesNo(data.litigator) || msg.includes('litigator') || rawCode.includes('litigator') || rawResult.includes('litigator');
+    const isPlaintiff   = yesNo(data.plaintiff) || rawCode.includes('plaintiff') || rawResult.includes('plaintiff') || msg.includes('plaintiff');
+    const isBlacklisted = rawResult === 'blacklisted' || rawStatus === 'blacklisted' || data.code === 400 || rawCode.includes('secondary') || rawCode.includes('blacklist');
+
+    /* ── INFORMATIONAL flags (shown but DO NOT block on Final Expense) ── */
+    const isFedDnc   = yesNo(data.dnc) || msg.includes('dnc');
+    const isStateDnc = yesNo(data.state_dnc) || false;
+
+    /* ── Telephony metadata ── */
+    const isWireless = yesNo(data.wireless);
+    const lineType   = data.linetype || data.line_type || null;
+
+    /* ── FE-specific: only litigator/plaintiff/blacklist block transfer ── */
+    const isDangerous = isLitigator || isPlaintiff || isBlacklisted;
+
+    /* ── Build registry rows ── */
+    let rows = '';
+
+    // 1. Serial Litigator
+    rows += makeRow(
+      isLitigator ? 'flag' : 'ok', 'gavel',
+      'Serial Litigator List', 'Known serial plaintiffs and TCPA litigators',
+      isLitigator ? 'flagged' : 'clear',
+      isLitigator ? 'FLAGGED' : 'CLEAR'
+    );
+
+    // 2. Plaintiff Attorney
+    rows += makeRow(
+      isPlaintiff ? 'flag' : 'ok', 'briefcase',
+      'Plaintiff Attorney Registry', 'Active legal professionals & class-action attorneys',
+      isPlaintiff ? 'flagged' : 'clear',
+      isPlaintiff ? 'FLAGGED' : 'CLEAR'
+    );
+
+    // 3. Federal DNC — shown as INFO only, never blocks
+    rows += makeRow(
+      isFedDnc ? 'warn' : 'ok', 'building-bank',
+      'National Do Not Call Registry',
+      isFedDnc ? 'Registered on Federal DNC — informational for FE' : 'FTC National DNC Registry exclusions',
+      isFedDnc ? 'warn' : 'clear',
+      isFedDnc ? 'ON LIST' : 'CLEAR'
+    );
+
+    // 4. State DNC — shown as INFO only, never blocks
+    rows += makeRow(
+      isStateDnc ? 'warn' : 'ok', 'map-pin',
+      'State DNC Registries',
+      isStateDnc ? 'Registered on State DNC — informational for FE' : 'State-level attorney general DNC registers',
+      isStateDnc ? 'warn' : 'clear',
+      isStateDnc ? 'ON LIST' : 'CLEAR'
+    );
+
+    // 5. Internal Blacklist
+    rows += makeRow(
+      isBlacklisted ? 'flag' : 'ok', 'ban',
+      'Internal Do Not Call List', 'Blacklist Alliance proprietary database & descriptive triggers',
+      isBlacklisted ? 'flagged' : 'clear',
+      isBlacklisted ? 'FLAGGED' : 'CLEAR'
+    );
+
+    // 6. Wireless
+    if (isWireless !== null) {
+      rows += makeRow('info', 'device-mobile',
+        'Wireless / Cell Classification',
+        lineType ? `Line type verified: ${lineType}` : 'Wireless network routing identifier',
+        isWireless ? 'warn' : 'info',
+        isWireless ? 'WIRELESS' : 'LANDLINE'
+      );
+    }
+
+    let sheetsVerdict = 'CLEAN';
+    let sheetsMessage = 'No blocking risk indices found. Federal/State DNC shown as informational only.';
+
+    if (isDangerous) {
+      display.className   = 'status-display bad';
+      icon.className      = 'ti ti-ban';
+      verdict.textContent = 'DO NOT TRANSFER';
+      sheetsVerdict       = 'DO NOT TRANSFER';
+
+      const flags = [];
+      if (isLitigator)   flags.push('Litigator');
+      if (isPlaintiff)   flags.push('Plaintiff/Attorney');
+      if (isBlacklisted) flags.push('Blacklisted Trigger');
+
+      sheetsMessage = `CRITICAL REGISTRY MATCH: ${flags.join(' · ')}`;
+      sub.textContent = sheetsMessage;
+      if (data.code) {
+        sub.innerHTML += `<br><span style="font-family:'DM Mono'; font-size:11px; background:rgba(239,68,68,0.2); padding:2px 6px; border-radius:4px; margin-top:4px; display:inline-block;">API Code: ${data.code}</span>`;
+      }
+    } else {
+      display.className   = 'status-display clean';
+      icon.className      = 'ti ti-circle-check';
+      verdict.textContent = 'CLEAN';
+
+      /* If Fed/State DNC matched, add a soft notice under the CLEAN verdict */
+      const infoFlags = [];
+      if (isFedDnc)   infoFlags.push('Federal DNC');
+      if (isStateDnc) infoFlags.push('State DNC');
+      if (infoFlags.length) {
+        sub.textContent = `Note: ${infoFlags.join(' & ')} registered — informational only for Final Expense.`;
+      } else {
+        sub.textContent = sheetsMessage;
+      }
+    }
+
+    numEl.textContent  = rawPhone;
+    regTable.innerHTML = rows;
+    regTable.classList.add('visible');
+
+    /* ── Log to Google Sheet (FE_LOAD_LOG → API Logs tab) ── */
+    const openLogPayload = {
+      submissionType: 'FE_LOAD_LOG',        // ← new type, routes to API Logs tab
+      phone:          clean,
+      agentName:      getParam('agentName') || 'Unknown Agent',
+      campaign:       getParam('campaign')  || 'N/A',
+      company:        document.getElementById('company').value || 'VTM',
+      apiStatus:      sheetsVerdict,
+      apiCode:        data.code || rawCode || 'N/A',
+      apiMessage:     sheetsMessage,
+      rawResponse:    JSON.stringify(data)
+    };
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode:   'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:   JSON.stringify(openLogPayload)
+    }).then(() => console.log('FE: API log sent to sheet.'));
+
+  } catch(err) {
+    display.className   = 'status-display invalid';
+    icon.className      = 'ti ti-wifi-off';
+    numEl.textContent   = rawPhone;
+    verdict.textContent = 'API ERROR';
+    sub.textContent     = 'Could not reach Alliance API.';
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode:   'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:   JSON.stringify({
+        submissionType: 'FE_LOAD_LOG',
+        phone:          clean,
+        agentName:      getParam('agentName') || 'Unknown Agent',
+        campaign:       getParam('campaign')  || 'N/A',
+        company:        'VTM',
+        apiStatus:      'API ERROR',
+        apiCode:        'ERROR',
+        apiMessage:     err.message
+      })
+    });
+  }
+}
+
+/* ── GO ── */
+boot();
+</script>
+</body>
+</html>
