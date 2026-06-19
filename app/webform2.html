@@ -899,7 +899,7 @@ async function runDncCheck(rawPhone) {
     }
 
     let sheetsVerdict = 'CLEAN';
-    let sheetsMessage = 'No blocking risk indices found. Federal/State DNC shown as informational only.';
+    let sheetsMessage = 'No risk indices found across all audited registries.';
 
     if (isDangerous) {
       display.className   = 'status-display bad';
