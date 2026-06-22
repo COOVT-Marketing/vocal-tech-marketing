@@ -866,7 +866,7 @@ async function runDncCheck(rawPhone) {
     rows += makeRow(
       isFedDnc ? 'warn' : 'ok', 'building-bank',
       'National Do Not Call Registry',
-      isFedDnc ? 'Registered on Federal DNC — informational for FE' : 'FTC National DNC Registry exclusions',
+      isFedDnc ? 'Registered on Federal DNC' : 'FTC National DNC Registry exclusions',
       isFedDnc ? 'warn' : 'clear',
       isFedDnc ? 'ON LIST' : 'CLEAR'
     );
@@ -875,7 +875,7 @@ async function runDncCheck(rawPhone) {
     rows += makeRow(
       isStateDnc ? 'warn' : 'ok', 'map-pin',
       'State DNC Registries',
-      isStateDnc ? 'Registered on State DNC — informational for FE' : 'State-level attorney general DNC registers',
+      isStateDnc ? 'Registered on State DNC' : 'State-level attorney general DNC registers',
       isStateDnc ? 'warn' : 'clear',
       isStateDnc ? 'ON LIST' : 'CLEAR'
     );
@@ -927,7 +927,7 @@ async function runDncCheck(rawPhone) {
       if (isFedDnc)   infoFlags.push('Federal DNC');
       if (isStateDnc) infoFlags.push('State DNC');
       if (infoFlags.length) {
-        sub.textContent = `Note: ${infoFlags.join(' & ')} registered — informational only for Final Expense.`;
+        sub.textContent = `Note: ${infoFlags.join(' & ')} registered.`;
       } else {
         sub.textContent = sheetsMessage;
       }
