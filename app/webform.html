@@ -905,7 +905,7 @@ async function runDncCheck(rawPhone) {
 
     /* ── DIRECT LOG TO GOOGLE SHEET ON INSTANT WEBFORM INITIALIZATION ── */
     const openLogPayload = {
-      submissionType: 'INITIAL_LOAD_LOG',
+      submissionType: 'MED_LOAD_LOG',
       phone:          clean,
       agentName:      getParam('agentName') || 'Unknown Agent',
       campaign:       getParam('campaign') || 'N/A',
