@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VTM Portal – Auto</title>
+  <title>VTM Portal - Medicare</title>
   <link rel="icon" type="image/png" href="logo.png"/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
@@ -95,7 +95,7 @@
     /* ── DNC BODY ── */
     .dnc-body { padding: 2rem; }
 
-    /* ── STATUS DISPLAY ── */
+    /* ── STATUS DISPLAY (top verdict) ── */
     .status-display {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 2rem 1.5rem 1.5rem;
@@ -158,7 +158,7 @@
 
     .status-sub { margin-top: .4rem; font-size: 12px; color: var(--txt2); text-align: center; }
 
-    /* ── REGISTRY TABLE ── */
+    /* ── REGISTRY BREAKDOWN TABLE ── */
     .registry-table {
       display: none;
       width: 100%;
@@ -225,7 +225,7 @@
     .registry-badge.warn    { background: rgba(245,158,11,.12); color: #fbbf24; border: 0.5px solid rgba(245,158,11,.3); }
     .registry-badge.n-a     { background: rgba(107,114,128,.1); color: var(--txt3); border: 0.5px solid rgba(107,114,128,.2); }
 
-    /* ── SALE FORM TRIGGER ── */
+    /* ── SALE FORM TOGGLE BUTTON ── */
     .sale-form-trigger {
       margin-top: 1.5rem;
       width: 100%; padding: 11px 20px;
@@ -245,14 +245,17 @@
       transition: max-height .45s cubic-bezier(.4,0,.2,1), opacity .35s ease;
       opacity: 0;
     }
-    .sale-form-panel.open { max-height: 1800px; opacity: 1; }
+    .sale-form-panel.open {
+      max-height: 1800px;
+      opacity: 1;
+    }
 
     .sale-form-inner {
       border-top: 0.5px solid var(--border);
       padding: 2rem;
     }
 
-    /* ── FORM FIELDS ── */
+    /* ── SALE FORM FIELDS ── */
     .section-label {
       font-size: 11px; font-weight: 600; letter-spacing: .08em;
       color: var(--teal); text-transform: uppercase;
@@ -404,8 +407,14 @@
     }
     .modal-icon i { font-size: 38px; color: var(--green); }
 
-    .modal-title { font-size: 20px; font-weight: 700; color: var(--txt); margin-bottom: .5rem; }
-    .modal-sub   { font-size: 13px; color: var(--txt2); line-height: 1.6; margin-bottom: 1.75rem; }
+    .modal-title {
+      font-size: 20px; font-weight: 700;
+      color: var(--txt); margin-bottom: .5rem;
+    }
+    .modal-sub {
+      font-size: 13px; color: var(--txt2); line-height: 1.6;
+      margin-bottom: 1.75rem;
+    }
     .modal-close {
       width: 100%; padding: 11px;
       background: var(--teal); color: #fff;
@@ -430,9 +439,9 @@
 /* ────────────────────────────────────────────────────
    CONFIGURATION
 ──────────────────────────────────────────────────── */
-const DNC_API_KEY     = 'zkU3p9bRrzVDgcKRC2sK';
-const DNC_API_BASE    = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${DNC_API_KEY}/response/json/phone/`;
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZo2WecH8AbJ2rx6-YM7nVzO6D7l7Qn8tMmYQdVMopnIyuCy3SkfZibVS5ibHFtces-w/exec';
+const DNC_API_KEY      = 'zkU3p9bRrzVDgcKRC2sK';
+const DNC_API_BASE     = `https://api.blacklistalliance.net/standard/api/v1/Lookup/key/${DNC_API_KEY}/response/json/phone/`;
+const APPS_SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbwZo2WecH8AbJ2rx6-YM7nVzO6D7l7Qn8tMmYQdVMopnIyuCy3SkfZibVS5ibHFtces-w/exec';
 
 const COMPANY_MAP = {
   'CAMPAIGN_A': 'SecureDrive Insurance',
@@ -507,10 +516,10 @@ function renderPage() {
     <div class="vtm-card">
 
       <div class="vtm-header">
-        <div class="vtm-logo teal"><i class="ti ti-heart-rate-monitor"></i></div>
+        <div class="vtm-logo teal"><i class="ti ti-shield-check"></i></div>
         <div class="vtm-header-txt">
           <h1>DNC Checker</h1>
-          <p>Vocal Tech Marketing · Auto</p>
+          <p>Vocal Tech Marketing · Medicare</p>
         </div>
         <div class="live-badge"><div class="live-dot"></div>Live call</div>
       </div>
@@ -521,7 +530,9 @@ function renderPage() {
           <div class="status-number" id="statusNumber">—</div>
           <div class="status-verdict" id="statusVerdict">Checking…</div>
           <div class="status-sub"    id="statusSub"></div>
-          <div class="registry-table" id="registryTable"></div>
+
+          <div class="registry-table" id="registryTable">
+            </div>
         </div>
 
         <button class="sale-form-trigger" id="saleFormBtn" onclick="toggleSaleForm()">
@@ -537,7 +548,7 @@ function renderPage() {
             <div class="vtm-logo teal"><i class="ti ti-headset" aria-hidden="true"></i></div>
             <div class="vtm-header-txt">
               <h1>Sale Form</h1>
-              <p>Final Expense</p>
+              <p>Medicare</p>
             </div>
           </div>
 
@@ -712,7 +723,7 @@ function submitSaleForm() {
   btn.disabled  = true;
 
   const payload = {
-    submissionType: 'AUTO_SALE_FORM',        // ← routes to "Final Expense" tab
+    submissionType: 'MED_SALE_FORM',
     agentName: document.getElementById('agentName').value,
     phone:     document.getElementById('phone').value,
     firstName: document.getElementById('firstName').value,
@@ -740,7 +751,7 @@ function submitSaleForm() {
         <div class="modal-box">
           <div class="modal-icon"><i class="ti ti-circle-check"></i></div>
           <h2 class="modal-title">Sale Submitted</h2>
-          <p class="modal-sub">Successfully recorded to Final Expense.</p>
+          <p class="modal-sub">Successfully recorded.</p>
           <button class="modal-close" onclick="closeSaleAndExit()">Okay</button>
         </div>
       </div>
@@ -779,10 +790,7 @@ function yesNo(val) {
 }
 
 /* ────────────────────────────────────────────────────
-   DNC CHECK
-   NOTE: Federal DNC and State DNC are DISPLAYED but
-   do NOT trigger DO NOT TRANSFER for Final Expense.
-   Only Litigator, Plaintiff, and Blacklist do.
+   DNC CHECK & INSTANT GOOGLE SHEET LOGGING
 ──────────────────────────────────────────────────── */
 async function runDncCheck(rawPhone) {
   const display  = document.getElementById('statusDisplay');
@@ -817,85 +825,55 @@ async function runDncCheck(rawPhone) {
     const data = await response.json();
     console.log('Alliance API response:', data);
 
+    /* Clean all code strings from API metadata to prevent false clears */
     const rawCode   = String(data.code || '').toLowerCase();
     const rawStatus = String(data.status || '').toLowerCase();
     const rawResult = String(data.result || '').toLowerCase();
     const msg       = String(data.message || '').toLowerCase();
 
-    /* ── CRITICAL flags (cause DO NOT TRANSFER on ALL forms) ── */
+    /* Check explicitly for Plaintiff Attorneys and Litigators within string codes */
     const isLitigator   = yesNo(data.litigator) || msg.includes('litigator') || rawCode.includes('litigator') || rawResult.includes('litigator');
     const isPlaintiff   = yesNo(data.plaintiff) || rawCode.includes('plaintiff') || rawResult.includes('plaintiff') || msg.includes('plaintiff');
     const isBlacklisted = rawResult === 'blacklisted' || rawStatus === 'blacklisted' || data.code === 400 || rawCode.includes('secondary') || rawCode.includes('blacklist');
+    
+    /* Standard Registries */
+    const isFedDnc    = yesNo(data.dnc) || msg.includes('dnc');
+    const isStateDnc  = yesNo(data.state_dnc) || false;
+    
+    /* Telephony Metadata */
+    const isWireless  = yesNo(data.wireless);
+    const lineType    = data.linetype || data.line_type    || null;
 
-    /* ── INFORMATIONAL flags (shown but DO NOT block on Final Expense) ── */
-    const isFedDnc   = yesNo(data.dnc) || msg.includes('dnc');
-    const isStateDnc = yesNo(data.state_dnc) || false;
+    /* Master Trigger Evaluation */
+    const isDangerous = isLitigator || isPlaintiff || isFedDnc || isStateDnc || isBlacklisted;
 
-    /* ── Telephony metadata ── */
-    const isWireless = yesNo(data.wireless);
-    const lineType   = data.linetype || data.line_type || null;
-
-    /* ── FE-specific: only litigator/plaintiff/blacklist block transfer ── */
-    const isDangerous = isLitigator || isPlaintiff || isBlacklisted;
-
-    /* ── Build registry rows ── */
+    /* ── Build Registry UI Breakdowns ── */
     let rows = '';
 
-    // 1. Serial Litigator
-    rows += makeRow(
-      isLitigator ? 'flag' : 'ok', 'gavel',
-      'Serial Litigator List', 'Known serial plaintiffs and TCPA litigators',
-      isLitigator ? 'flagged' : 'clear',
-      isLitigator ? 'FLAGGED' : 'CLEAR'
-    );
+    /* 1. Serial Litigator List */
+    rows += makeRow(isLitigator ? 'flag' : 'ok', 'gavel', 'Serial Litigator List', 'Known serial plaintiffs and TCPA litigators', isLitigator ? 'flagged' : 'clear', isLitigator ? 'FLAGGED' : 'CLEAR');
 
-    // 2. Plaintiff Attorney
-    rows += makeRow(
-      isPlaintiff ? 'flag' : 'ok', 'briefcase',
-      'Plaintiff Attorney Registry', 'Active legal professionals & class-action attorneys',
-      isPlaintiff ? 'flagged' : 'clear',
-      isPlaintiff ? 'FLAGGED' : 'CLEAR'
-    );
+    /* 2. Plaintiff Attorney Registry */
+    rows += makeRow(isPlaintiff ? 'flag' : 'ok', 'briefcase', 'Plaintiff Attorney Registry', 'Active legal professionals & class-action attorneys', isPlaintiff ? 'flagged' : 'clear', isPlaintiff ? 'FLAGGED' : 'CLEAR');
 
-    // 3. Federal DNC — shown as INFO only, never blocks
-    rows += makeRow(
-      isFedDnc ? 'warn' : 'ok', 'building-bank',
-      'National Do Not Call Registry',
-      isFedDnc ? 'Registered on Federal DNC' : 'FTC National DNC Registry exclusions',
-      isFedDnc ? 'warn' : 'clear',
-      isFedDnc ? 'ON LIST' : 'CLEAR'
-    );
+    /* 3. National Do Not Call Registry */
+    rows += makeRow(isFedDnc ? 'flag' : 'ok', 'building-bank', 'National Do Not Call Registry', 'FTC National DNC Registry exclusions', isFedDnc ? 'flagged' : 'clear', isFedDnc ? 'FLAGGED' : 'CLEAR');
 
-    // 4. State DNC — shown as INFO only, never blocks
-    rows += makeRow(
-      isStateDnc ? 'warn' : 'ok', 'map-pin',
-      'State DNC Registries',
-      isStateDnc ? 'Registered on State DNC' : 'State-level attorney general DNC registers',
-      isStateDnc ? 'warn' : 'clear',
-      isStateDnc ? 'ON LIST' : 'CLEAR'
-    );
+    /* 4. State DNC Registries */
+    rows += makeRow(isStateDnc ? 'flag' : 'ok', 'map-pin', 'State DNC Registries', 'State-level attorney general DNC registers', isStateDnc ? 'flagged' : 'clear', isStateDnc ? 'FLAGGED' : 'CLEAR');
 
-    // 5. Internal Blacklist
-    rows += makeRow(
-      isBlacklisted ? 'flag' : 'ok', 'ban',
-      'Internal Do Not Call List', 'Blacklist Alliance proprietary database & descriptive triggers',
-      isBlacklisted ? 'flagged' : 'clear',
-      isBlacklisted ? 'FLAGGED' : 'CLEAR'
-    );
+    /* 5. Internal Do Not Call List / Alliance Blacklist */
+    rows += makeRow(isBlacklisted ? 'flag' : 'ok', 'ban', 'Internal Do Not Call List', 'Blacklist Alliance proprietary database & descriptive triggers', isBlacklisted ? 'flagged' : 'clear', isBlacklisted ? 'FLAGGED' : 'CLEAR');
 
-    // 6. Wireless
+    /* 6. Wireless / Cell Breakdown */
     if (isWireless !== null) {
-      rows += makeRow('info', 'device-mobile',
-        'Wireless / Cell Classification',
-        lineType ? `Line type verified: ${lineType}` : 'Wireless network routing identifier',
-        isWireless ? 'warn' : 'info',
-        isWireless ? 'WIRELESS' : 'LANDLINE'
-      );
+      rows += makeRow('info', 'device-mobile', 'Wireless / Cell Classification', lineType ? `Line type verified: ${lineType}` : 'Wireless network routing identifier', isWireless ? 'warn' : 'info', isWireless ? 'WIRELESS' : 'LANDLINE');
     }
 
     let sheetsVerdict = 'CLEAN';
     let sheetsMessage = 'No risk indices found across all audited registries.';
 
+    /* ── Apply Verdict Rendering ── */
     if (isDangerous) {
       display.className   = 'status-display bad';
       icon.className      = 'ti ti-ban';
@@ -905,8 +883,10 @@ async function runDncCheck(rawPhone) {
       const flags = [];
       if (isLitigator)   flags.push('Litigator');
       if (isPlaintiff)   flags.push('Plaintiff/Attorney');
+      if (isFedDnc)      flags.push('Federal DNC');
+      if (isStateDnc)    flags.push('State DNC');
       if (isBlacklisted) flags.push('Blacklisted Trigger');
-
+      
       sheetsMessage = `CRITICAL REGISTRY MATCH: ${flags.join(' · ')}`;
       sub.textContent = sheetsMessage;
       if (data.code) {
@@ -916,28 +896,19 @@ async function runDncCheck(rawPhone) {
       display.className   = 'status-display clean';
       icon.className      = 'ti ti-circle-check';
       verdict.textContent = 'CLEAN';
-
-      /* If Fed/State DNC matched, add a soft notice under the CLEAN verdict */
-      const infoFlags = [];
-      if (isFedDnc)   infoFlags.push('Federal DNC');
-      if (isStateDnc) infoFlags.push('State DNC');
-      if (infoFlags.length) {
-        sub.textContent = `Note: ${infoFlags.join(' & ')} registered.`;
-      } else {
-        sub.textContent = sheetsMessage;
-      }
+      sub.textContent     = sheetsMessage;
     }
 
-    numEl.textContent  = rawPhone;
-    regTable.innerHTML = rows;
+    numEl.textContent   = rawPhone;
+    regTable.innerHTML  = rows;
     regTable.classList.add('visible');
 
-    /* ── Log to Google Sheet (FE_LOAD_LOG → API Logs tab) ── */
+    /* ── DIRECT LOG TO GOOGLE SHEET ON INSTANT WEBFORM INITIALIZATION ── */
     const openLogPayload = {
-      submissionType: 'AUTO_LOAD_LOG',        // ← new type, routes to API Logs tab
+      submissionType: 'MED_LOAD_LOG',
       phone:          clean,
       agentName:      getParam('agentName') || 'Unknown Agent',
-      campaign:       getParam('campaign')  || 'N/A',
+      campaign:       getParam('campaign') || 'N/A',
       company:        document.getElementById('company').value || 'VTM',
       apiStatus:      sheetsVerdict,
       apiCode:        data.code || rawCode || 'N/A',
@@ -950,7 +921,7 @@ async function runDncCheck(rawPhone) {
       mode:   'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body:   JSON.stringify(openLogPayload)
-    }).then(() => console.log('FE: API log sent to sheet.'));
+    }).then(() => console.log('Successfully logged API open data to sheet.'));
 
   } catch(err) {
     display.className   = 'status-display invalid';
@@ -959,15 +930,16 @@ async function runDncCheck(rawPhone) {
     verdict.textContent = 'API ERROR';
     sub.textContent     = 'Could not reach Alliance API.';
 
+    /* Log error parameters to sheet if connection fails */
     fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       mode:   'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body:   JSON.stringify({
-        submissionType: 'AUTO_LOAD_LOG',
+        submissionType: 'INITIAL_LOAD_LOG',
         phone:          clean,
         agentName:      getParam('agentName') || 'Unknown Agent',
-        campaign:       getParam('campaign')  || 'N/A',
+        campaign:       getParam('campaign') || 'N/A',
         company:        'VTM',
         apiStatus:      'API ERROR',
         apiCode:        'ERROR',
