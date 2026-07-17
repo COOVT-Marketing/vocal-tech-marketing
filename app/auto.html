@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VTM Portal - Medicare</title>
+  <title>VTM Portal - Auto</title>
   <link rel="icon" type="image/png" href="logo.png"/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
@@ -519,7 +519,7 @@ function renderPage() {
         <div class="vtm-logo teal"><i class="ti ti-shield-check"></i></div>
         <div class="vtm-header-txt">
           <h1>DNC Checker</h1>
-          <p>Vocal Tech Marketing · Medicare</p>
+          <p>Vocal Tech Marketing · Auto</p>
         </div>
         <div class="live-badge"><div class="live-dot"></div>Live call</div>
       </div>
@@ -548,7 +548,7 @@ function renderPage() {
             <div class="vtm-logo teal"><i class="ti ti-headset" aria-hidden="true"></i></div>
             <div class="vtm-header-txt">
               <h1>Sale Form</h1>
-              <p>Medicare</p>
+              <p>Auto</p>
             </div>
           </div>
 
@@ -723,7 +723,7 @@ function submitSaleForm() {
   btn.disabled  = true;
 
   const payload = {
-    submissionType: 'MED_SALE_FORM',
+    submissionType: 'Auto_SALE_FORM',
     agentName: document.getElementById('agentName').value,
     phone:     document.getElementById('phone').value,
     firstName: document.getElementById('firstName').value,
@@ -905,7 +905,7 @@ async function runDncCheck(rawPhone) {
 
     /* ── DIRECT LOG TO GOOGLE SHEET ON INSTANT WEBFORM INITIALIZATION ── */
     const openLogPayload = {
-      submissionType: 'MED_LOAD_LOG',
+      submissionType: 'AUTO_LOAD_LOG',
       phone:          clean,
       agentName:      getParam('agentName') || 'Unknown Agent',
       campaign:       getParam('campaign') || 'N/A',
