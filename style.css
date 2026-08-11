@@ -727,7 +727,6 @@ img { max-width: 100%; display: block; }
   .wd-inner           { grid-template-columns: 1fr; gap: 40px; }
   .footer-inner       { grid-template-columns: 1fr 1fr; gap: 32px; }
   .footer-brand       { grid-column: 1 / -1; }
-  .about-float-badge, .about-float-badge--2 { right: 0; }
   .section-header     { padding-top: 80px; }
 }
 @media (max-width: 768px) {
