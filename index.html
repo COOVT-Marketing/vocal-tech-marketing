@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vocal Tech Marketing — High-Intent Lead Generation</title>
+  <meta name="description" content="Vocal Tech Marketing specializes in high-intent lead generation and qualified calls for Medicare Advantage, ACA, MVA, Auto Insurance, and Final Expense. Full-stack web development included.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Roboto:wght@400;500;700&family=Squada+One&display=swap" rel="stylesheet">
+  <script>
+    (function() {
+      var t = localStorage.getItem('vtm-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+
+<!-- Mobile overlay -->
+<div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <button class="overlay-close-btn" id="closeNav" aria-label="Close menu">&#x2715;</button>
+  <a href="./" class="nav-link">Home</a>
+  <a href="about/" class="nav-link">About</a>
+  <div class="mobile-services-list">
+    <a href="medicare/">Medicare Advantage</a>
+    <a href="aca/">ACA Insurance</a>
+    <a href="mva/">MVA Campaigns</a>
+    <a href="auto/">Auto Insurance</a>
+    <a href="final-expense/">Final Expense</a>
+    <a href="web-development/">Web Development</a>
+  </div>
+  <a href="./#results" class="nav-link">Results</a>
+  <a href="./#contact" class="nav-link">Contact</a>
+  <a href="./#contact" class="nav-overlay-cta">Get Started &rarr;</a>
+</div>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+                        <a href="./" class="nav-logo">
+      <img src="images/logo.png" alt="Vocal Tech Marketing" class="logo-img" />
+      <div class="logo-text">
+        <span class="logo-v">Vocal Tech</span>
+        <span class="logo-sub">Marketing</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="./" class="nav-link active">Home</a></li>
+      <li><a href="about/" class="nav-link">About</a></li>
+      <li><a href="./#services" class="nav-link">Services</a></li>
+      <li><a href="./#results" class="nav-link">Results</a></li>
+      <li><a href="./#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <a href="./#contact" class="nav-cta">Get Started</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">
+      <span class="icon-moon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </span>
+      <span class="icon-sun">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </span>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-mesh"></div>
+  <div class="hero-grid-overlay"></div>
+  <div class="hero-inner">
+    <div class="hero-badge reveal">
+      <span class="badge-dot"></span>
+      Specialized Marketing Firm
+    </div>
+    <h1 class="hero-title reveal reveal-delay-1">
+      We Drive Results<br>in <span class="cycler-wrap"><span id="cycler">Medicare Advantage</span></span>
+    </h1>
+    <p class="hero-desc reveal reveal-delay-2">
+      Vocal Tech Marketing handles end-to-end outbound &amp; inbound
+      campaigns for Medicare Advantage, ACA, MVA, Auto Insurance, and Final
+      Expense — plus full-stack web development that converts.
+    </p>
+    <div class="hero-actions reveal reveal-delay-3">
+      <a href="#contact" class="btn-primary">Start a Campaign</a>
+      <a href="#services" class="btn-ghost">Explore Services</a>
+    </div>
+    <div class="hero-stats reveal reveal-delay-4">
+      <div class="hstat">
+        <div class="hstat-row">
+          <span class="hstat-num" data-target="10">0</span><span class="hstat-suf">+</span>
+        </div>
+        <span class="hstat-label">Verticals Served</span>
+      </div>
+      <div class="hstat-div"></div>
+      <div class="hstat">
+        <div class="hstat-row">
+          <span class="hstat-num" data-target="98">0</span><span class="hstat-suf">%</span>
+        </div>
+        <span class="hstat-label">Client Retention</span>
+      </div>
+      <div class="hstat-div"></div>
+      <div class="hstat">
+        <div class="hstat-row">
+          <span class="hstat-num" data-target="24">0</span><span class="hstat-suf">/7</span>
+        </div>
+        <span class="hstat-label">Campaign Support</span>
+      </div>
+    </div>
+  </div>
+  <!-- Hero right visual cards -->
+  <div class="hero-right-visual">
+    <div class="hrv-card">
+      <div class="hrv-card-top">
+        <div class="hrv-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div>
+        <div><div class="hrv-title">Medicare AEP</div><div class="hrv-sub">Conversion rate</div></div>
+      </div>
+      <div class="hrv-bar-wrap"><div class="hrv-bar teal"></div></div>
+      <div class="hrv-pct">92%</div>
+    </div>
+    <div class="hrv-card">
+      <div class="hrv-card-top">
+        <div class="hrv-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 11 14 10 22 21 10 13 10 13 2"/></svg></div>
+        <div><div class="hrv-title">ACA Enrollment</div><div class="hrv-sub">Campaign efficiency</div></div>
+      </div>
+      <div class="hrv-bar-wrap"><div class="hrv-bar gold"></div></div>
+      <div class="hrv-pct">78%</div>
+    </div>
+    <div class="hrv-card">
+      <div class="hrv-card-top">
+        <div class="hrv-icon coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
+        <div><div class="hrv-title">Auto Live Transfer</div><div class="hrv-sub">Quote efficiency</div></div>
+      </div>
+      <div class="hrv-bar-wrap"><div class="hrv-bar coral"></div></div>
+      <div class="hrv-pct">85%</div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="ticker-band" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Medicare Advantage</span><span class="t-sep">&#9670;</span>
+    <span>ACA Insurance</span><span class="t-sep">&#9670;</span>
+    <span>MVA Campaigns</span><span class="t-sep">&#9670;</span>
+    <span>Auto Insurance</span><span class="t-sep">&#9670;</span>
+    <span>Final Expense</span><span class="t-sep">&#9670;</span>
+    <span>Web Development</span><span class="t-sep">&#9670;</span>
+    <span>Inbound &amp; Outbound</span><span class="t-sep">&#9670;</span>
+    <span>Lead Generation</span><span class="t-sep">&#9670;</span>
+    <span>Medicare Advantage</span><span class="t-sep">&#9670;</span>
+    <span>ACA Insurance</span><span class="t-sep">&#9670;</span>
+    <span>MVA Campaigns</span><span class="t-sep">&#9670;</span>
+    <span>Auto Insurance</span><span class="t-sep">&#9670;</span>
+    <span>Final Expense</span><span class="t-sep">&#9670;</span>
+    <span>Web Development</span><span class="t-sep">&#9670;</span>
+    <span>Inbound &amp; Outbound</span><span class="t-sep">&#9670;</span>
+    <span>Lead Generation</span><span class="t-sep">&#9670;</span>
+  </div>
+</div>
+
+<!-- Services overview -->
+<section class="services-section" id="services">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div class="section-chip section-chip--plain reveal">Services</div>
+      <h2 class="section-title reveal reveal-delay-1">Every vertical.<br>One powerhouse team.</h2>
+      <p class="section-sub reveal reveal-delay-2">
+        From cold outreach to warm inbound transfer — we own the full funnel
+        across the most competitive insurance and legal verticals.
+      </p>
+    </div>
+    <div class="services-grid">
+      <a href="medicare/" class="svc-card reveal" data-color="teal">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3>Medicare Advantage</h3>
+        <p>Compliant inbound &amp; outbound MA campaigns — plan comparison, T65 and SEP targeting, AEP surge support with licensed agent transfers.</p>
+        <span class="svc-link">View details &rarr;</span>
+      </a>
+      <a href="aca/" class="svc-card reveal reveal-delay-1" data-color="sky">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>ACA Insurance</h3>
+        <p>Affordable Care Act enrollment with SEP and OEP handling. Precision targeting to maximize enrollments and cut churn.</p>
+        <span class="svc-link">View details &rarr;</span>
+      </a>
+      <a href="mva/" class="svc-card reveal reveal-delay-2" data-color="gold">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h3>MVA Campaigns</h3>
+        <p>Motor Vehicle Accident lead generation and live transfer to law firms. High-intent claimants delivered in real time.</p>
+        <span class="svc-link">View details &rarr;</span>
+      </a>
+      <a href="auto/" class="svc-card reveal reveal-delay-1" data-color="teal">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><path d="M9 17h6"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="17.5" r="2.5"/></svg>
+        </div>
+        <h3>Auto Insurance</h3>
+        <p>Outbound auto campaigns with carrier matching and live transfer. Standard policies through SR-22 and high-risk drivers.</p>
+        <span class="svc-link">View details &rarr;</span>
+      </a>
+      <a href="final-expense/" class="svc-card reveal reveal-delay-2" data-color="coral">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <h3>Final Expense</h3>
+        <p>Compassionate final expense campaigns built on trust. Reach seniors with whole life and burial insurance that matters.</p>
+        <span class="svc-link">View details &rarr;</span>
+      </a>
+      <a href="web-development/" class="svc-card reveal reveal-delay-3" data-color="sky">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3>Web Development</h3>
+        <p>Landing pages, lead funnels, and business sites built to convert. Responsive, fast, and wired to your campaign stack.</p>
+        <span class="svc-link">View details &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- About snippet -->
+<section class="about-section" id="about">
+  <div class="about-wrap">
+    <div class="about-visual reveal">
+      <div class="about-img-card">
+        <div class="acard-logo">VTM</div>
+        <div class="acard-tags">
+          <span>Outbound</span>
+          <span>Inbound</span>
+          <span>Web Dev</span>
+          <span>Compliance</span>
+        </div>
+        <div class="acard-glow"></div>
+      </div>
+      <div class="about-float-badge reveal reveal-delay-2">
+        <span class="afb-icon">&#10003;</span>
+        <div><strong>TCPA Compliant</strong><span>All campaigns</span></div>
+      </div>
+      <div class="about-float-badge about-float-badge--2 reveal reveal-delay-3">
+        <span class="afb-icon">&#9650;</span>
+        <div><strong>ROI Focused</strong><span>Every vertical</span></div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-chip section-chip--diamond reveal">About Us</div>
+      <h2 class="section-title left reveal reveal-delay-1">
+        Your full-service<br>marketing engine.
+      </h2>
+      <p class="about-body reveal reveal-delay-2">
+        Vocal Tech Marketing was built by people who’ve actually run insurance
+        and legal campaigns — not by a generic agency that learned the verticals
+        last Tuesday. We combine data-driven outbound dialing, precision inbound
+        routing, and conversion-focused web builds under one roof.
+      </p>
+      <p class="about-body reveal reveal-delay-3">
+        Whether you’re scaling Medicare AEP enrollment, generating MVA transfers
+        for a law firm, or launching a fresh ACA campaign, we bring the scripts,
+        the agents, and the infrastructure to execute at volume.
+      </p>
+      <div class="about-pillars reveal reveal-delay-4">
+        <div class="pillar">
+          <div class="pillar-icon">&#9670;</div>
+          <div>
+            <strong>Compliance First</strong>
+            <p>TCPA, CMS, and state-level rules baked into every campaign from day one.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">&#9670;</div>
+          <div>
+            <strong>Full Funnel Ownership</strong>
+            <p>From first touch to closed deal — we stay accountable for every step.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">&#9670;</div>
+          <div>
+            <strong>Dedicated Account Team</strong>
+            <p>Real people managing your campaigns, not just automated dashboards.</p>
+          </div>
+        </div>
+      </div>
+      <a href="about/" class="btn-ghost reveal" style="margin-top:28px">More about us &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- Results -->
+<section class="results-section" id="results">
+  <div class="results-mesh" aria-hidden="true"></div>
+  <div class="section-wrap">
+    <div class="section-header">
+      <div class="section-chip section-chip--plain reveal">Results</div>
+      <h2 class="section-title light reveal reveal-delay-1">Real numbers from real campaigns.</h2>
+    </div>
+    <div class="results-grid">
+      <div class="result-card reveal">
+        <div class="rc-num"><span data-target="250">0</span>K+</div>
+        <div class="rc-label">Leads Generated</div>
+        <div class="rc-sub">Across all verticals</div>
+      </div>
+      <div class="result-card reveal reveal-delay-1">
+        <div class="rc-num"><span data-target="98">0</span>%</div>
+        <div class="rc-label">Client Retention</div>
+        <div class="rc-sub">Year-over-year</div>
+      </div>
+      <div class="result-card reveal reveal-delay-2">
+        <div class="rc-num"><span data-target="40">0</span>%</div>
+        <div class="rc-label">Avg. Cost Reduction</div>
+        <div class="rc-sub">Vs. previous campaigns</div>
+      </div>
+      <div class="result-card reveal reveal-delay-3">
+        <div class="rc-num"><span data-target="10">0</span>+</div>
+        <div class="rc-label">Active Verticals</div>
+        <div class="rc-sub">Medicare · ACA · MVA · Auto · FE</div>
+      </div>
+    </div>
+    <div class="process-strip">
+      <div class="ps-step reveal">
+        <div class="ps-num">01</div>
+        <h4>Strategy &amp; Setup</h4>
+        <p>Goals, targeting, compliance review, script approval.</p>
+      </div>
+      <div class="ps-step reveal reveal-delay-1">
+        <div class="ps-num">02</div>
+        <h4>Launch &amp; Dial</h4>
+        <p>Outbound live, inbound lines active, leads flowing.</p>
+      </div>
+      <div class="ps-step reveal reveal-delay-2">
+        <div class="ps-num">03</div>
+        <h4>Qualify &amp; Transfer</h4>
+        <p>Intent scoring, live agent transfer, CRM delivery.</p>
+      </div>
+      <div class="ps-step reveal reveal-delay-3">
+        <div class="ps-num">04</div>
+        <h4>Optimize &amp; Scale</h4>
+        <p>A/B tests, reporting, CPL reduction, volume growth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials-section" id="testimonials">
+  <div class="section-wrap">
+    <div class="section-header" style="padding-top:0">
+      <div class="section-chip section-chip--plain reveal">What Clients Say</div>
+      <h2 class="section-title reveal reveal-delay-1">Clients who scaled with us.</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testi-card reveal">
+        <p class="testi-body">VTM transformed our Medicare AEP season. Their outbound team delivered more qualified transfers in one month than our previous vendor did all year.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">RJ</div>
+          <div>
+            <div class="testi-name">Robert J.</div>
+            <div class="testi-role">Medicare FMO Director</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <p class="testi-body">The MVA live transfer quality is unmatched. We see 85% attorney intake rates on every transfer. Our case load has tripled since partnering with Vocal Tech.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SM</div>
+          <div>
+            <div class="testi-name">Sarah M.</div>
+            <div class="testi-role">Personal Injury Law Firm</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <p class="testi-body">Their web team built our ACA landing page and CRM integration in under a week. TCPA-compliant, fast, and our cost-per-lead dropped almost 40%.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">DK</div>
+          <div>
+            <div class="testi-name">Daniel K.</div>
+            <div class="testi-role">ACA Insurance Agency Owner</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact-section" id="contact">
+  <div class="contact-mesh" aria-hidden="true"></div>
+  <div class="section-wrap">
+    <div class="contact-inner">
+      <div class="contact-text">
+        <div class="section-chip reveal">Contact Us</div>
+        <h2 class="section-title left light reveal reveal-delay-1">
+          Ready to scale<br>your campaigns?
+        </h2>
+        <p class="about-body reveal reveal-delay-2">
+          Tell us your vertical, your goals, and your volume — we’ll put together
+          a custom plan within 24 hours. No fluff, no runaround.
+        </p>
+        <div class="contact-details reveal reveal-delay-3">
+          <div class="cd-item">
+            <div class="cd-icon">&#9993;</div>
+            <div>
+              <strong>Email Us</strong>
+              <a href="mailto:info@vocaltechmarketing.com">info@vocaltechmarketing.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-wrap reveal reveal-delay-2">
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="cf-row">
+            <div class="cf-field">
+              <label for="cf-name">Your Name</label>
+              <input id="cf-name" type="text" name="name" placeholder="John Smith" required autocomplete="name" />
+            </div>
+            <div class="cf-field">
+              <label for="cf-email">Email Address</label>
+              <input id="cf-email" type="email" name="email" placeholder="john@company.com" required autocomplete="email" />
+            </div>
+          </div>
+          <div class="cf-field">
+            <label for="cf-phone">Phone Number</label>
+            <input id="cf-phone" type="tel" name="phone" placeholder="(555) 000-0000" autocomplete="tel" />
+          </div>
+          <div class="cf-field">
+            <label for="cf-service">Service Interested In</label>
+            <select id="cf-service" name="service" required>
+              <option value="" disabled selected>Select a service</option>
+              <option value="medicare">Medicare Advantage</option>
+              <option value="aca">ACA Insurance</option>
+              <option value="mva">MVA Campaigns</option>
+              <option value="auto">Auto Insurance</option>
+              <option value="fe">Final Expense</option>
+              <option value="webdev">Web Development</option>
+              <option value="multiple">Multiple Services</option>
+            </select>
+          </div>
+          <div class="cf-field">
+            <label for="cf-message">Tell Us About Your Goals</label>
+            <textarea id="cf-message" name="message" placeholder="Monthly lead volume, target states, budget range..." rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn-primary full">Send Message &rarr;</button>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <div class="form-success-icon">&#10003;</div>
+          <h3>Message Received!</h3>
+          <p>We’ll have a custom campaign plan ready for you within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="main-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img src="images/logo.png" alt="Vocal Tech Marketing" class="logo-img" style="height:48px" />
+        <div class="logo-text">
+          <span class="logo-v">Vocal Tech</span>
+          <span class="logo-sub">Marketing</span>
+        </div>
+      </div>
+      <p>Specialized outbound &amp; inbound marketing for insurance and legal verticals. Full-stack web development included.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="medicare/">Medicare Advantage</a>
+      <a href="aca/">ACA Insurance</a>
+      <a href="mva/">MVA Campaigns</a>
+      <a href="auto/">Auto Insurance</a>
+      <a href="final-expense/">Final Expense</a>
+      <a href="web-development/">Web Development</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="about/">About Us</a>
+      <a href="./#results">Our Results</a>
+      <a href="./#testimonials">Testimonials</a>
+      <a href="./#contact">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Get In Touch</h4>
+      <a href="mailto:info@vocaltechmarketing.com">info@vocaltechmarketing.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Vocal Tech Marketing. All rights reserved.</p>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTopBtn" aria-label="Back to top">&#8593;</button>
+<script src="js/script.js"></script>
+</body>
+</html>
