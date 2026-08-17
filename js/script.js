@@ -258,148 +258,150 @@
     });
   })();
 
-(function () {
-  var contactForm = document.getElementById('contactForm');
-  var formSuccess = document.getElementById('formSuccess');
-  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbz0nyFjR4fLx90XyCEhhIaeXIFZUKGaUaJDLmbTQJsPIDNYboM1s77PSx4Z3V3JQ_r8/exec';
+  (function () {
+    var contactForm = document.getElementById('contactForm');
+    var formSuccess = document.getElementById('formSuccess');
+    var SHEET_URL = 'https://script.google.com/macros/s/AKfycbz0nyFjR4fLx90XyCEhhIaeXIFZUKGaUaJDLmbTQJsPIDNYboM1s77PSx4Z3V3JQ_r8/exec';
 
-  if (!contactForm) return;
+    if (!contactForm) return;
 
-  var fields = {
-    name: {
-      input: document.getElementById('cf-name'),
-      error: document.getElementById('err-name'),
-      validate: function (v) {
-        v = v.trim();
-        if (!v) return 'Please enter your name.';
-        if (v.length < 2) return 'Name is too short.';
-        if (v.length > 60) return 'Name is too long.';
-        if (!/^[A-Za-z][A-Za-z .'-]*[A-Za-z.]$/.test(v)) {
-          return 'Enter a valid name (letters only).';
+    var fields = {
+      name: {
+        input: document.getElementById('cf-name'),
+        error: document.getElementById('err-name'),
+        validate: function (v) {
+          v = v.trim();
+          if (!v) return 'Please enter your name.';
+          if (v.length < 2) return 'Name is too short.';
+          if (v.length > 60) return 'Name is too long.';
+          if (!/^[A-Za-z][A-Za-z .'-]*[A-Za-z.]$/.test(v)) {
+            return 'Enter a valid name (letters only).';
+          }
+          return '';
         }
-        return '';
-      }
-    },
-    email: {
-      input: document.getElementById('cf-email'),
-      error: document.getElementById('err-email'),
-      validate: function (v) {
-        v = v.trim();
-        if (!v) return 'Please enter your email.';
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) {
-          return 'Enter a valid email address.';
+      },
+      email: {
+        input: document.getElementById('cf-email'),
+        error: document.getElementById('err-email'),
+        validate: function (v) {
+          v = v.trim();
+          if (!v) return 'Please enter your email.';
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) {
+            return 'Enter a valid email address.';
+          }
+          return '';
         }
-        return '';
-      }
-    },
-    phone: {
-      input: document.getElementById('cf-phone'),
-      error: document.getElementById('err-phone'),
-      validate: function (v) {
-        v = v.trim();
-        if (!v) return ''; // optional field
-        var digits = v.replace(/\D/g, '');
-        if (digits.length < 10 || digits.length > 11) {
-          return 'Enter a valid phone number.';
+      },
+      phone: {
+        input: document.getElementById('cf-phone'),
+        error: document.getElementById('err-phone'),
+        validate: function (v) {
+          v = v.trim();
+          if (!v) return '';
+          var digits = v.replace(/\D/g, '');
+          if (digits.length < 10 || digits.length > 11) {
+            return 'Enter a valid phone number.';
+          }
+          return '';
         }
-        return '';
+      },
+      service: {
+        input: document.getElementById('cf-service'),
+        error: document.getElementById('err-service'),
+        validate: function (v) {
+          if (!v) return 'Please select a service.';
+          return '';
+        }
+      },
+      message: {
+        input: document.getElementById('cf-message'),
+        error: document.getElementById('err-message'),
+        validate: function (v) {
+          v = v.trim();
+          if (!v) return 'Please tell us about your goals.';
+          if (v.length < 10) return 'Please provide a bit more detail (10+ characters).';
+          if (v.length > 1000) return 'Message is too long (max 1000 characters).';
+          return '';
+        }
       }
-    },
-    service: {
-      input: document.getElementById('cf-service'),
-      error: document.getElementById('err-service'),
-      validate: function (v) {
-        if (!v) return 'Please select a service.';
-        return '';
-      }
-    },
-    message: {
-      input: document.getElementById('cf-message'),
-      error: document.getElementById('err-message'),
-      validate: function (v) {
-        v = v.trim();
-        if (!v) return 'Please tell us about your goals.';
-        if (v.length < 10) return 'Please provide a bit more detail (10+ characters).';
-        if (v.length > 1000) return 'Message is too long (max 1000 characters).';
-        return '';
-      }
-    }
-  };
+    };
 
-  function showError(field, message) {
-    if (!field.error) return;
-    field.error.textContent = message;
-    field.input.classList.toggle('invalid', !!message);
-    field.input.setAttribute('aria-invalid', message ? 'true' : 'false');
-  }
-
-  function validateField(key) {
-    var field = fields[key];
-    var msg = field.validate(field.input.value);
-    showError(field, msg);
-    return !msg;
-  }
-
-  function validateAll() {
-    var valid = true;
-    Object.keys(fields).forEach(function (key) {
-      if (!validateField(key)) valid = false;
-    });
-    return valid;
-  }
-
-  Object.keys(fields).forEach(function (key) {
-    var field = fields[key];
-    if (!field.input) return;
-    field.input.addEventListener('blur', function () { validateField(key); });
-    field.input.addEventListener('input', function () {
-      if (field.error && field.error.textContent) validateField(key);
-    });
-  });
-
-  function getUserIP() {
-    return fetch('https://api.ipify.org?format=json')
-      .then(function (res) { return res.json(); })
-      .then(function (data) { return data.ip || 'Unknown'; })
-      .catch(function () { return 'Unknown'; });
-  }
-
-  contactForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    if (!validateAll()) {
-      var firstInvalid = Object.keys(fields)
-        .map(function (key) { return fields[key]; })
-        .find(function (f) { return f.error && f.error.textContent; });
-      if (firstInvalid) firstInvalid.input.focus();
-      return;
+    function showError(field, message) {
+      if (!field.error) return;
+      field.error.textContent = message;
+      field.input.classList.toggle('invalid', !!message);
+      field.input.setAttribute('aria-invalid', message ? 'true' : 'false');
     }
 
-    var submitBtn = contactForm.querySelector('button[type=submit]');
-    if (submitBtn) {
-      submitBtn.textContent = 'Sending…';
-      submitBtn.disabled = true;
+    function validateField(key) {
+      var field = fields[key];
+      var msg = field.validate(field.input.value);
+      showError(field, msg);
+      return !msg;
     }
 
-    getUserIP().then(function (ip) {
-      var payload = {
-        name: fields.name.input.value.trim(),
-        email: fields.email.input.value.trim(),
-        phone: fields.phone.input.value.trim(),
-        service: fields.service.input.value,
-        message: fields.message.input.value.trim(),
-        ip: ip,
-        submittedAt: new Date().toLocaleString()
-      };
-      return fetch(SHEET_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+    function validateAll() {
+      var valid = true;
+      Object.keys(fields).forEach(function (key) {
+        if (!validateField(key)) valid = false;
       });
-    }).catch(function () {}).finally(function () {
-      contactForm.style.display = 'none';
-      if (formSuccess) formSuccess.classList.add('show');
+      return valid;
+    }
+
+    Object.keys(fields).forEach(function (key) {
+      var field = fields[key];
+      if (!field.input) return;
+      field.input.addEventListener('blur', function () { validateField(key); });
+      field.input.addEventListener('input', function () {
+        if (field.error && field.error.textContent) validateField(key);
+      });
     });
-  });
+
+    function getUserIP() {
+      return fetch('https://api.ipify.org?format=json')
+        .then(function (res) { return res.json(); })
+        .then(function (data) { return data.ip || 'Unknown'; })
+        .catch(function () { return 'Unknown'; });
+    }
+
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (!validateAll()) {
+        var firstInvalid = Object.keys(fields)
+          .map(function (key) { return fields[key]; })
+          .find(function (f) { return f.error && f.error.textContent; });
+        if (firstInvalid) firstInvalid.input.focus();
+        return;
+      }
+
+      var submitBtn = contactForm.querySelector('button[type=submit]');
+      if (submitBtn) {
+        submitBtn.textContent = 'Sending…';
+        submitBtn.disabled = true;
+      }
+
+      getUserIP().then(function (ip) {
+        var payload = {
+          name: fields.name.input.value.trim(),
+          email: fields.email.input.value.trim(),
+          phone: fields.phone.input.value.trim(),
+          service: fields.service.input.value,
+          message: fields.message.input.value.trim(),
+          ip: ip,
+          submittedAt: new Date().toLocaleString()
+        };
+        return fetch(SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      }).catch(function () {}).finally(function () {
+        contactForm.style.display = 'none';
+        if (formSuccess) formSuccess.classList.add('show');
+      });
+    });
+  })();
+
 })();
