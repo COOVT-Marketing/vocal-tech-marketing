@@ -467,16 +467,19 @@
           <div class="cf-row">
             <div class="cf-field">
               <label for="cf-name">Your Name</label>
-              <input id="cf-name" type="text" name="name" placeholder="John Smith" required autocomplete="name" />
+              <input id="cf-name" type="text" name="name" placeholder="John Smith" required autocomplete="name" minlength="2" maxlength="60" />
+              <span class="cf-error" id="err-name"></span>
             </div>
             <div class="cf-field">
               <label for="cf-email">Email Address</label>
               <input id="cf-email" type="email" name="email" placeholder="john@company.com" required autocomplete="email" />
+              <span class="cf-error" id="err-email"></span>
             </div>
           </div>
           <div class="cf-field">
             <label for="cf-phone">Phone Number</label>
             <input id="cf-phone" type="tel" name="phone" placeholder="(555) 000-0000" autocomplete="tel" />
+            <span class="cf-error" id="err-phone"></span>
           </div>
           <div class="cf-field">
             <label for="cf-service">Service Interested In</label>
@@ -490,10 +493,12 @@
               <option value="webdev">Web Development</option>
               <option value="multiple">Multiple Services</option>
             </select>
+            <span class="cf-error" id="err-service"></span>
           </div>
           <div class="cf-field">
             <label for="cf-message">Tell Us About Your Goals</label>
-            <textarea id="cf-message" name="message" placeholder="Monthly lead volume, target states, budget range..." rows="4" required></textarea>
+            <textarea id="cf-message" name="message" placeholder="Monthly lead volume, target states, budget range..." rows="4" required minlength="10" maxlength="1000"></textarea>
+            <span class="cf-error" id="err-message"></span>
           </div>
           <button type="submit" class="btn-primary full">Send Message &rarr;</button>
         </form>
