@@ -1,0 +1,1 @@
+export const theme={get:()=>document.documentElement.dataset.theme,set(t){document.documentElement.dataset.theme=t;try{localStorage.setItem("vtm_theme",t)}catch(t){}document.querySelector("meta[name=theme-color]").content="dark"===t?"#141b1f":"#548888"},toggle(){return this.set("dark"===this.get()?"light":"dark"),this.get()}};

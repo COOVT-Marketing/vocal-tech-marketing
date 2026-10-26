@@ -1,0 +1,1 @@
+export const CONFIG={webhook:"https://script.google.com/macros/s/AKfycbz0nyFjR4fLx90XyCEhhIaeXIFZUKGaUaJDLmbTQJsPIDNYboM1s77PSx4Z3V3JQ_r8/exec",ipApi:"https://api.ipify.org?format=json",ipTimeoutMs:3e3};
